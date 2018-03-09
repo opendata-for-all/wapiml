@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Core
+Bundle-SymbolicName: som.openapitouml.core
+Require-Bundle: org.eclipse.uml2.uml,
+ org.eclipse.uml2.uml.resources,
+ org.eclipse.emf.ecore.xmi,
+ org.eclipse.emf.ecore,
+ edu.uoc.som.openapi;bundle-version="1.0.0",
+ edu.uoc.som.openapi.io;bundle-version="1.0.0"
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ClassPath: lib/gson-2.6.2.jar,
+ .
+Export-Package: som.openapitouml.core.generators

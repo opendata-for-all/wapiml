@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="som.openapitouml.core" default="default">
+    <description>
+    	Build JAR
+    </description>
+
+    <!-- ================================= 
+          target: default              
+         ================================= -->
+    <target name="default" description="JAR">
+        <jar destfile="openapitouml-core.jar" basedir="bin"/>
+    </target>
+</project>
