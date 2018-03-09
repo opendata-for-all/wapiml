@@ -19,8 +19,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.uml2.uml.Model;
 
 import core.Root;
-import som.openapitouml.generators.ClassDiagramGenerator;
-import som.openapitouml.generators.OpenAPIGenerator;
+import som.openapitouml.core.generators.ClassDiagramGenerator;
+import som.openapitouml.core.generators.OpenAPIGenerator;
+import som.openapitouml.core.generators.OpenAPItoUML;
 
 public class GenerateClassDiagramAction implements IObjectActionDelegate {
 
@@ -53,15 +54,9 @@ public class GenerateClassDiagramAction implements IObjectActionDelegate {
 		}
 
 		try {
+			
+			OpenAPItoUML.genrateAndSaveClassDiagram(new File(iFile.getLocation().toString()),iFile.getName().substring(0, iFile.getName().lastIndexOf('.')) , target.getFullPath().toString());
 
-			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator();
-			OpenAPIGenerator openAPIGenerator = new OpenAPIGenerator();
-			Root openAPIRoot = openAPIGenerator.createOpenAPIModelFromJson(new File(iFile.getLocation().toString()));
-			Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI(openAPIRoot, iFile.getName());
-			classDiagramGenerator.saveClassDiagram(model,
-					URI.createPlatformResourceURI(target.getFullPath().toString(), true)
-							.appendSegment(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
-							.appendFileExtension("uml"));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
