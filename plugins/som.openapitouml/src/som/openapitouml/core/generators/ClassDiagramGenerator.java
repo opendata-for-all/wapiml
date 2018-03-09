@@ -24,6 +24,7 @@ import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
@@ -95,16 +96,22 @@ public class ClassDiagramGenerator implements Serializable {
 						Property umlProperty = umlFactory.createProperty();
 						umlProperty.setName(property.getName());
 
-						if (!property.getType().equals(JSONDataType.ARRAY))
-							umlProperty.setType(getUMLTypeFromJson(model, property.getType()));
-						else {
+						if (!property.getType().equals(JSONDataType.ARRAY)) {
+							umlProperty.setType(getUMLType(model, property.getType(), property.getFormat()));
+							if (schema.getRequired().contains(property))
+								umlProperty.setLower(1);
+							else
+								umlProperty.setLower(0);
+						} else {
+
 							umlProperty.setUpper(-1);
-							umlProperty.setType(getUMLTypeFromJson(model, property.getItems().getType()));
+							if (property.getMinItems() != null)
+								umlProperty.setLower(property.getMinItems());
+							else
+								umlProperty.setLower(0);
+							umlProperty.setType(getUMLType(model, property.getItems().getType(), property.getItems().getFormat()));
+
 						}
-						if(schema.getRequired().contains(property))
-							umlProperty.setLower(1);
-						else
-							umlProperty.setLower(0);
 						clazz.getOwnedAttributes().add(umlProperty);
 					}
 				}
@@ -125,14 +132,14 @@ public class ClassDiagramGenerator implements Serializable {
 						firstOwnedEnd.setType(map.get(schema));
 						secondOwnedEnd.setName(property.getName());
 						secondOwnedEnd.setAggregation(AggregationKind.COMPOSITE_LITERAL);
-						if(schema.getRequired().contains(property))
+						if (schema.getRequired().contains(property))
 							secondOwnedEnd.setLower(1);
 						else
 							secondOwnedEnd.setLower(0);
 						if (!property.getType().equals(JSONDataType.ARRAY)) {
 							Class type = map.get(property.getValue());
 							secondOwnedEnd.setType(type);
-							
+
 						} else {
 							secondOwnedEnd.setUpper(-1);
 							secondOwnedEnd.setType(map.get(property.getItems()));
@@ -158,42 +165,54 @@ public class ClassDiagramGenerator implements Serializable {
 						org.eclipse.uml2.uml.Parameter umlParameter = umlFactory.createParameter();
 						umlParameter.setName(parameter.getName());
 						umlParameter.setDirection(ParameterDirectionKind.IN_LITERAL);
-						if (parameter.getRequired() == true)
-							umlParameter.setLower(1);
-						else
-							umlParameter.setLower(0);
-
-						if (parameter.getLocation().equals(ParameterLocation.BODY) && parameter.getSchema() != null
-								&& parameter.getSchema().getType().equals(JSONDataType.ARRAY))
-							umlParameter.setUpper(-1);
-						if (parameter.getLocation() != ParameterLocation.BODY) {
-							if (parameter.getType().equals(JSONDataType.ARRAY)) {
-								umlParameter.setUpper(-1);
-								umlParameter.setType(getUMLTypeFromJson(model, parameter.getItems().getType()));
-							} else
-								umlParameter.setType(getUMLTypeFromJson(model, parameter.getType()));
+						if (parameter.getLocation().equals(ParameterLocation.BODY)) {
+							if (parameter.getSchema() != null) {
+								if (parameter.getSchema().getType().equals(JSONDataType.ARRAY)) {
+									umlParameter.setType(map.get(parameter.getSchema().getItems()));
+									if (parameter.getSchema().getMaxItems() != null) {
+										umlParameter.setUpper(parameter.getSchema().getMaxItems());
+									} else
+										umlParameter.setUpper(-1);
+									if (parameter.getSchema().getMinItems() != null)
+										umlParameter.setLower(parameter.getSchema().getMinItems());
+									else
+										umlParameter.setLower(0);
+								} else {
+									umlParameter.setType(map.get(parameter.getSchema()));
+								}
+							}
 						} else {
-							if (parameter.getSchema() != null && parameter.getSchema().getType().equals(JSONDataType.OBJECT))
-								umlParameter.setType(map.get(parameter.getSchema()));
-							if (parameter.getSchema() != null && parameter.getSchema().getType().equals(JSONDataType.ARRAY)
-									&& parameter.getSchema().getItems() != null)
-								umlParameter.setType(map.get(parameter.getSchema().getItems()));
+							if (parameter.getRequired() == true)
+								umlParameter.setLower(1);
+							else
+								umlParameter.setLower(0);
+							if (parameter.getType().equals(JSONDataType.ARRAY)) {
+								if (parameter.getMaxItems() != null)
+									umlParameter.setUpper(parameter.getMaxItems());
+								else
+									umlParameter.setUpper(-1);
+								umlParameter.setType(getUMLType(model, parameter.getItems().getType(), parameter.getItems().getFormat()));
+							} else
+								umlParameter.setType(getUMLType(model, parameter.getType(), parameter.getFormat()));
+							if (parameter.getDefault() != null) {
+								umlParameter.setDefault(parameter.getDefault());
+							}
 						}
-						
+
 						umlOperation.getOwnedParameters().add(umlParameter);
 
 					}
-					Schema s= operation.getProducedSchema();
-					if(s!=null) {
+					Schema s = operation.getProducedSchema();
+					if (s != null) {
 						org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
 						returnedParameter.setType(map.get(s));
-						if(operation.IsProducingList()) {
-						returnedParameter.setUpper(-1);
-						returnedParameter.setLower(0);
+						if (operation.IsProducingList()) {
+							returnedParameter.setUpper(-1);
+							returnedParameter.setLower(0);
 						}
 						umlOperation.getOwnedParameters().add(returnedParameter);
 						returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
-						
+
 					}
 				}
 			}
@@ -310,20 +329,49 @@ public class ClassDiagramGenerator implements Serializable {
 		return false;
 	}
 
-	private PrimitiveType getUMLTypeFromJson(Model model, JSONDataType jsonDataType) {
+	private PrimitiveType getUMLType(Model model, JSONDataType jsonDataType, String format) {
 		PrimitiveType type = null;
 		switch (jsonDataType) {
-		case BOOLEAN:
-			type = (PrimitiveType) model.getImportedMember("Boolean");
-			break;
+
 		case INTEGER:
-			type = (PrimitiveType) model.getImportedMember("Integer");
-			break;
-		case STRING:
-			type = (PrimitiveType) model.getImportedMember("String");
+			if (format == null)
+				type = getOrCreatePrimitiveTypeByCommonName("Integer", model);
+			else if (format.equals("int32"))
+				type = getOrCreatePrimitiveTypeByCommonName("Integer", model);
+			else if (format.equals("int64"))
+				type = getOrCreatePrimitiveTypeByCommonName("Long", model);
+			else
+				type = getOrCreatePrimitiveTypeByCommonName(format, model);
 			break;
 		case NUMBER:
-			type = (PrimitiveType) model.getImportedMember("Real");
+			if (format == null)
+				type = getOrCreatePrimitiveTypeByCommonName("Number", model);
+			else if (format.equals("float"))
+				type = getOrCreatePrimitiveTypeByCommonName("Float", model);
+			else if (format.equals("double"))
+				type = getOrCreatePrimitiveTypeByCommonName("Double", model);
+			else
+				type = getOrCreatePrimitiveTypeByCommonName(format, model);
+			break;
+		case STRING:
+			if (format == null)
+				type = getOrCreatePrimitiveTypeByCommonName("String", model);
+			else if (format.equals("byte"))
+				type = getOrCreatePrimitiveTypeByCommonName("Byte", model);
+			else if (format.equals("binary"))
+				type = getOrCreatePrimitiveTypeByCommonName("Binary", model);
+			else if (format.equals("date"))
+				type = getOrCreatePrimitiveTypeByCommonName("Date", model);
+			else if (format.equals("date-time"))
+				type = getOrCreatePrimitiveTypeByCommonName("DateTime", model);
+			else if (format.equals("password"))
+				type = getOrCreatePrimitiveTypeByCommonName("Password", model);
+			else
+				type = getOrCreatePrimitiveTypeByCommonName(format, model);
+
+			break;
+		case BOOLEAN:
+			type = getOrCreatePrimitiveTypeByCommonName("Boolean", model);
 			break;
 
 		default:
@@ -346,6 +394,18 @@ public class ClassDiagramGenerator implements Serializable {
 		resource.getContents().add(model);
 		resource.save(Collections.EMPTY_MAP);
 
+	}
+
+	private PrimitiveType getOrCreatePrimitiveTypeByCommonName(String commonName, Model model) {
+		Type type = model.getOwnedType(commonName, false, UMLPackage.eINSTANCE.getPrimitiveType(), false);
+		if (type != null)
+			return (PrimitiveType) type;
+		else {
+			PrimitiveType primitiveType = umlFactory.createPrimitiveType();
+			primitiveType.setName(commonName);
+			model.getOwnedElements().add(primitiveType);
+			return primitiveType;
+		}
 	}
 
 }
