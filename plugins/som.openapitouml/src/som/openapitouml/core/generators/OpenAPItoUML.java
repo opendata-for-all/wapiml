@@ -8,14 +8,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.resource.UMLResource;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import edu.uoc.som.openapi.OpenAPIPackage;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.io.OpenAPIImporter;
 
@@ -51,6 +59,17 @@ public class OpenAPItoUML {
 				URI.createPlatformResourceURI(location, true)
 						.appendSegment(modelName)
 						.appendFileExtension("uml"));
+		
+//		ResourceSet resourceSet = new ResourceSetImpl();
+//		resourceSet.getPackageRegistry().put(OpenAPIPackage.eNS_URI, OpenAPIPackage.eINSTANCE);
+//		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("oas",
+//				new XMIResourceFactoryImpl());
+//		Resource resource = resourceSet.createResource(URI.createPlatformResourceURI(location, true)
+//				.appendSegment(modelName)
+//				.appendFileExtension("oas"));
+//		resource.getContents().add(openAPIRoot);
+//		resource.save(Collections.EMPTY_MAP);
+		
 	}
 	
 	

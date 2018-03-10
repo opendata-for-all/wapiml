@@ -3,7 +3,11 @@ package som.openapitouml.core.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import edu.uoc.som.openapi.API;
 import edu.uoc.som.openapi.Operation;
+import edu.uoc.som.openapi.Path;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
 
@@ -73,5 +77,30 @@ public class OpenAPIUtils {
 			if(tag.equalsIgnoreCase(schema.getName()))
 				return true;
 		return false;
+	}
+	public static Schema getAppropriateLocation(API api, Operation operation) {
+		for(Schema schema: api.getDefinitions())
+			if(isSchemaInTags(schema, operation.getTagReferences()))
+		return schema;
+		Schema produced =operation.getProducedSchema();
+		if(produced!= null)
+			return produced;
+		Schema consumed =operation.getConsumedSchema();
+		if(consumed != null)
+			return consumed;
+		return null;
+	}
+
+	public static String getLastMeaningfullSegment(String path) {
+		if(!path.equals("/")) {
+		String[] segments = path.substring(1).split("/");
+		if(segments.length > 0) {
+		for(int i = (segments.length -1); i >= 0; i--) {
+			if(!segments[i].contains("{")) {
+				return segments[i];
+			}}
+		}
+		}
+		return "Resource";
 	}
 }

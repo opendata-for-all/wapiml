@@ -10,5 +10,6 @@ Require-Bundle: org.eclipse.uml2.uml,
  edu.uoc.som.openapi.io;bundle-version="1.0.0"
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/commons-lang3-3.7.jar
 Export-Package: som.openapitouml.core.generators

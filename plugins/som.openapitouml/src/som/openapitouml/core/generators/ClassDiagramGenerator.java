@@ -1,6 +1,5 @@
 package som.openapitouml.core.generators;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -19,7 +19,11 @@ import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Element;
+import org.eclipse.uml2.uml.Enumeration;
+import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.LiteralString;
 import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
@@ -33,6 +37,7 @@ import edu.uoc.som.openapi.JSONDataType;
 import edu.uoc.som.openapi.Operation;
 import edu.uoc.som.openapi.Parameter;
 import edu.uoc.som.openapi.ParameterLocation;
+import edu.uoc.som.openapi.Path;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
 import som.openapitouml.core.utils.OpenAPIUtils;
@@ -52,20 +57,6 @@ public class ClassDiagramGenerator implements Serializable {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
 
-//			resourceSet.getURIConverter().getURIMap().put(
-//					URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"), URI.createPlatformPluginURI(
-//							"/org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml", true));
-
-	}
-
-	private void loadDefaultImports(Model model) {
-		Model umlLibrary = (Model) resourceSet
-				.getResource(URI.createURI(UMLResource.UML_PRIMITIVE_TYPES_LIBRARY_URI), true).getContents().get(0);
-		model.createElementImport(umlLibrary.getOwnedType("Boolean"));
-		model.createElementImport(umlLibrary.getOwnedType("String"));
-		model.createElementImport(umlLibrary.getOwnedType("UnlimitedNatural"));
-		model.createElementImport(umlLibrary.getOwnedType("Real"));
-		model.createElementImport(umlLibrary.getOwnedType("Integer"));
 	}
 
 	public Model generateClassDiagramFromOpenAPI(Root root, String modelName) {
@@ -73,7 +64,6 @@ public class ClassDiagramGenerator implements Serializable {
 		model.setName(modelName);
 
 		Map<Schema, Class> map = new HashMap<Schema, Class>();
-		loadDefaultImports(model);
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (schema.getType().equals(JSONDataType.OBJECT)) {
 				Class clazz = umlFactory.createClass();
@@ -85,9 +75,15 @@ public class ClassDiagramGenerator implements Serializable {
 					if (isPrimitive(property)) {
 						Property umlProperty = umlFactory.createProperty();
 						umlProperty.setName(property.getName());
+						if(property.getDefault() != null)
+							umlProperty.setDefault(property.getDefault());
 
 						if (!property.getType().equals(JSONDataType.ARRAY)) {
-							umlProperty.setType(getUMLType(model, property.getType(), property.getFormat()));
+							if (!property.getEnum().isEmpty())
+								umlProperty.setType(getOrCreateEnumeration(property.getEnum(),
+										schema.getName() + StringUtils.capitalize(property.getName()), model));
+							else
+								umlProperty.setType(getUMLType(model, property.getType(), property.getFormat()));
 							if (schema.getRequired().contains(property))
 								umlProperty.setLower(1);
 							else
@@ -99,7 +95,12 @@ public class ClassDiagramGenerator implements Serializable {
 								umlProperty.setLower(property.getMinItems());
 							else
 								umlProperty.setLower(0);
-							umlProperty.setType(getUMLType(model, property.getItems().getType(), property.getItems().getFormat()));
+							if (!property.getItems().getEnum().isEmpty())
+								umlProperty.setType(getOrCreateEnumeration(property.getItems().getEnum(),
+										schema.getName() + StringUtils.capitalize(property.getName()), model));
+							else
+								umlProperty.setType(getUMLType(model, property.getItems().getType(),
+										property.getItems().getFormat()));
 
 						}
 						clazz.getOwnedAttributes().add(umlProperty);
@@ -142,71 +143,98 @@ public class ClassDiagramGenerator implements Serializable {
 				}
 			}
 		}
-		// resolve operations
-		for (Schema schema : root.getApi().getDefinitions()) {
-			if (schema.getType().equals(JSONDataType.OBJECT)) {
-				Class clazz = map.get(schema);
-				List<Operation> operations = OpenAPIUtils.getAllRelatedOperations(root, schema);
-				for (Operation operation : operations) {
-					org.eclipse.uml2.uml.Operation umlOperation = umlFactory.createOperation();
-					umlOperation.setName(OpenAPIUtils.getOperationName(operation));
-					clazz.getOwnedOperations().add(umlOperation);
-					for (Parameter parameter : operation.getParameters()) {
-						org.eclipse.uml2.uml.Parameter umlParameter = umlFactory.createParameter();
-						umlParameter.setName(parameter.getName());
-						umlParameter.setDirection(ParameterDirectionKind.IN_LITERAL);
-						if (parameter.getLocation().equals(ParameterLocation.BODY)) {
-							if (parameter.getSchema() != null) {
-								if (parameter.getSchema().getType().equals(JSONDataType.ARRAY)) {
-									umlParameter.setType(map.get(parameter.getSchema().getItems()));
-									if (parameter.getSchema().getMaxItems() != null) {
-										umlParameter.setUpper(parameter.getSchema().getMaxItems());
-									} else
-										umlParameter.setUpper(-1);
-									if (parameter.getSchema().getMinItems() != null)
-										umlParameter.setLower(parameter.getSchema().getMinItems());
-									else
-										umlParameter.setLower(0);
-								} else {
-									umlParameter.setType(map.get(parameter.getSchema()));
-								}
-							}
-						} else {
-							if (parameter.getRequired() == true)
-								umlParameter.setLower(1);
-							else
-								umlParameter.setLower(0);
-							if (parameter.getType().equals(JSONDataType.ARRAY)) {
-								if (parameter.getMaxItems() != null)
-									umlParameter.setUpper(parameter.getMaxItems());
-								else
-									umlParameter.setUpper(-1);
-								umlParameter.setType(getUMLType(model, parameter.getItems().getType(), parameter.getItems().getFormat()));
-							} else
-								umlParameter.setType(getUMLType(model, parameter.getType(), parameter.getFormat()));
-							if (parameter.getDefault() != null) {
-								umlParameter.setDefault(parameter.getDefault());
-							}
-						}
-
-						umlOperation.getOwnedParameters().add(umlParameter);
-
-					}
-					Schema s = operation.getProducedSchema();
-					if (s != null) {
-						org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
-						returnedParameter.setType(map.get(s));
-						if (operation.IsProducingList()) {
-							returnedParameter.setUpper(-1);
-							returnedParameter.setLower(0);
-						}
-						umlOperation.getOwnedParameters().add(returnedParameter);
-						returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
-
-					}
+		for (Operation operation : root.getApi().getAllOperations()) {
+			Schema schema = OpenAPIUtils.getAppropriateLocation(root.getApi(), operation);
+			Class clazz = null;
+			if(schema!= null) {
+				if( map.get(schema)!= null) {
+					clazz = map.get(schema);
+				}
+				
+			}
+			if(clazz == null) {
+				Path path = (Path) operation.eContainer();
+				String resource = OpenAPIUtils.getLastMeaningfullSegment(path.getRelativePath());
+				NamedElement namedElement = model.getOwnedMember(StringUtils.capitalize(resource), false, UMLPackage.eINSTANCE.getClass_());
+				if(namedElement!= null) {
+					clazz = (Class) namedElement;
+				}
+				else {
+					clazz = umlFactory.createClass();
+					clazz.setName(StringUtils.capitalize(resource));
+					model.getOwnedTypes().add(clazz);
 				}
 			}
-		}
+	
+				org.eclipse.uml2.uml.Operation umlOperation = umlFactory.createOperation();
+				umlOperation.setName(OpenAPIUtils.getOperationName(operation));
+				clazz.getOwnedOperations().add(umlOperation);
+				for (Parameter parameter : operation.getParameters()) {
+					org.eclipse.uml2.uml.Parameter umlParameter = umlFactory.createParameter();
+					umlParameter.setName(parameter.getName());
+					umlParameter.setDirection(ParameterDirectionKind.IN_LITERAL);
+					if(parameter.getDefault()!= null)
+						umlParameter.setDefault(parameter.getDefault());
+					if (parameter.getLocation().equals(ParameterLocation.BODY)) {
+						if (parameter.getSchema() != null) {
+							if (parameter.getSchema().getType().equals(JSONDataType.ARRAY)) {
+								umlParameter.setType(map.get(parameter.getSchema().getItems()));
+								if (parameter.getSchema().getMaxItems() != null) {
+									umlParameter.setUpper(parameter.getSchema().getMaxItems());
+								} else
+									umlParameter.setUpper(-1);
+								if (parameter.getSchema().getMinItems() != null)
+									umlParameter.setLower(parameter.getSchema().getMinItems());
+								else
+									umlParameter.setLower(0);
+							} else {
+								umlParameter.setType(map.get(parameter.getSchema()));
+							}
+						}
+					} else {
+						if (parameter.getRequired() == true)
+							umlParameter.setLower(1);
+						else
+							umlParameter.setLower(0);
+						if (parameter.getType().equals(JSONDataType.ARRAY)) {
+							if (parameter.getMaxItems() != null)
+								umlParameter.setUpper(parameter.getMaxItems());
+							else
+								umlParameter.setUpper(-1);
+							if (!parameter.getItems().getEnum().isEmpty())
+								umlParameter.setType(getOrCreateEnumeration(parameter.getItems().getEnum(),
+										clazz.getName() + StringUtils.capitalize(parameter.getName()), model));
+							else
+								umlParameter.setType(getUMLType(model, parameter.getItems().getType(),
+										parameter.getItems().getFormat()));
+						} else if (!parameter.getEnum().isEmpty())
+							umlParameter.setType(getOrCreateEnumeration(parameter.getEnum(),
+									clazz.getName() + StringUtils.capitalize(parameter.getName()), model));
+						else
+							umlParameter.setType(getUMLType(model, parameter.getType(), parameter.getFormat()));
+						if (parameter.getDefault() != null) {
+							umlParameter.setDefault(parameter.getDefault());
+						}
+					}
+
+					umlOperation.getOwnedParameters().add(umlParameter);
+
+				}
+				Schema s = operation.getProducedSchema();
+				if (s != null) {
+					org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
+					returnedParameter.setType(map.get(s));
+					if (operation.IsProducingList()) {
+						returnedParameter.setUpper(-1);
+						returnedParameter.setLower(0);
+					}
+					umlOperation.getOwnedParameters().add(returnedParameter);
+					returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
+
+				}
+
+			}
+		
 
 		return model;
 
@@ -331,7 +359,7 @@ public class ClassDiagramGenerator implements Serializable {
 			else if (format.equals("int64"))
 				type = getOrCreatePrimitiveTypeByCommonName("Long", model);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(format, model);
+				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), model);
 			break;
 		case NUMBER:
 			if (format == null)
@@ -341,7 +369,7 @@ public class ClassDiagramGenerator implements Serializable {
 			else if (format.equals("double"))
 				type = getOrCreatePrimitiveTypeByCommonName("Double", model);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(format, model);
+				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), model);
 			break;
 		case STRING:
 			if (format == null)
@@ -357,7 +385,7 @@ public class ClassDiagramGenerator implements Serializable {
 			else if (format.equals("password"))
 				type = getOrCreatePrimitiveTypeByCommonName("Password", model);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(format, model);
+				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), model);
 
 			break;
 		case BOOLEAN:
@@ -395,6 +423,23 @@ public class ClassDiagramGenerator implements Serializable {
 			primitiveType.setName(commonName);
 			model.getOwnedTypes().add(primitiveType);
 			return primitiveType;
+		}
+	}
+
+	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Model model) {
+		Type type = model.getOwnedType(name, false, UMLPackage.eINSTANCE.getEnumeration(), false);
+		if (type != null)
+			return (Enumeration) type;
+		else {
+			Enumeration enumeration = umlFactory.createEnumeration();
+			enumeration.setName(name);
+			model.getOwnedTypes().add(enumeration);
+			for (String l : literals) {
+				EnumerationLiteral literal = umlFactory.createEnumerationLiteral();
+				literal.setName(l);
+				enumeration.getOwnedLiterals().add(literal);
+			}
+			return enumeration;
 		}
 	}
 
