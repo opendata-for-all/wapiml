@@ -223,7 +223,9 @@ public class ClassDiagramGenerator implements Serializable {
 				Schema s = operation.getProducedSchema();
 				if (s != null) {
 					org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
-					returnedParameter.setType(map.get(s));
+					Class producedClass = map.get(s);
+					if(producedClass != null)
+					returnedParameter.setType(producedClass);
 					if (operation.IsProducingList()) {
 						returnedParameter.setUpper(-1);
 						returnedParameter.setLower(0);
@@ -391,7 +393,8 @@ public class ClassDiagramGenerator implements Serializable {
 		case BOOLEAN:
 			type = getOrCreatePrimitiveTypeByCommonName("Boolean", model);
 			break;
-
+		case FILE:
+			type = getOrCreatePrimitiveTypeByCommonName("File", model);
 		default:
 			break;
 		}
