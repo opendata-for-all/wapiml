@@ -7,12 +7,13 @@
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any">
          <menu
-               label="Open API to UML">
+               icon="images/logo.png"
+               label="OpenAPI to UML">
             <command
                   commandId="edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagram"
                   label="Generate a Class diagram"
                   style="push"
-                  tooltip="Generate Class diagram from an Open API definition">
+                  tooltip="Generate Class diagram from an OpenAPI definition">
                <visibleWhen
                      checkEnabled="false">
                   <iterate>
