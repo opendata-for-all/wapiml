@@ -52,19 +52,9 @@ public class ClassDiagramGenerator implements Serializable {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
 
-		try {
-			resourceSet.getURIConverter().getURIMap().put(
-					URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"), URI.createPlatformPluginURI(
-							"/org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml", true));
-		} catch (Exception e) {
-			ClassLoader classLoader = getClass().getClassLoader();
-			File primitiveTypesLibraryFile = new File(
-					classLoader.getResource("imported/UMLPrimitiveTypes.library.uml").getFile());
-			resourceSet.getURIConverter().getURIMap().put(
-					URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"),
-					URI.createFileURI(primitiveTypesLibraryFile.getAbsolutePath()));
-
-		}
+//			resourceSet.getURIConverter().getURIMap().put(
+//					URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"), URI.createPlatformPluginURI(
+//							"/org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml", true));
 
 	}
 
@@ -403,7 +393,7 @@ public class ClassDiagramGenerator implements Serializable {
 		else {
 			PrimitiveType primitiveType = umlFactory.createPrimitiveType();
 			primitiveType.setName(commonName);
-			model.getOwnedElements().add(primitiveType);
+			model.getOwnedTypes().add(primitiveType);
 			return primitiveType;
 		}
 	}
