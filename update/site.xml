@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site
       associateSitesURL="associateSites.xml">
-   <feature url="features/edu.uoc.som.openapitouml.feature_1.0.0.201803111243.jar" id="edu.uoc.som.openapitouml.feature" version="1.0.0.201803111243">
+   <feature url="features/edu.uoc.som.openapitouml.feature_1.0.0.201803111336.jar" id="edu.uoc.som.openapitouml.feature" version="1.0.0.201803111336">
       <category name="openapitouml"/>
    </feature>
    <category-def name="openapitouml" label="OpenAPI to UML"/>
