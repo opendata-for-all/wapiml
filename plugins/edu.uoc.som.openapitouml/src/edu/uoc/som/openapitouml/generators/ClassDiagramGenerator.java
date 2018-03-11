@@ -1,4 +1,4 @@
-package som.openapitouml.core.generators;
+package edu.uoc.som.openapitouml.generators;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -40,7 +40,7 @@ import edu.uoc.som.openapi.ParameterLocation;
 import edu.uoc.som.openapi.Path;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
-import som.openapitouml.core.utils.OpenAPIUtils;
+import edu.uoc.som.openapitouml.utils.OpenAPIUtils;
 
 public class ClassDiagramGenerator implements Serializable {
 	/**

@@ -1,4 +1,4 @@
-package som.openapitouml.core.generators;
+package edu.uoc.som.openapitouml.generators;
 
 import java.io.File;
 import java.io.FileInputStream;

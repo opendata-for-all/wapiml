@@ -1,4 +1,4 @@
-package som.openapitouml.core.utils;
+package edu.uoc.som.openapitouml.utils;
 
 import java.util.ArrayList;
 import java.util.List;
