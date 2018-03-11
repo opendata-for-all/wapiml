@@ -18,8 +18,8 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import edu.uoc.som.openapitouml.generators.OpenAPItoUML;
 import edu.uoc.som.openapitouml.ui.OpenAPIToUMLUIPlugin;
-import som.openapitouml.core.generators.OpenAPItoUML;
 
 public class ConvertToClassDiagram extends AbstractHandler {
 
