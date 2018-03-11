@@ -9,6 +9,8 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -44,12 +46,13 @@ public class ConvertToClassDiagram extends AbstractHandler {
 								IContainer target = iFile.getProject().getFolder("src-gen");
 								if (!target.getLocation().toFile().exists()) {
 									target.getLocation().toFile().mkdirs();	
+									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
 								OpenAPItoUML.genrateAndSaveClassDiagram(new File(iFile.getLocation().toString()),iFile.getName().substring(0, iFile.getName().lastIndexOf('.')) , target.getFullPath().toString());
 
 							}
 						}
-					} catch (IOException e) {
+					} catch (IOException | CoreException e) {
 						return new Status(IStatus.ERROR, OpenAPIToUMLUIPlugin.PLUGIN_ID, e.getLocalizedMessage(), e);
 						
 					} finally {
