@@ -87,7 +87,7 @@
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_D2GvoyS5EeiPUvkzZ2gAiA"/>
     </children>
     <element xmi:type="uml:Class" href="petstore.uml#_kVFY0SS4EeiPUvkzZ2gAiA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_D2GvkSS5EeiPUvkzZ2gAiA" x="340" y="380"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_D2GvkSS5EeiPUvkzZ2gAiA" x="400" y="400"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_JA6nkCS5EeiPUvkzZ2gAiA" type="Class_Shape">
     <children xmi:type="notation:DecorationNode" xmi:id="_JA7OoCS5EeiPUvkzZ2gAiA" type="Class_NameLabel"/>
@@ -493,7 +493,7 @@
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UsI4oSS5EeiPUvkzZ2gAiA"/>
     </children>
     <element xmi:type="uml:Class" href="petstore.uml#_kVFZYCS4EeiPUvkzZ2gAiA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UsIRgSS5EeiPUvkzZ2gAiA" x="640" y="380"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_UsIRgSS5EeiPUvkzZ2gAiA" x="720" y="400"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_WWTUUCS5EeiPUvkzZ2gAiA" type="Class_Shape">
     <children xmi:type="notation:DecorationNode" xmi:id="_WWTUUiS5EeiPUvkzZ2gAiA" type="Class_NameLabel"/>
@@ -523,7 +523,7 @@
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WWT7ZCS5EeiPUvkzZ2gAiA"/>
     </children>
     <element xmi:type="uml:Class" href="petstore.uml#_kVFZcSS4EeiPUvkzZ2gAiA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WWTUUSS5EeiPUvkzZ2gAiA" x="900" y="280" width="141"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_WWTUUSS5EeiPUvkzZ2gAiA" x="900" y="40" width="141"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_un_EoCS7EeiPUvkzZ2gAiA" type="Enumeration_Shape">
     <children xmi:type="notation:DecorationNode" xmi:id="_uoASwCS7EeiPUvkzZ2gAiA" type="Enumeration_NameLabel"/>
@@ -549,7 +549,7 @@
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_uoASxyS7EeiPUvkzZ2gAiA"/>
     </children>
     <element xmi:type="uml:Enumeration" href="petstore.uml#_kVFZXCS4EeiPUvkzZ2gAiA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_un_EoSS7EeiPUvkzZ2gAiA" x="980" y="400"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_un_EoSS7EeiPUvkzZ2gAiA" x="920" y="320"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_xWG3wCS7EeiPUvkzZ2gAiA" type="Enumeration_Shape">
     <children xmi:type="notation:DecorationNode" xmi:id="_xWG3wiS7EeiPUvkzZ2gAiA" type="Enumeration_NameLabel"/>
@@ -575,7 +575,7 @@
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_xWHe1iS7EeiPUvkzZ2gAiA"/>
     </children>
     <element xmi:type="uml:Enumeration" href="petstore.uml#_kVFY7CS4EeiPUvkzZ2gAiA"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_xWG3wSS7EeiPUvkzZ2gAiA" x="860" y="400"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_xWG3wSS7EeiPUvkzZ2gAiA" x="920" y="180"/>
   </children>
   <styles xmi:type="notation:StringValueStyle" xmi:id="_BgHIkSS5EeiPUvkzZ2gAiA" name="diagram_compatibility_version" stringValue="1.3.0"/>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_BgHIkiS5EeiPUvkzZ2gAiA"/>
