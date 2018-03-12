@@ -2,7 +2,7 @@
 
 ![OpenAPItoUML](https://som-research.github.io/openapi-to-uml/images/logo.png)
 
-A tool to generate UML models from Open API defintions.
+A tool to generate UML models from OpenAPI defintions.
 
 ## Requirements
 To generate UML models:
@@ -28,7 +28,7 @@ To visualize the generated UML models:
 
 1. Create a Project or use an existing project in your workspace.
 2. Import the JSON file of your OpenAPI definition. 
-3. Right-click on the definition file and select *OpenAPI to UML/Generate a Class diagram*. This will generate the UML model corresponding to the input definition under the folder *src-gen* of your project (Check [petstore.uml](https://raw.githubusercontent.com/SOM-Research/openapi-to-uml/master/examples/edu.uoc.som.openapitouml.example/src-gen/petstore.uml), the generated model from the Petstore example).
+3. Right-click on the definition file and select *OpenAPI to UML/Generate a Class diagram*. This will generate the UML model corresponding to the input definition under the folder *src-gen* of your project (check [petstore.uml](https://raw.githubusercontent.com/SOM-Research/openapi-to-uml/master/examples/edu.uoc.som.openapitouml.example/src-gen/petstore.uml), the generated model from the Petstore example).
 
 ## Visualizing the Class diagram using Papyrus
 
@@ -42,7 +42,7 @@ Instructions:
 3. Right-click on the generated UML model and select *New -> Papyrus Model*.
 4. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initializtion information* step where you should check *Class Diagram* as the Respresentation kind).
 5. Drag-and-drop the UML elements from the *Model Expoler* into the editor.
-6. Align and arrange the layout as you wish.
+6. Align and arrange the layout as you prefer.
 7. Save.
 
 
