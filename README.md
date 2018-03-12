@@ -2,7 +2,7 @@
 
 ![OpenAPItoUML](https://som-research.github.io/openapi-to-uml/images/logo.png)
 
-A tool to generate UML models from OpenAPI defintions.
+A tool to generate UML models from OpenAPI definitions.
 
 ## Requirements
 To generate UML models:
