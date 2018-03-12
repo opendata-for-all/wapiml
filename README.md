@@ -32,6 +32,11 @@ To visualize the generated UML models:
 
 ## Visualizing the Class diagram using Papyrus
 
+The Petstore example:
+![Petstore](https://som-research.github.io/openapi-to-uml/images/petstore.png)
+
+Instructions:
+
 1. Install Papyrus if you didn't do it yet (You can find the instructions [here](https://www.eclipse.org/papyrus/download.html)).
 2. Open the perspective *Papyrus*.
 3. Right-click on the generated UML model and select *New -> Papyrus Model*.
@@ -40,4 +45,4 @@ To visualize the generated UML models:
 6. Align and arrange the layout as you wish.
 7. Save.
 
-![Petstore](https://som-research.github.io/openapi-to-uml/images/petstore.png)
+
