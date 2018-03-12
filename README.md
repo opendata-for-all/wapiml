@@ -1,4 +1,4 @@
-# openapi-to-uml
+# OpenAPItoUML
 
 ![OpenAPItoUML](https://som-research.github.io/openapi-to-uml/images/logo.png)
 
@@ -9,7 +9,7 @@ To generate UML models:
 - Eclipse Modeling tools (it can be found [here](http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/oxygen2)).
 
 To visualize the generated UML models:
-- UML 2.5 modeling environments in Eclipse such as [Papyrus](https://www.eclipse.org/papyrus/) and [UMLDesigner](https://marketplace.eclipse.org/content/uml-designer) (we tested the tool with Papyrus).
+- A UML 2.5 modeling environment in Eclipse such as [Papyrus](https://www.eclipse.org/papyrus/) or [UMLDesigner](https://marketplace.eclipse.org/content/uml-designer) (we tested the tool with Papyrus).
 
 ## Installation
 1. Open Eclipse IDE
