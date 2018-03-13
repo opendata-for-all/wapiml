@@ -1,3 +1,4 @@
+
 # OpenAPItoUML
 
 ![OpenAPItoUML](https://som-research.github.io/openapi-to-uml/images/logo.png)
@@ -45,4 +46,14 @@ Instructions:
 6. Align and arrange the layout as you prefer.
 7. Save.
 
+## Notes
+- Each schema definition  (#/definitions) of type `object` is represented as a class.
+- All associations are of type aggregation.
+- The location of an operation (i.e., in which class it should be) is decided based on the schema this operation produces (response 2xx schema), the schema it consumes (parameter of type body), or the tags properties of the operation. When no class is a good fit for the operation, an artificial class is created to host the operation. The name of such class is inferred from the path of the operation.
+- The name of an operation is taken from `operationId` of the operation definition. If such information is not provided the name is created by concatenating the method of the operation (e.g., get, post) plus the name of its class.
+- The cardinalities of attributes and parameters are inferred from:
+		- the `type` field (`array` for multivalued)
+		- the `required` field in the OpenAPI definition (note that a required parameter or property of type `array` doesn't not mean that the lower bound should be 1. Empty arrays are still valid).
+		- `minItems` and `maxItems` for `array` types.
 
+N.B. This tool relies on the OpenAPI metamodel located [here](https://github.com/SOM-Research/openapi-metamodel).
