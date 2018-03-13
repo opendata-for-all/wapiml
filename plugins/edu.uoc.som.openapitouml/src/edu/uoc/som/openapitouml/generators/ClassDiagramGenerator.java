@@ -112,7 +112,7 @@ public class ClassDiagramGenerator implements Serializable {
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (schema.getType().equals(JSONDataType.OBJECT)) {
 				for (Schema property : schema.getProperties()) {
-					if (!isPrimitive(property)) {
+					if (isObject(property)) {
 						Association association = umlFactory.createAssociation();
 						association.setName(schema.getName() + "_" + property.getName());
 						Property firstOwnedEnd = umlFactory.createProperty();
@@ -345,6 +345,14 @@ public class ClassDiagramGenerator implements Serializable {
 				|| property.getItems().getType().equals(JSONDataType.INTEGER)
 				|| property.getItems().getType().equals(JSONDataType.NUMBER)
 				|| property.getItems().getType().equals(JSONDataType.STRING)))
+			return true;
+		return false;
+	}
+	
+	private boolean isObject(Schema property) {
+		if (property.getType().equals(JSONDataType.OBJECT))
+			return true;
+		if (property.getType().equals(JSONDataType.ARRAY) && (property.getItems().getType().equals(JSONDataType.OBJECT)))
 			return true;
 		return false;
 	}
