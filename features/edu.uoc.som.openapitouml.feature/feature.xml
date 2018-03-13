@@ -101,30 +101,30 @@ You may add additional accurate notices of copyright ownership.
    </url>
 
    <requires>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.uml2.uml"/>
       <import plugin="org.eclipse.uml2.uml.resources"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="edu.uoc.som.openapi" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="edu.uoc.som.openapitouml" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="edu.uoc.som.openapi"/>
       <import plugin="edu.uoc.som.openapi.io"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="edu.uoc.som.openapitouml" version="1.0.0" match="greaterOrEqual"/>
    </requires>
-
-   <plugin
-         id="edu.uoc.som.openapitouml.ui"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="edu.uoc.som.openapitouml"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="edu.uoc.som.openapitouml.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
          unpack="false"/>
 
 </feature>
