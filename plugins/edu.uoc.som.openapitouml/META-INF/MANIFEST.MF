@@ -12,5 +12,5 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
  lib/commons-lang3-3.7.jar
-Export-Package: edu.uoc.som.openapitouml.generators
+Export-Package: edu.uoc.som.openapitouml.facade
 Bundle-Vendor: SOM Research Lab
