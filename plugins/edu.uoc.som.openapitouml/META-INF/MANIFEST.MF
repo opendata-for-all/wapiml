@@ -11,6 +11,11 @@ Require-Bundle: org.eclipse.uml2.uml,
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
- lib/commons-lang3-3.7.jar
-Export-Package: edu.uoc.som.openapitouml.facade
+ lib/commons-lang3-3.7.jar,
+ lib/json-schema-validator-2.2.6-lib.jar,
+ lib/json-schema-validator-2.2.6.jar,
+ lib/log4j-api-2.7.jar,
+ lib/log4j-core-2.7.jar
+Export-Package: edu.uoc.som.openapitouml.exception,
+ edu.uoc.som.openapitouml.facade
 Bundle-Vendor: SOM Research Lab

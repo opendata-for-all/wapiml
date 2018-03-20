@@ -42,10 +42,12 @@ public class ClassDiagramGenerator implements Serializable {
 		 */
 	private static final long serialVersionUID = 1L;
 	private UMLFactory umlFactory;
-	ResourceSet resourceSet = new ResourceSetImpl();
+	private ResourceSet resourceSet;
 
 	public ClassDiagramGenerator() {
+	
 		umlFactory = UMLFactory.eINSTANCE;
+		resourceSet = new ResourceSetImpl();
 		resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,

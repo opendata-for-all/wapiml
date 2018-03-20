@@ -10,12 +10,18 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.uml2.uml.Model;
+
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.io.OpenAPIImporter;
+import edu.uoc.som.openapitouml.exception.OpenAPIValidationException;
+import edu.uoc.som.openapitouml.exception.OpenAPItoUMLRuntimeException;
 import edu.uoc.som.openapitouml.generators.ClassDiagramGenerator;
+import edu.uoc.som.openapitouml.validator.OpenAPIValidator;
 
 
 public class OpenAPItoUMLFacade {
@@ -28,7 +34,15 @@ public class OpenAPItoUMLFacade {
 		openAPIImporter = new OpenAPIImporter();
 	}
 
-	public Model generateClassDiagram(File definitionFile, String modelName) throws FileNotFoundException, UnsupportedEncodingException {
+	public Model generateClassDiagram(File definitionFile, String modelName, boolean validate) throws IOException, ProcessingException {
+		if(validate) {
+			OpenAPIValidator openAPIValidator = new OpenAPIValidator();
+			ProcessingReport report = openAPIValidator.validate(definitionFile);
+			if(!report.isSuccess()){
+				throw new OpenAPIValidationException("Invalid Open API definition\n"+report.toString());
+			}
+			
+		}
 		InputStream in = new FileInputStream(definitionFile);
         Reader reader = new InputStreamReader(in, "UTF-8");
 		JsonElement jsonElement =  (new JsonParser()).parse(reader);
@@ -37,15 +51,15 @@ public class OpenAPItoUMLFacade {
 	
 	}
 	
-	public void generateAndSaveClassDiagram(File definitionFile, String modelName, File location) throws IOException {
-		Model model = generateClassDiagram(definitionFile, modelName);
+	public void generateAndSaveClassDiagram(File definitionFile, String modelName, File location,  boolean validate) throws IOException, ProcessingException {
+		Model model = generateClassDiagram(definitionFile, modelName, validate);
 		classDiagramGenerator.saveClassDiagram(model,
 				URI.createFileURI(location.getPath())
 						.appendSegment(modelName)
 						.appendFileExtension("uml"));
 	}
-	public void generateAndSaveClassDiagram(File definitionFile, String modelName, URI output) throws IOException {
-		Model model = generateClassDiagram(definitionFile, modelName);
+	public void generateAndSaveClassDiagram(File definitionFile, String modelName, URI output, boolean validate) throws IOException, ProcessingException {
+		Model model = generateClassDiagram(definitionFile, modelName, validate);
 		classDiagramGenerator.saveClassDiagram(model,
 				output.appendSegment(modelName).appendFileExtension("uml"));
 	}
