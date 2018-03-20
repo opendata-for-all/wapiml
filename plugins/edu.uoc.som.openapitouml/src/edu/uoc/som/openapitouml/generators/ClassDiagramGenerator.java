@@ -21,7 +21,6 @@ import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
-import org.eclipse.uml2.uml.LiteralString;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.PackageableElement;
@@ -242,40 +241,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
-	public Model refine(Model model) {
-		List<Class> classes = new ArrayList<Class>();
-		List<Association> associations = new ArrayList<Association>();
-		List<Property> propertiesToRemore = new ArrayList<Property>();
-		for (PackageableElement element : model.getPackagedElements()) {
-			if (element instanceof Class) {
-				Class clazz = (Class) element;
-				classes.add(clazz);
-			}
-		}
-
-		for (PackageableElement element : model.getPackagedElements()) {
-			if (element instanceof Class) {
-				Class clazz = (Class) element;
-				for (Property property : clazz.getOwnedAttributes()) {
-					for (Class c : classes) {
-						if (property.getName().equalsIgnoreCase(c.getName())
-								&& !property.getName().equalsIgnoreCase(clazz.getName())) {
-							associations.add(extractAssociation(clazz, c, property));
-							propertiesToRemore.add(property);
-
-						}
-					}
-				}
-			}
-		}
-		for (Association association : associations) {
-			model.getPackagedElements().add(association);
-		}
-		for (Property property : propertiesToRemore) {
-			EcoreUtil.remove(property);
-		}
-		return model;
-	}
+	
 
 	public Model class2DataType(Model model, Class clazz, List<Element> newElements) {
 		DataType dataType = umlFactory.createDataType();
