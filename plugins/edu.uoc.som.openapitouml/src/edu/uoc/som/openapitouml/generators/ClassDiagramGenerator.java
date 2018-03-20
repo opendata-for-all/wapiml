@@ -306,6 +306,8 @@ public class ClassDiagramGenerator implements Serializable {
 			return true;
 		if (property.getType().equals(JSONDataType.ARRAY) && (property.getItems().getType().equals(JSONDataType.OBJECT)))
 			return true;
+		if (property.getValue()!= null && (property.getValue().getType().equals(JSONDataType.OBJECT) || (property.getValue().getType().equals(JSONDataType.ARRAY) && (property.getValue().getItems().getType().equals(JSONDataType.OBJECT)))))
+				return true;
 		return false;
 	}
 
