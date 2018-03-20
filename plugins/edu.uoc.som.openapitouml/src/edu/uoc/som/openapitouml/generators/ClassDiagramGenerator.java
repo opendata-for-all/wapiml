@@ -287,21 +287,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
-	private Association extractAssociation(Class class1, Class class2, Property property) {
-		Association association = umlFactory.createAssociation();
-
-		association.setName(class1.getName() + "_" + class2.getName());
-		Property firstEnd = umlFactory.createProperty();
-		firstEnd.setName(property.getName());
-		firstEnd.setType(class2);
-		firstEnd.setUpper(property.getUpper());
-		association.getOwnedEnds().add(firstEnd);
-		Property secondEnd = umlFactory.createProperty();
-		secondEnd.setName(class1.getName());
-		secondEnd.setType(class1);
-		association.getOwnedEnds().add(secondEnd);
-		return association;
-	}
+	
 
 	private boolean isPrimitive(Schema property) {
 		if (property.getType().equals(JSONDataType.BOOLEAN) || property.getType().equals(JSONDataType.INTEGER)
