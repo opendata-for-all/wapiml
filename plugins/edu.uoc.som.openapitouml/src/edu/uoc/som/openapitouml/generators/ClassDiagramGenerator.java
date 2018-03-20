@@ -2,7 +2,6 @@ package edu.uoc.som.openapitouml.generators;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,17 +12,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.DataType;
-import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
-import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
@@ -63,6 +58,8 @@ public class ClassDiagramGenerator implements Serializable {
 		model.setName(modelName);
 
 		Map<Schema, Class> map = new HashMap<Schema, Class>();
+
+		// generate classes
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (schema.getType().equals(JSONDataType.OBJECT)) {
 				Class clazz = umlFactory.createClass();
@@ -74,7 +71,7 @@ public class ClassDiagramGenerator implements Serializable {
 					if (isPrimitive(property)) {
 						Property umlProperty = umlFactory.createProperty();
 						umlProperty.setName(property.getName());
-						if(property.getDefault() != null)
+						if (property.getDefault() != null)
 							umlProperty.setDefault(property.getDefault());
 
 						if (!property.getType().equals(JSONDataType.ARRAY)) {
@@ -107,6 +104,7 @@ public class ClassDiagramGenerator implements Serializable {
 				}
 			}
 		}
+
 		// resolve associations
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (schema.getType().equals(JSONDataType.OBJECT)) {
@@ -142,152 +140,105 @@ public class ClassDiagramGenerator implements Serializable {
 				}
 			}
 		}
+		// add operations
 		for (Operation operation : root.getApi().getAllOperations()) {
 			Schema schema = OpenAPIUtils.getAppropriateLocation(root.getApi(), operation);
 			Class clazz = null;
-			if(schema!= null) {
-				if( map.get(schema)!= null) {
+			if (schema != null) {
+				if (map.get(schema) != null) {
 					clazz = map.get(schema);
 				}
-				
+
 			}
-			if(clazz == null) {
+			if (clazz == null) {
 				Path path = (Path) operation.eContainer();
 				String resource = OpenAPIUtils.getLastMeaningfullSegment(path.getRelativePath());
-				NamedElement namedElement = model.getOwnedMember(StringUtils.capitalize(resource), false, UMLPackage.eINSTANCE.getClass_());
-				if(namedElement!= null) {
+				NamedElement namedElement = model.getOwnedMember(StringUtils.capitalize(resource), false,
+						UMLPackage.eINSTANCE.getClass_());
+				if (namedElement != null) {
 					clazz = (Class) namedElement;
-				}
-				else {
+				} else {
 					clazz = umlFactory.createClass();
 					clazz.setName(StringUtils.capitalize(resource));
 					model.getOwnedTypes().add(clazz);
 				}
 			}
-	
-				org.eclipse.uml2.uml.Operation umlOperation = umlFactory.createOperation();
-				umlOperation.setName(OpenAPIUtils.getOperationName(operation));
-				clazz.getOwnedOperations().add(umlOperation);
-				for (Parameter parameter : operation.getParameters()) {
-					org.eclipse.uml2.uml.Parameter umlParameter = umlFactory.createParameter();
-					umlParameter.setName(parameter.getName());
-					umlParameter.setDirection(ParameterDirectionKind.IN_LITERAL);
-					if(parameter.getDefault()!= null)
-						umlParameter.setDefault(parameter.getDefault());
-					if (parameter.getLocation().equals(ParameterLocation.BODY)) {
-						if (parameter.getSchema() != null) {
-							if (parameter.getSchema().getType().equals(JSONDataType.ARRAY)) {
-								umlParameter.setType(map.get(parameter.getSchema().getItems()));
-								if (parameter.getSchema().getMaxItems() != null) {
-									umlParameter.setUpper(parameter.getSchema().getMaxItems());
-								} else
-									umlParameter.setUpper(-1);
-								if (parameter.getSchema().getMinItems() != null)
-									umlParameter.setLower(parameter.getSchema().getMinItems());
-								else
-									umlParameter.setLower(0);
-							} else {
-								umlParameter.setType(map.get(parameter.getSchema()));
-							}
-						}
-					} else {
-						if (parameter.getRequired() == true)
-							umlParameter.setLower(1);
-						else
-							umlParameter.setLower(0);
-						if (parameter.getType().equals(JSONDataType.ARRAY)) {
-							if (parameter.getMaxItems() != null)
-								umlParameter.setUpper(parameter.getMaxItems());
-							else
+
+			org.eclipse.uml2.uml.Operation umlOperation = umlFactory.createOperation();
+			umlOperation.setName(OpenAPIUtils.getOperationName(operation));
+			clazz.getOwnedOperations().add(umlOperation);
+			for (Parameter parameter : operation.getParameters()) {
+				org.eclipse.uml2.uml.Parameter umlParameter = umlFactory.createParameter();
+				umlParameter.setName(parameter.getName());
+				umlParameter.setDirection(ParameterDirectionKind.IN_LITERAL);
+				if (parameter.getDefault() != null)
+					umlParameter.setDefault(parameter.getDefault());
+				if (parameter.getLocation().equals(ParameterLocation.BODY)) {
+					if (parameter.getSchema() != null) {
+						if (parameter.getSchema().getType().equals(JSONDataType.ARRAY)) {
+							umlParameter.setType(map.get(parameter.getSchema().getItems()));
+							if (parameter.getSchema().getMaxItems() != null) {
+								umlParameter.setUpper(parameter.getSchema().getMaxItems());
+							} else
 								umlParameter.setUpper(-1);
-							if (!parameter.getItems().getEnum().isEmpty())
-								umlParameter.setType(getOrCreateEnumeration(parameter.getItems().getEnum(),
-										clazz.getName() + StringUtils.capitalize(parameter.getName()), model));
+							if (parameter.getSchema().getMinItems() != null)
+								umlParameter.setLower(parameter.getSchema().getMinItems());
 							else
-								umlParameter.setType(getUMLType(model, parameter.getItems().getType(),
-										parameter.getItems().getFormat()));
-						} else if (!parameter.getEnum().isEmpty())
-							umlParameter.setType(getOrCreateEnumeration(parameter.getEnum(),
+								umlParameter.setLower(0);
+						} else {
+							umlParameter.setType(map.get(parameter.getSchema()));
+						}
+					}
+				} else {
+					if (parameter.getRequired() == true)
+						umlParameter.setLower(1);
+					else
+						umlParameter.setLower(0);
+					if (parameter.getType().equals(JSONDataType.ARRAY)) {
+						if (parameter.getMaxItems() != null)
+							umlParameter.setUpper(parameter.getMaxItems());
+						else
+							umlParameter.setUpper(-1);
+						if (!parameter.getItems().getEnum().isEmpty())
+							umlParameter.setType(getOrCreateEnumeration(parameter.getItems().getEnum(),
 									clazz.getName() + StringUtils.capitalize(parameter.getName()), model));
 						else
-							umlParameter.setType(getUMLType(model, parameter.getType(), parameter.getFormat()));
-						if (parameter.getDefault() != null) {
-							umlParameter.setDefault(parameter.getDefault());
-						}
+							umlParameter.setType(getUMLType(model, parameter.getItems().getType(),
+									parameter.getItems().getFormat()));
+					} else if (!parameter.getEnum().isEmpty())
+						umlParameter.setType(getOrCreateEnumeration(parameter.getEnum(),
+								clazz.getName() + StringUtils.capitalize(parameter.getName()), model));
+					else
+						umlParameter.setType(getUMLType(model, parameter.getType(), parameter.getFormat()));
+					if (parameter.getDefault() != null) {
+						umlParameter.setDefault(parameter.getDefault());
 					}
-
-					umlOperation.getOwnedParameters().add(umlParameter);
-
 				}
-				Schema s = operation.getProducedSchema();
-				if (s != null) {
-					org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
-					Class producedClass = map.get(s);
-					if(producedClass != null)
+
+				umlOperation.getOwnedParameters().add(umlParameter);
+
+			}
+			Schema s = operation.getProducedSchema();
+			if (s != null) {
+				org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
+				Class producedClass = map.get(s);
+				if (producedClass != null)
 					returnedParameter.setType(producedClass);
-					if (operation.IsProducingList()) {
-						returnedParameter.setUpper(-1);
-						returnedParameter.setLower(0);
-					}
-					umlOperation.getOwnedParameters().add(returnedParameter);
-					returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
-
+				if (operation.IsProducingList()) {
+					returnedParameter.setUpper(-1);
+					returnedParameter.setLower(0);
 				}
+				umlOperation.getOwnedParameters().add(returnedParameter);
+				returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
 
 			}
-		
+
+		}
 
 		return model;
 
 	}
 
-	
-
-	public Model class2DataType(Model model, Class clazz, List<Element> newElements) {
-		DataType dataType = umlFactory.createDataType();
-		dataType.setName(clazz.getName());
-
-		for (Element element : clazz.getOwnedElements()) {
-			Element copy = EcoreUtil.copy(element);
-			dataType.getOwnedAttributes().add((org.eclipse.uml2.uml.Property) copy);
-		}
-		List<Association> associationsToRemove = new ArrayList<Association>();
-		for (PackageableElement element : model.getPackagedElements()) {
-			if (element instanceof Association) {
-				Association association = (Association) element;
-				for (Property end : association.getOwnedEnds()) {
-					if (end.getType().equals(clazz))
-						associationsToRemove.add(association);
-				}
-			}
-		}
-		for (Association association : associationsToRemove) {
-			Property firstEnd = association.getOwnedEnds().get(0);
-			Property secondEnd = association.getOwnedEnds().get(1);
-			if (firstEnd.getType().equals(clazz)) {
-				Property copy = EcoreUtil.copy(firstEnd);
-				copy.setType(dataType);
-				newElements.add(copy);
-				((Class) secondEnd.getType()).getOwnedAttributes().add(copy);
-			}
-			if (secondEnd.getType().equals(clazz)) {
-				Property copy = EcoreUtil.copy(secondEnd);
-				copy.setType(dataType);
-				newElements.add(copy);
-
-				((Class) firstEnd.getType()).getOwnedAttributes().add(copy);
-			}
-		}
-		EcoreUtil.remove(clazz);
-		for (Association association : associationsToRemove)
-			EcoreUtil.remove(association);
-		newElements.add(dataType);
-		model.getPackagedElements().add(dataType);
-		return model;
-
-	}
-
-	
 
 	private boolean isPrimitive(Schema property) {
 		if (property.getType().equals(JSONDataType.BOOLEAN) || property.getType().equals(JSONDataType.INTEGER)
@@ -300,14 +251,17 @@ public class ClassDiagramGenerator implements Serializable {
 			return true;
 		return false;
 	}
-	
+
 	private boolean isObject(Schema property) {
 		if (property.getType().equals(JSONDataType.OBJECT))
 			return true;
-		if (property.getType().equals(JSONDataType.ARRAY) && (property.getItems().getType().equals(JSONDataType.OBJECT)))
+		if (property.getType().equals(JSONDataType.ARRAY)
+				&& (property.getItems().getType().equals(JSONDataType.OBJECT)))
 			return true;
-		if (property.getValue()!= null && (property.getValue().getType().equals(JSONDataType.OBJECT) || (property.getValue().getType().equals(JSONDataType.ARRAY) && (property.getValue().getItems().getType().equals(JSONDataType.OBJECT)))))
-				return true;
+		if (property.getValue() != null && (property.getValue().getType().equals(JSONDataType.OBJECT)
+				|| (property.getValue().getType().equals(JSONDataType.ARRAY)
+						&& (property.getValue().getItems().getType().equals(JSONDataType.OBJECT)))))
+			return true;
 		return false;
 	}
 
