@@ -3,21 +3,19 @@ package edu.uoc.som.openapitouml.tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+
 import edu.uoc.som.openapitouml.facade.OpenAPItoUMLFacade;
 
-
+@DisplayName("Test OpenAPItoUML Facade")
 class TestOpenAPIToUMLFacade {
 
-	@DisplayName("Generate model")
+	@DisplayName("Test generate model")
 	@Test
 	void testGenerateClassDiagram() {
 		
@@ -25,13 +23,13 @@ class TestOpenAPIToUMLFacade {
 	        OpenAPItoUMLFacade openAPItoUMLFacade = new OpenAPItoUMLFacade();
 	        try {
 	        	
-	        	openAPItoUMLFacade.generateClassDiagram(input, "petstore");
-			} catch (FileNotFoundException | UnsupportedEncodingException e) {
+	        	openAPItoUMLFacade.generateClassDiagram(input, "petstore", true);
+			} catch (IOException | ProcessingException e) {
 				fail(e.getLocalizedMessage());
 			}
 	       
 	}
-	@DisplayName("Generate and save model using file")
+	@DisplayName("Test generate and save model using file")
 	@Test
 	void testGenerateAndSaveClassDiagramFile() {
 		
@@ -39,13 +37,13 @@ class TestOpenAPIToUMLFacade {
 	        File output = new File("outputs");
 	        OpenAPItoUMLFacade openAPItoUMLFacade = new OpenAPItoUMLFacade();
 	        try {
-	        	openAPItoUMLFacade.generateAndSaveClassDiagram(input, "petstore", output);
-			} catch (IOException e) {
+	        	openAPItoUMLFacade.generateAndSaveClassDiagram(input, "petstore", output, true);
+			} catch (IOException | ProcessingException e) {
 				fail(e.getLocalizedMessage());
 			}
 	       
 	}
-	@DisplayName("Generate and save model using URI")
+	@DisplayName("Test generate and save model using URI")
 	@Test
 	void testGenerateAndSaveClassDiagramURI() {
 		
@@ -53,11 +51,12 @@ class TestOpenAPIToUMLFacade {
 	        URI outputURI = URI.createFileURI("outputs");
 	        OpenAPItoUMLFacade openAPItoUMLFacade = new OpenAPItoUMLFacade();
 	        try {
-	        	openAPItoUMLFacade.generateAndSaveClassDiagram(input, "petstore", outputURI);
-			} catch (IOException e) {
+	        	openAPItoUMLFacade.generateAndSaveClassDiagram(input, "petstore", outputURI, true);
+			} catch (IOException | ProcessingException e) {
 				fail(e.getLocalizedMessage());
 			}
 	       
 	}
+	
 
 }

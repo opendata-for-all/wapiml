@@ -25,3 +25,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.uml2.uml
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: libs/json-schema-validator-2.2.6.jar,
+ libs/json-schema-validator-2.2.6-lib.jar,
+ libs/log4j-api-2.7.jar,
+ libs/log4j-core-2.7.jar
