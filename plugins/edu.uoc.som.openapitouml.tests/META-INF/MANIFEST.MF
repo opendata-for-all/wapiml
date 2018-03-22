@@ -3,7 +3,6 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: edu.uoc.som.openapitouml.tests
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: edu.uoc.som.openapitouml.tests.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
  org.junit.jupiter.api,
@@ -19,10 +18,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.hamcrest.core,
  org.opentest4j,
  org.apiguardian,
- edu.uoc.som.openapitouml;bundle-version="1.0.0",
  edu.uoc.som.openapi;bundle-version="1.0.0",
  edu.uoc.som.openapi.io;bundle-version="1.0.0",
- org.eclipse.uml2.uml
+ org.eclipse.uml2.uml,
+ edu.uoc.som.openapitouml;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: libs/json-schema-validator-2.2.6.jar,
