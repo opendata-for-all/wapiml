@@ -15,10 +15,14 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Classifier;
+import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.Namespace;
+import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
@@ -48,7 +52,6 @@ public class ClassDiagramGenerator implements Serializable {
 	
 		umlFactory = UMLFactory.eINSTANCE;
 		resourceSet = new ResourceSetImpl();
-		resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
@@ -73,6 +76,32 @@ public class ClassDiagramGenerator implements Serializable {
 					if (isPrimitive(property)) {
 						Property umlProperty = umlFactory.createProperty();
 						umlProperty.setName(property.getName());
+						if(property.getMultipleOf() != null)
+							addConstraint(clazz, umlProperty.getName(), "multipleOfConstraint",
+									"self." + umlProperty.getName() + ".div("+property.getMultipleOf()+") = 0");
+						if(property.getMaximum() != null) {
+							if(property.getExclusiveMaximum() != null && property.getExclusiveMaximum().equals(Boolean.TRUE))
+								addConstraint(clazz, umlProperty.getName(), "maximumConstraint",
+										"self." + umlProperty.getName() + " < " + property.getMaximum());
+							else
+								addConstraint(clazz, umlProperty.getName(), "maximumConstraint",
+										"self." + umlProperty.getName() + " <= " + property.getMaximum());
+						}
+						if(property.getMinimum() != null) {
+							if(property.getExclusiveMinimum() != null && property.getExclusiveMinimum().equals(Boolean.TRUE))
+								addConstraint(clazz, umlProperty.getName(), "minimumConstraint",
+										"self." + umlProperty.getName() + " > " + property.getMinimum());
+							else
+								addConstraint(clazz, umlProperty.getName(), "minimumConstraint",
+										"self." + umlProperty.getName() + " >= " + property.getMinimum());
+						}
+						if(property.getMaxLength() != null)
+							addConstraint(clazz, property.getName(), "maxLengthConstraint",
+									"self." + property.getName() + ".size() <= " + property.getMaxLength());
+						if(property.getMinLength() != null)
+							addConstraint(clazz, property.getName(), "minLengthConstraint",
+									"self." + property.getName() + ".size() >= " + property.getMinLength());
+						
 						if (property.getDefault() != null)
 							umlProperty.setDefault(property.getDefault());
 
@@ -175,6 +204,31 @@ public class ClassDiagramGenerator implements Serializable {
 				umlParameter.setDirection(ParameterDirectionKind.IN_LITERAL);
 				if (parameter.getDefault() != null)
 					umlParameter.setDefault(parameter.getDefault());
+				if(parameter.getMultipleOf() != null)
+					addConstraint(umlOperation, parameter.getName(), "multipleOfConstraint",
+							"self." + parameter.getName() + ".div("+parameter.getMultipleOf()+") = 0");
+				if(parameter.getMaximum() != null) {
+					if(parameter.getExclusiveMaximum() != null && parameter.getExclusiveMaximum().equals(Boolean.TRUE))
+						addConstraint(umlOperation, umlParameter.getName(), "maximumConstraint",
+								"self." + umlParameter.getName() + " < " + parameter.getMaximum());
+					else
+						addConstraint(umlOperation, umlParameter.getName(), "maximumConstraint",
+								"self." + umlParameter.getName() + " <= " + parameter.getMaximum());
+				}
+				if(parameter.getMinimum() != null) {
+					if(parameter.getExclusiveMinimum() != null && parameter.getExclusiveMinimum().equals(Boolean.TRUE))
+						addConstraint(umlOperation, umlParameter.getName(), "minimumConstraint",
+								"self." + umlParameter.getName() + " > " + parameter.getMinimum());
+					else
+						addConstraint(umlOperation, umlParameter.getName(), "minimumConstraint",
+								"self." + umlParameter.getName() + " >= " + parameter.getMinimum());
+				}
+				if(parameter.getMaxLength() != null)
+					addConstraint(umlOperation, parameter.getName(), "maxLengthConstraint",
+							"self." + parameter.getName() + ".size() <= " + parameter.getMaxLength());
+				if(parameter.getMinLength() != null)
+					addConstraint(umlOperation, parameter.getName(), "minLengthConstraint",
+							"self." + parameter.getName() + ".size() >= " + parameter.getMinLength());
 				if (parameter.getLocation().equals(ParameterLocation.BODY)) {
 					if (parameter.getSchema() != null) {
 						if (parameter.getSchema().getType().equals(JSONDataType.ARRAY)) {
@@ -362,6 +416,24 @@ public class ClassDiagramGenerator implements Serializable {
 			}
 			return enumeration;
 		}
+	}
+	/**
+	 * Adds a OCL constraint to a concept
+	 * @param concept The concept which holds the constraint
+	 * @param constraintName The name of the constraint (will be eventually formed
+	 *                       as conceptName-constraintName-constraintType
+	 * @param constraintType The type of the constraint being applied (e.g., macLengthConstraint)
+	 * @param constraintExp The OCL expression
+	 */
+	private void addConstraint(Namespace namespace, String constraintName, String constraintType, String constraintExp) {
+		Constraint constraint = UMLFactory.eINSTANCE.createConstraint();
+		String constraintId= namespace.getName()+"-"+constraintName+"-"+constraintType;
+		constraint.setName(constraintId);
+		OpaqueExpression expression = UMLFactory.eINSTANCE.createOpaqueExpression();
+		expression.getLanguages().add("OCL");
+		expression.getBodies().add(constraintExp);
+		constraint.setSpecification(expression);
+		namespace.getOwnedRules().add(constraint);
 	}
 
 }
