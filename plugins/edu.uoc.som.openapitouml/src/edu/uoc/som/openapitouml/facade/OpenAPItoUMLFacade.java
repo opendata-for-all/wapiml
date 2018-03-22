@@ -21,6 +21,7 @@ import edu.uoc.som.openapi.io.OpenAPIImporter;
 import edu.uoc.som.openapitouml.exception.OpenAPIValidationException;
 import edu.uoc.som.openapitouml.exception.OpenAPItoUMLRuntimeException;
 import edu.uoc.som.openapitouml.generators.ClassDiagramGenerator;
+import edu.uoc.som.openapitouml.model.OpenAPIValidationReport;
 import edu.uoc.som.openapitouml.validator.OpenAPIValidator;
 
 
@@ -34,10 +35,14 @@ public class OpenAPItoUMLFacade {
 		openAPIImporter = new OpenAPIImporter();
 	}
 
+	public OpenAPIValidationReport validateOpenAPIDefinition(File definitionFile) throws ProcessingException, IOException{
+		OpenAPIValidator openAPIValidator = new OpenAPIValidator();
+		return openAPIValidator.validate(definitionFile);
+	}
 	public Model generateClassDiagram(File definitionFile, String modelName, boolean validate) throws IOException, ProcessingException {
 		if(validate) {
 			OpenAPIValidator openAPIValidator = new OpenAPIValidator();
-			ProcessingReport report = openAPIValidator.validate(definitionFile);
+			OpenAPIValidationReport report = openAPIValidator.validate(definitionFile);
 			if(!report.isSuccess()){
 				throw new OpenAPIValidationException("Invalid Open API definition\n"+report.toString());
 			}
