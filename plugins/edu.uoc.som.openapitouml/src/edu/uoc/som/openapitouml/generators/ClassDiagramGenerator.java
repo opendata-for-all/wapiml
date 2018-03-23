@@ -23,6 +23,8 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.OpaqueExpression;
+import org.eclipse.uml2.uml.Package;
+import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
@@ -61,6 +63,12 @@ public class ClassDiagramGenerator implements Serializable {
 	public Model generateClassDiagramFromOpenAPI(Root root, String modelName) {
 		Model model = umlFactory.createModel();
 		model.setName(modelName);
+		Package package_ = umlFactory.createPackage();
+		package_.setName(modelName);
+		model.getPackagedElements().add(package_);
+		Package types = umlFactory.createPackage();
+		types.setName("types");
+		model.getPackagedElements().add(types);
 
 		Map<Schema, Class> map = new HashMap<Schema, Class>();
 
@@ -70,7 +78,7 @@ public class ClassDiagramGenerator implements Serializable {
 				Class clazz = umlFactory.createClass();
 				clazz.setName(schema.getName());
 
-				model.getOwnedTypes().add(clazz);
+				package_.getOwnedTypes().add(clazz);
 				map.put(schema, clazz);
 				for (Schema property : schema.getProperties()) {
 					if (isPrimitive(property)) {
@@ -108,9 +116,9 @@ public class ClassDiagramGenerator implements Serializable {
 						if (!property.getType().equals(JSONDataType.ARRAY)) {
 							if (!property.getEnum().isEmpty())
 								umlProperty.setType(getOrCreateEnumeration(property.getEnum(),
-										schema.getName() + StringUtils.capitalize(property.getName()), model));
+										schema.getName() + StringUtils.capitalize(property.getName()), types));
 							else
-								umlProperty.setType(getUMLType(model, property.getType(), property.getFormat()));
+								umlProperty.setType(getUMLType(types, property.getType(), property.getFormat()));
 							if (schema.getRequired().contains(property))
 								umlProperty.setLower(1);
 							else
@@ -124,9 +132,9 @@ public class ClassDiagramGenerator implements Serializable {
 								umlProperty.setLower(0);
 							if (!property.getItems().getEnum().isEmpty())
 								umlProperty.setType(getOrCreateEnumeration(property.getItems().getEnum(),
-										schema.getName() + StringUtils.capitalize(property.getName()), model));
+										schema.getName() + StringUtils.capitalize(property.getName()), types));
 							else
-								umlProperty.setType(getUMLType(model, property.getItems().getType(),
+								umlProperty.setType(getUMLType(types, property.getItems().getType(),
 										property.getItems().getFormat()));
 
 						}
@@ -165,7 +173,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 						}
 						association.getNavigableOwnedEnds().add(secondOwnedEnd);
-						model.getPackagedElements().add(association);
+						package_.getPackagedElements().add(association);
 					}
 
 				}
@@ -184,14 +192,14 @@ public class ClassDiagramGenerator implements Serializable {
 			if (clazz == null) {
 				Path path = (Path) operation.eContainer();
 				String resource = OpenAPIUtils.getLastMeaningfullSegment(path.getRelativePath());
-				NamedElement namedElement = model.getOwnedMember(StringUtils.capitalize(resource), false,
+				NamedElement namedElement = package_.getOwnedMember(StringUtils.capitalize(resource), false,
 						UMLPackage.eINSTANCE.getClass_());
 				if (namedElement != null) {
 					clazz = (Class) namedElement;
 				} else {
 					clazz = umlFactory.createClass();
 					clazz.setName(StringUtils.capitalize(resource));
-					model.getOwnedTypes().add(clazz);
+					package_.getOwnedTypes().add(clazz);
 				}
 			}
 
@@ -246,7 +254,7 @@ public class ClassDiagramGenerator implements Serializable {
 						}
 					}
 				} else {
-					if (parameter.getRequired() == true)
+					if (parameter.getRequired()!=null && parameter.getRequired().equals(Boolean.TRUE))
 						umlParameter.setLower(1);
 					else
 						umlParameter.setLower(0);
@@ -257,15 +265,15 @@ public class ClassDiagramGenerator implements Serializable {
 							umlParameter.setUpper(-1);
 						if (!parameter.getItems().getEnum().isEmpty())
 							umlParameter.setType(getOrCreateEnumeration(parameter.getItems().getEnum(),
-									clazz.getName() + StringUtils.capitalize(parameter.getName()), model));
+									clazz.getName() + StringUtils.capitalize(parameter.getName()),types));
 						else
-							umlParameter.setType(getUMLType(model, parameter.getItems().getType(),
+							umlParameter.setType(getUMLType(types, parameter.getItems().getType(),
 									parameter.getItems().getFormat()));
 					} else if (!parameter.getEnum().isEmpty())
 						umlParameter.setType(getOrCreateEnumeration(parameter.getEnum(),
-								clazz.getName() + StringUtils.capitalize(parameter.getName()), model));
+								clazz.getName() + StringUtils.capitalize(parameter.getName()), types));
 					else
-						umlParameter.setType(getUMLType(model, parameter.getType(), parameter.getFormat()));
+						umlParameter.setType(getUMLType(types, parameter.getType(), parameter.getFormat()));
 					if (parameter.getDefault() != null) {
 						umlParameter.setDefault(parameter.getDefault());
 					}
@@ -321,52 +329,52 @@ public class ClassDiagramGenerator implements Serializable {
 		return false;
 	}
 
-	private PrimitiveType getUMLType(Model model, JSONDataType jsonDataType, String format) {
+	private PrimitiveType getUMLType(Package types, JSONDataType jsonDataType, String format) {
 		PrimitiveType type = null;
 		switch (jsonDataType) {
 
 		case INTEGER:
 			if (format == null)
-				type = getOrCreatePrimitiveTypeByCommonName("Integer", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Integer", types);
 			else if (format.equals("int32"))
-				type = getOrCreatePrimitiveTypeByCommonName("Integer", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Integer", types);
 			else if (format.equals("int64"))
-				type = getOrCreatePrimitiveTypeByCommonName("Long", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Long", types);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), model);
+				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), types);
 			break;
 		case NUMBER:
 			if (format == null)
-				type = getOrCreatePrimitiveTypeByCommonName("Number", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Number", types);
 			else if (format.equals("float"))
-				type = getOrCreatePrimitiveTypeByCommonName("Float", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Float", types);
 			else if (format.equals("double"))
-				type = getOrCreatePrimitiveTypeByCommonName("Double", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Double", types);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), model);
+				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), types);
 			break;
 		case STRING:
 			if (format == null)
-				type = getOrCreatePrimitiveTypeByCommonName("String", model);
+				type = getOrCreatePrimitiveTypeByCommonName("String", types);
 			else if (format.equals("byte"))
-				type = getOrCreatePrimitiveTypeByCommonName("Byte", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Byte", types);
 			else if (format.equals("binary"))
-				type = getOrCreatePrimitiveTypeByCommonName("Binary", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Binary", types);
 			else if (format.equals("date"))
-				type = getOrCreatePrimitiveTypeByCommonName("Date", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Date", types);
 			else if (format.equals("date-time"))
-				type = getOrCreatePrimitiveTypeByCommonName("DateTime", model);
+				type = getOrCreatePrimitiveTypeByCommonName("DateTime", types);
 			else if (format.equals("password"))
-				type = getOrCreatePrimitiveTypeByCommonName("Password", model);
+				type = getOrCreatePrimitiveTypeByCommonName("Password", types);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), model);
+				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), types);
 
 			break;
 		case BOOLEAN:
-			type = getOrCreatePrimitiveTypeByCommonName("Boolean", model);
+			type = getOrCreatePrimitiveTypeByCommonName("Boolean", types);
 			break;
 		case FILE:
-			type = getOrCreatePrimitiveTypeByCommonName("File", model);
+			type = getOrCreatePrimitiveTypeByCommonName("File", types);
 		default:
 			break;
 		}
@@ -389,26 +397,28 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
-	private PrimitiveType getOrCreatePrimitiveTypeByCommonName(String commonName, Model model) {
-		Type type = model.getOwnedType(commonName, false, UMLPackage.eINSTANCE.getPrimitiveType(), false);
+	private PrimitiveType getOrCreatePrimitiveTypeByCommonName(String commonName, Package types) {
+	
+		Type type = types.getOwnedType(commonName, false, UMLPackage.eINSTANCE.getPrimitiveType(), false);
 		if (type != null)
 			return (PrimitiveType) type;
 		else {
 			PrimitiveType primitiveType = umlFactory.createPrimitiveType();
 			primitiveType.setName(commonName);
-			model.getOwnedTypes().add(primitiveType);
+			types.getOwnedTypes().add(primitiveType);
 			return primitiveType;
 		}
 	}
 
-	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Model model) {
-		Type type = model.getOwnedType(name, false, UMLPackage.eINSTANCE.getEnumeration(), false);
+	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Package types) {
+		
+		Type type = types.getOwnedType(name, false, UMLPackage.eINSTANCE.getEnumeration(), false);
 		if (type != null)
 			return (Enumeration) type;
 		else {
 			Enumeration enumeration = umlFactory.createEnumeration();
 			enumeration.setName(name);
-			model.getOwnedTypes().add(enumeration);
+			types.getOwnedTypes().add(enumeration);
 			for (String l : literals) {
 				EnumerationLiteral literal = umlFactory.createEnumerationLiteral();
 				literal.setName(l);
