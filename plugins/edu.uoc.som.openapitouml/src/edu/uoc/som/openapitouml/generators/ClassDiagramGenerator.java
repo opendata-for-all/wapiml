@@ -74,7 +74,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 		// generate classes
 		for (Schema schema : root.getApi().getDefinitions()) {
-			if (schema.getType().equals(JSONDataType.OBJECT)) {
+			if (isObject(schema)) {
 				Class clazz = umlFactory.createClass();
 				clazz.setName(schema.getName());
 
@@ -148,7 +148,7 @@ public class ClassDiagramGenerator implements Serializable {
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (schema.getType().equals(JSONDataType.OBJECT)) {
 				for (Schema property : schema.getProperties()) {
-					if (isObject(property)) {
+					if (isObject(property) || isArrayOfObjects(property)) {
 						Association association = umlFactory.createAssociation();
 						association.setName(schema.getName() + "_" + property.getName());
 						Property firstOwnedEnd = umlFactory.createProperty();
@@ -316,15 +316,34 @@ public class ClassDiagramGenerator implements Serializable {
 		return false;
 	}
 
-	private boolean isObject(Schema property) {
-		if (property.getType().equals(JSONDataType.OBJECT))
+	private boolean isObject(Schema schema) {
+		if (schema.getType().equals(JSONDataType.OBJECT))
 			return true;
-		if (property.getType().equals(JSONDataType.ARRAY)
-				&& (property.getItems().getType().equals(JSONDataType.OBJECT)))
+
+		if (schema.getValue() != null && schema.getValue().getType().equals(JSONDataType.OBJECT))
 			return true;
-		if (property.getValue() != null && (property.getValue().getType().equals(JSONDataType.OBJECT)
-				|| (property.getValue().getType().equals(JSONDataType.ARRAY)
-						&& (property.getValue().getItems().getType().equals(JSONDataType.OBJECT)))))
+		
+		if(!schema.getProperties().isEmpty())
+			return true;
+	
+		if (schema.getValue() != null && !schema.getValue().getProperties().isEmpty())
+			return true;
+		return false;
+	}
+	private boolean isArrayOfObjects(Schema schema) {
+		
+		if (schema.getType().equals(JSONDataType.ARRAY)
+				&& (schema.getItems().getType().equals(JSONDataType.OBJECT)))
+			return true;
+		if (schema.getValue() != null && schema.getValue().getType().equals(JSONDataType.ARRAY)
+						&&schema.getValue().getItems().getType().equals(JSONDataType.OBJECT))
+			return true;
+	
+		if (schema.getType().equals(JSONDataType.ARRAY)
+				&& !schema.getItems().getProperties().isEmpty())
+			return true;
+		if (schema.getValue() != null &&  schema.getValue().getType().equals(JSONDataType.ARRAY)
+						&& !schema.getValue().getItems().getProperties().isEmpty())
 			return true;
 		return false;
 	}
