@@ -146,7 +146,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 		// resolve associations
 		for (Schema schema : root.getApi().getDefinitions()) {
-			if (schema.getType().equals(JSONDataType.OBJECT)) {
+			if (isObject(schema)) {
 				for (Schema property : schema.getProperties()) {
 					if (isObject(property) || isArrayOfObjects(property)) {
 						Association association = umlFactory.createAssociation();
