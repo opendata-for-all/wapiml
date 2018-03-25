@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_6lNM8C5xEeilNroh5Ox4Fw" name="multipleOf">
+  <packagedElement xmi:type="uml:Class" xmi:id="_6lNM8S5xEeilNroh5Ox4Fw" name="Concept">
+    <ownedRule xmi:id="_6lNM8i5xEeilNroh5Ox4Fw" name="Concept-attributeWithMultipleOf-multipleOfConstraint">
+      <specification xmi:type="uml:OpaqueExpression" xmi:id="_6lNM8y5xEeilNroh5Ox4Fw">
+        <language>OCL</language>
+        <body>self.attributeWithMultipleOf.div(2.0) = 0</body>
+      </specification>
+    </ownedRule>
+    <ownedAttribute xmi:id="_6lNM9C5xEeilNroh5Ox4Fw" name="id" type="_6lNM_C5xEeilNroh5Ox4Fw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6lNM9S5xEeilNroh5Ox4Fw"/>
+    </ownedAttribute>
+    <ownedAttribute xmi:id="_6lNM9i5xEeilNroh5Ox4Fw" name="attributeWithMultipleOf" type="_6lNM_S5xEeilNroh5Ox4Fw">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6lNM9y5xEeilNroh5Ox4Fw"/>
+    </ownedAttribute>
+    <ownedOperation xmi:id="_6lNM-C5xEeilNroh5Ox4Fw" name="getConcepts">
+      <ownedParameter xmi:id="_6lNM-S5xEeilNroh5Ox4Fw" type="_6lNM8S5xEeilNroh5Ox4Fw" direction="return">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6lNM-i5xEeilNroh5Ox4Fw"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6lNM-y5xEeilNroh5Ox4Fw" value="*"/>
+      </ownedParameter>
+    </ownedOperation>
+  </packagedElement>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6lNM_C5xEeilNroh5Ox4Fw" name="Long"/>
+  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6lNM_S5xEeilNroh5Ox4Fw" name="Integer"/>
+</uml:Model>
