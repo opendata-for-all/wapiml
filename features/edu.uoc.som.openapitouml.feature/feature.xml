@@ -2,7 +2,7 @@
 <feature
       id="edu.uoc.som.openapitouml.feature"
       label="OpenAPI to UML"
-      version="1.0.0.qualifier"
+      version="1.0.1.qualifier"
       provider-name="SOM Research Lab">
 
    <description url="https://github.com/SOM-Research/openapi-to-uml">
@@ -117,14 +117,14 @@ You may add additional accurate notices of copyright ownership.
          id="edu.uoc.som.openapitouml"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="1.0.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="edu.uoc.som.openapitouml.ui"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="1.0.1.qualifier"
          unpack="false"/>
 
 </feature>

@@ -19,6 +19,7 @@ import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
@@ -51,7 +52,7 @@ public class ClassDiagramGenerator implements Serializable {
 	private ResourceSet resourceSet;
 
 	public ClassDiagramGenerator() {
-	
+
 		umlFactory = UMLFactory.eINSTANCE;
 		resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
@@ -80,70 +81,34 @@ public class ClassDiagramGenerator implements Serializable {
 
 				package_.getOwnedTypes().add(clazz);
 				map.put(schema, clazz);
-				for (Schema property : schema.getProperties()) {
-					if (isPrimitive(property)) {
-						Property umlProperty = umlFactory.createProperty();
-						umlProperty.setName(property.getName());
-						if(property.getMultipleOf() != null)
-							addConstraint(clazz, umlProperty.getName(), "multipleOfConstraint",
-									"self." + umlProperty.getName() + ".div("+property.getMultipleOf()+") = 0");
-						if(property.getMaximum() != null) {
-							if(property.getExclusiveMaximum() != null && property.getExclusiveMaximum().equals(Boolean.TRUE))
-								addConstraint(clazz, umlProperty.getName(), "maximumConstraint",
-										"self." + umlProperty.getName() + " < " + property.getMaximum());
-							else
-								addConstraint(clazz, umlProperty.getName(), "maximumConstraint",
-										"self." + umlProperty.getName() + " <= " + property.getMaximum());
+				addProperties(types, schema, clazz);
+				if(!schema.getAllOf().isEmpty()) {
+					for(Schema allOfItem : schema.getAllOf()) {
+						if(allOfItem.getDeclaringContext()!= null && allOfItem.getDeclaringContext().equals(schema)) {
+							addProperties(types, allOfItem, clazz);
 						}
-						if(property.getMinimum() != null) {
-							if(property.getExclusiveMinimum() != null && property.getExclusiveMinimum().equals(Boolean.TRUE))
-								addConstraint(clazz, umlProperty.getName(), "minimumConstraint",
-										"self." + umlProperty.getName() + " > " + property.getMinimum());
-							else
-								addConstraint(clazz, umlProperty.getName(), "minimumConstraint",
-										"self." + umlProperty.getName() + " >= " + property.getMinimum());
-						}
-						if(property.getMaxLength() != null)
-							addConstraint(clazz, property.getName(), "maxLengthConstraint",
-									"self." + property.getName() + ".size() <= " + property.getMaxLength());
-						if(property.getMinLength() != null)
-							addConstraint(clazz, property.getName(), "minLengthConstraint",
-									"self." + property.getName() + ".size() >= " + property.getMinLength());
-						
-						if (property.getDefault() != null)
-							umlProperty.setDefault(property.getDefault());
-
-						if (!property.getType().equals(JSONDataType.ARRAY)) {
-							if (!property.getEnum().isEmpty())
-								umlProperty.setType(getOrCreateEnumeration(property.getEnum(),
-										schema.getName() + StringUtils.capitalize(property.getName()), types));
-							else
-								umlProperty.setType(getUMLType(types, property.getType(), property.getFormat()));
-							if (schema.getRequired().contains(property))
-								umlProperty.setLower(1);
-							else
-								umlProperty.setLower(0);
-						} else {
-
-							umlProperty.setUpper(-1);
-							if (property.getMinItems() != null)
-								umlProperty.setLower(property.getMinItems());
-							else
-								umlProperty.setLower(0);
-							if (!property.getItems().getEnum().isEmpty())
-								umlProperty.setType(getOrCreateEnumeration(property.getItems().getEnum(),
-										schema.getName() + StringUtils.capitalize(property.getName()), types));
-							else
-								umlProperty.setType(getUMLType(types, property.getItems().getType(),
-										property.getItems().getFormat()));
-
-						}
-						clazz.getOwnedAttributes().add(umlProperty);
 					}
 				}
 			}
 		}
-
+		// resolve superclasses
+		for (Schema schema : root.getApi().getDefinitions()) {
+			if (isObject(schema)) {
+						if(!schema.getAllOf().isEmpty()) {
+							Class child = map.get(schema);
+							if(child != null)
+							for(Schema allOfItem : schema.getAllOf()) {
+							Class parent =	map.get(allOfItem);
+							
+							if(parent != null) {
+								Generalization generation = umlFactory.createGeneralization();
+								generation.setGeneral(parent);
+								child.getGeneralizations().add(generation);
+							}
+							}
+						}
+					}
+				}
 		// resolve associations
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (isObject(schema)) {
@@ -176,6 +141,14 @@ public class ClassDiagramGenerator implements Serializable {
 						package_.getPackagedElements().add(association);
 					}
 
+				}
+			}
+		}
+		// resolve associations
+		for (Schema schema : root.getApi().getDefinitions()) {
+			if (isObject(schema)) {
+				if(!schema.getAllOf().isEmpty()) {
+					
 				}
 			}
 		}
@@ -212,29 +185,29 @@ public class ClassDiagramGenerator implements Serializable {
 				umlParameter.setDirection(ParameterDirectionKind.IN_LITERAL);
 				if (parameter.getDefault() != null)
 					umlParameter.setDefault(parameter.getDefault());
-				if(parameter.getMultipleOf() != null)
+				if (parameter.getMultipleOf() != null)
 					addConstraint(umlOperation, parameter.getName(), "multipleOfConstraint",
-							"self." + parameter.getName() + ".div("+parameter.getMultipleOf()+") = 0");
-				if(parameter.getMaximum() != null) {
-					if(parameter.getExclusiveMaximum() != null && parameter.getExclusiveMaximum().equals(Boolean.TRUE))
+							"self." + parameter.getName() + ".div(" + parameter.getMultipleOf() + ") = 0");
+				if (parameter.getMaximum() != null) {
+					if (parameter.getExclusiveMaximum() != null && parameter.getExclusiveMaximum().equals(Boolean.TRUE))
 						addConstraint(umlOperation, umlParameter.getName(), "maximumConstraint",
 								"self." + umlParameter.getName() + " < " + parameter.getMaximum());
 					else
 						addConstraint(umlOperation, umlParameter.getName(), "maximumConstraint",
 								"self." + umlParameter.getName() + " <= " + parameter.getMaximum());
 				}
-				if(parameter.getMinimum() != null) {
-					if(parameter.getExclusiveMinimum() != null && parameter.getExclusiveMinimum().equals(Boolean.TRUE))
+				if (parameter.getMinimum() != null) {
+					if (parameter.getExclusiveMinimum() != null && parameter.getExclusiveMinimum().equals(Boolean.TRUE))
 						addConstraint(umlOperation, umlParameter.getName(), "minimumConstraint",
 								"self." + umlParameter.getName() + " > " + parameter.getMinimum());
 					else
 						addConstraint(umlOperation, umlParameter.getName(), "minimumConstraint",
 								"self." + umlParameter.getName() + " >= " + parameter.getMinimum());
 				}
-				if(parameter.getMaxLength() != null)
+				if (parameter.getMaxLength() != null)
 					addConstraint(umlOperation, parameter.getName(), "maxLengthConstraint",
 							"self." + parameter.getName() + ".size() <= " + parameter.getMaxLength());
-				if(parameter.getMinLength() != null)
+				if (parameter.getMinLength() != null)
 					addConstraint(umlOperation, parameter.getName(), "minLengthConstraint",
 							"self." + parameter.getName() + ".size() >= " + parameter.getMinLength());
 				if (parameter.getLocation().equals(ParameterLocation.BODY)) {
@@ -254,7 +227,7 @@ public class ClassDiagramGenerator implements Serializable {
 						}
 					}
 				} else {
-					if (parameter.getRequired()!=null && parameter.getRequired().equals(Boolean.TRUE))
+					if (parameter.getRequired() != null && parameter.getRequired().equals(Boolean.TRUE))
 						umlParameter.setLower(1);
 					else
 						umlParameter.setLower(0);
@@ -265,7 +238,7 @@ public class ClassDiagramGenerator implements Serializable {
 							umlParameter.setUpper(-1);
 						if (!parameter.getItems().getEnum().isEmpty())
 							umlParameter.setType(getOrCreateEnumeration(parameter.getItems().getEnum(),
-									clazz.getName() + StringUtils.capitalize(parameter.getName()),types));
+									clazz.getName() + StringUtils.capitalize(parameter.getName()), types));
 						else
 							umlParameter.setType(getUMLType(types, parameter.getItems().getType(),
 									parameter.getItems().getFormat()));
@@ -303,6 +276,69 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
+	private void addProperties(Package types, Schema schema, Class clazz) {
+		for (Schema property : schema.getProperties()) {
+			if (isPrimitive(property)) {
+				Property umlProperty = umlFactory.createProperty();
+				umlProperty.setName(property.getName());
+				if (property.getMultipleOf() != null)
+					addConstraint(clazz, umlProperty.getName(), "multipleOfConstraint",
+							"self." + umlProperty.getName() + ".div(" + property.getMultipleOf() + ") = 0");
+				if (property.getMaximum() != null) {
+					if (property.getExclusiveMaximum() != null && property.getExclusiveMaximum().equals(Boolean.TRUE))
+						addConstraint(clazz, umlProperty.getName(), "maximumConstraint",
+								"self." + umlProperty.getName() + " < " + property.getMaximum());
+					else
+						addConstraint(clazz, umlProperty.getName(), "maximumConstraint",
+								"self." + umlProperty.getName() + " <= " + property.getMaximum());
+				}
+				if (property.getMinimum() != null) {
+					if (property.getExclusiveMinimum() != null && property.getExclusiveMinimum().equals(Boolean.TRUE))
+						addConstraint(clazz, umlProperty.getName(), "minimumConstraint",
+								"self." + umlProperty.getName() + " > " + property.getMinimum());
+					else
+						addConstraint(clazz, umlProperty.getName(), "minimumConstraint",
+								"self." + umlProperty.getName() + " >= " + property.getMinimum());
+				}
+				if (property.getMaxLength() != null)
+					addConstraint(clazz, property.getName(), "maxLengthConstraint",
+							"self." + property.getName() + ".size() <= " + property.getMaxLength());
+				if (property.getMinLength() != null)
+					addConstraint(clazz, property.getName(), "minLengthConstraint",
+							"self." + property.getName() + ".size() >= " + property.getMinLength());
+
+				if (property.getDefault() != null)
+					umlProperty.setDefault(property.getDefault());
+
+				if (!property.getType().equals(JSONDataType.ARRAY)) {
+					if (!property.getEnum().isEmpty())
+						umlProperty.setType(getOrCreateEnumeration(property.getEnum(),
+								schema.getName() + StringUtils.capitalize(property.getName()), types));
+					else
+						umlProperty.setType(getUMLType(types, property.getType(), property.getFormat()));
+					if (schema.getRequired().contains(property))
+						umlProperty.setLower(1);
+					else
+						umlProperty.setLower(0);
+				} else {
+
+					umlProperty.setUpper(-1);
+					if (property.getMinItems() != null)
+						umlProperty.setLower(property.getMinItems());
+					else
+						umlProperty.setLower(0);
+					if (!property.getItems().getEnum().isEmpty())
+						umlProperty.setType(getOrCreateEnumeration(property.getItems().getEnum(),
+								schema.getName() + StringUtils.capitalize(property.getName()), types));
+					else
+						umlProperty.setType(
+								getUMLType(types, property.getItems().getType(), property.getItems().getFormat()));
+
+				}
+				clazz.getOwnedAttributes().add(umlProperty);
+			}
+		}
+	}
 
 	private boolean isPrimitive(Schema property) {
 		if (property.getType().equals(JSONDataType.BOOLEAN) || property.getType().equals(JSONDataType.INTEGER)
@@ -322,28 +358,38 @@ public class ClassDiagramGenerator implements Serializable {
 
 		if (schema.getValue() != null && schema.getValue().getType().equals(JSONDataType.OBJECT))
 			return true;
-		
-		if(!schema.getProperties().isEmpty())
+
+		if (!schema.getProperties().isEmpty())
 			return true;
-	
+
+		if (!schema.getAllOf().isEmpty())
+			return true;
+
 		if (schema.getValue() != null && !schema.getValue().getProperties().isEmpty())
+			return true;
+
+		if (schema.getValue() != null && !schema.getValue().getAllOf().isEmpty())
 			return true;
 		return false;
 	}
+
 	private boolean isArrayOfObjects(Schema schema) {
-		
-		if (schema.getType().equals(JSONDataType.ARRAY)
-				&& (schema.getItems().getType().equals(JSONDataType.OBJECT)))
+
+		if (schema.getType().equals(JSONDataType.ARRAY) && (schema.getItems().getType().equals(JSONDataType.OBJECT)))
 			return true;
 		if (schema.getValue() != null && schema.getValue().getType().equals(JSONDataType.ARRAY)
-						&&schema.getValue().getItems().getType().equals(JSONDataType.OBJECT))
+				&& schema.getValue().getItems().getType().equals(JSONDataType.OBJECT))
 			return true;
-	
-		if (schema.getType().equals(JSONDataType.ARRAY)
-				&& !schema.getItems().getProperties().isEmpty())
+
+		if (schema.getType().equals(JSONDataType.ARRAY) && !schema.getItems().getProperties().isEmpty())
 			return true;
-		if (schema.getValue() != null &&  schema.getValue().getType().equals(JSONDataType.ARRAY)
-						&& !schema.getValue().getItems().getProperties().isEmpty())
+		if (schema.getType().equals(JSONDataType.ARRAY) && !schema.getItems().getAllOf().isEmpty())
+			return true;
+		if (schema.getValue() != null && schema.getValue().getType().equals(JSONDataType.ARRAY)
+				&& !schema.getValue().getItems().getProperties().isEmpty())
+			return true;
+		if (schema.getValue() != null && schema.getValue().getType().equals(JSONDataType.ARRAY)
+				&& !schema.getValue().getItems().getAllOf().isEmpty())
 			return true;
 		return false;
 	}
@@ -417,7 +463,7 @@ public class ClassDiagramGenerator implements Serializable {
 	}
 
 	private PrimitiveType getOrCreatePrimitiveTypeByCommonName(String commonName, Package types) {
-	
+
 		Type type = types.getOwnedType(commonName, false, UMLPackage.eINSTANCE.getPrimitiveType(), false);
 		if (type != null)
 			return (PrimitiveType) type;
@@ -430,7 +476,7 @@ public class ClassDiagramGenerator implements Serializable {
 	}
 
 	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Package types) {
-		
+
 		Type type = types.getOwnedType(name, false, UMLPackage.eINSTANCE.getEnumeration(), false);
 		if (type != null)
 			return (Enumeration) type;
@@ -446,17 +492,25 @@ public class ClassDiagramGenerator implements Serializable {
 			return enumeration;
 		}
 	}
+
 	/**
 	 * Adds a OCL constraint to a concept
-	 * @param concept The concept which holds the constraint
-	 * @param constraintName The name of the constraint (will be eventually formed
-	 *                       as conceptName-constraintName-constraintType
-	 * @param constraintType The type of the constraint being applied (e.g., macLengthConstraint)
-	 * @param constraintExp The OCL expression
+	 * 
+	 * @param concept
+	 *            The concept which holds the constraint
+	 * @param constraintName
+	 *            The name of the constraint (will be eventually formed as
+	 *            conceptName-constraintName-constraintType
+	 * @param constraintType
+	 *            The type of the constraint being applied (e.g.,
+	 *            macLengthConstraint)
+	 * @param constraintExp
+	 *            The OCL expression
 	 */
-	private void addConstraint(Namespace namespace, String constraintName, String constraintType, String constraintExp) {
+	private void addConstraint(Namespace namespace, String constraintName, String constraintType,
+			String constraintExp) {
 		Constraint constraint = UMLFactory.eINSTANCE.createConstraint();
-		String constraintId= namespace.getName()+"-"+constraintName+"-"+constraintType;
+		String constraintId = namespace.getName() + "-" + constraintName + "-" + constraintType;
 		constraint.setName(constraintId);
 		OpaqueExpression expression = UMLFactory.eINSTANCE.createOpaqueExpression();
 		expression.getLanguages().add("OCL");
