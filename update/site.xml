@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site
       associateSitesURL="https://som-research.github.io/openapi-to-uml/update/associateSites.xml">
-   <feature url="features/edu.uoc.som.openapitouml.feature_1.0.0.201803131857.jar" id="edu.uoc.som.openapitouml.feature" version="1.0.0.201803131857">
+   <feature url="features/edu.uoc.som.openapitouml.feature_1.0.1.201803260023.jar" id="edu.uoc.som.openapitouml.feature" version="1.0.1.201803260023">
       <category name="openapitouml"/>
    </feature>
    <category-def name="openapitouml" label="OpenAPI to UML">
