@@ -6,11 +6,20 @@ Require-Bundle: org.eclipse.uml2.uml,
  org.eclipse.uml2.uml.resources,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.emf.ecore,
- edu.uoc.som.openapi,
- edu.uoc.som.openapi.io
-Bundle-Version: 1.0.0.qualifier
+ edu.uoc.som.openapi;bundle-version="1.0.2",
+ edu.uoc.som.openapi.io;bundle-version="1.0.3",
+ org.eclipse.osgi,
+ org.eclipse.equinox.registry
+Bundle-Version: 1.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
- lib/commons-lang3-3.7.jar
-Export-Package: edu.uoc.som.openapitouml.generators
+ lib/commons-lang3-3.7.jar,
+ lib/json-schema-validator-2.2.6-lib.jar,
+ lib/json-schema-validator-2.2.6.jar,
+ lib/log4j-api-2.7.jar,
+ lib/log4j-core-2.7.jar
+Export-Package: com.github.fge.jsonschema.core.exceptions,
+ edu.uoc.som.openapitouml.exception,
+ edu.uoc.som.openapitouml.facade,
+ edu.uoc.som.openapitouml.model
 Bundle-Vendor: SOM Research Lab
