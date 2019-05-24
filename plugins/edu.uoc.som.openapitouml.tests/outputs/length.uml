@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_6smOYC5xEeilNroh5Ox4Fw" name="length">
-  <packagedElement xmi:type="uml:Class" xmi:id="_6smOYS5xEeilNroh5Ox4Fw" name="Concept">
-    <ownedRule xmi:id="_6smOYi5xEeilNroh5Ox4Fw" name="Concept-attributeWithMaxLength-maxLengthConstraint">
-      <specification xmi:type="uml:OpaqueExpression" xmi:id="_6smOYy5xEeilNroh5Ox4Fw">
-        <language>OCL</language>
-        <body>self.attributeWithMaxLength.size() &lt;= 20</body>
-      </specification>
-    </ownedRule>
-    <ownedRule xmi:id="_6smOZC5xEeilNroh5Ox4Fw" name="Concept-attributeWithMinLength-minLengthConstraint">
-      <specification xmi:type="uml:OpaqueExpression" xmi:id="_6smOZS5xEeilNroh5Ox4Fw">
-        <language>OCL</language>
-        <body>self.attributeWithMinLength.size() >= 1</body>
-      </specification>
-    </ownedRule>
-    <ownedAttribute xmi:id="_6smOZi5xEeilNroh5Ox4Fw" name="id" type="_6smOcC5xEeilNroh5Ox4Fw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6smOZy5xEeilNroh5Ox4Fw"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_6smOaC5xEeilNroh5Ox4Fw" name="attributeWithMaxLength" type="_6smOcS5xEeilNroh5Ox4Fw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6smOaS5xEeilNroh5Ox4Fw"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_6smOai5xEeilNroh5Ox4Fw" name="attributeWithMinLength" type="_6smOcS5xEeilNroh5Ox4Fw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6smOay5xEeilNroh5Ox4Fw"/>
-    </ownedAttribute>
-    <ownedOperation xmi:id="_6smObC5xEeilNroh5Ox4Fw" name="getConcepts">
-      <ownedParameter xmi:id="_6smObS5xEeilNroh5Ox4Fw" type="_6smOYS5xEeilNroh5Ox4Fw" direction="return">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6smObi5xEeilNroh5Ox4Fw"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6smOby5xEeilNroh5Ox4Fw" value="*"/>
-      </ownedParameter>
-    </ownedOperation>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_LXiw8H4YEemvB5yz_aNbFg" name="length">
+  <packagedElement xmi:type="uml:Package" xmi:id="_LXiw8X4YEemvB5yz_aNbFg" name="length">
+    <packagedElement xmi:type="uml:Class" xmi:id="_LXiw8n4YEemvB5yz_aNbFg" name="Concept">
+      <ownedRule xmi:id="_LXiw834YEemvB5yz_aNbFg" name="Concept-attributeWithMaxLength-maxLengthConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_LXiw9H4YEemvB5yz_aNbFg">
+          <language>OCL</language>
+          <body>self.attributeWithMaxLength.size() &lt;= 20</body>
+        </specification>
+      </ownedRule>
+      <ownedRule xmi:id="_LXiw9X4YEemvB5yz_aNbFg" name="Concept-attributeWithMinLength-minLengthConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_LXiw9n4YEemvB5yz_aNbFg">
+          <language>OCL</language>
+          <body>self.attributeWithMinLength.size() >= 1</body>
+        </specification>
+      </ownedRule>
+      <ownedAttribute xmi:id="_LXiw934YEemvB5yz_aNbFg" name="id" type="_LXixAn4YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LXiw-H4YEemvB5yz_aNbFg"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_LXiw-X4YEemvB5yz_aNbFg" name="attributeWithMaxLength" type="_LXixA34YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LXiw-n4YEemvB5yz_aNbFg"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_LXiw-34YEemvB5yz_aNbFg" name="attributeWithMinLength" type="_LXixA34YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LXiw_H4YEemvB5yz_aNbFg"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_LXiw_X4YEemvB5yz_aNbFg" name="getConcepts">
+        <ownedParameter xmi:id="_LXiw_n4YEemvB5yz_aNbFg" type="_LXiw8n4YEemvB5yz_aNbFg" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LXiw_34YEemvB5yz_aNbFg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_LXixAH4YEemvB5yz_aNbFg" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
   </packagedElement>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6smOcC5xEeilNroh5Ox4Fw" name="Long"/>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6smOcS5xEeilNroh5Ox4Fw" name="String"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_LXixAX4YEemvB5yz_aNbFg" name="types">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_LXixAn4YEemvB5yz_aNbFg" name="Long"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_LXixA34YEemvB5yz_aNbFg" name="String"/>
+  </packagedElement>
 </uml:Model>

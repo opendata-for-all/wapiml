@@ -15,7 +15,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Constraint;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
@@ -25,7 +24,6 @@ import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Namespace;
 import org.eclipse.uml2.uml.OpaqueExpression;
 import org.eclipse.uml2.uml.Package;
-import org.eclipse.uml2.uml.PackageableElement;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
@@ -114,41 +112,24 @@ public class ClassDiagramGenerator implements Serializable {
 			if (isObject(schema)) {
 				for (Schema property : schema.getProperties()) {
 					if (isObject(property) || isArrayOfObjects(property)) {
-						Association association = umlFactory.createAssociation();
-						association.setName(schema.getName() + "_" + property.getName());
-						Property firstOwnedEnd = umlFactory.createProperty();
-						association.getOwnedEnds().add(firstOwnedEnd);
-						Property secondOwnedEnd = umlFactory.createProperty();
-						association.getOwnedEnds().add(secondOwnedEnd);
-						firstOwnedEnd.setName(schema.getName());
-						firstOwnedEnd.setType(map.get(schema));
-						secondOwnedEnd.setName(property.getName());
-						secondOwnedEnd.setAggregation(AggregationKind.COMPOSITE_LITERAL);
-						if (schema.getRequired().contains(property))
-							secondOwnedEnd.setLower(1);
-						else
-							secondOwnedEnd.setLower(0);
-						if (!property.getType().equals(JSONDataType.ARRAY)) {
-							Class type = map.get(property.getValue());
-							secondOwnedEnd.setType(type);
-
-						} else {
-							secondOwnedEnd.setUpper(-1);
-							secondOwnedEnd.setType(map.get(property.getItems()));
-
-						}
-						association.getNavigableOwnedEnds().add(secondOwnedEnd);
+						Association association = createAssociation(map, schema, property);
 						package_.getPackagedElements().add(association);
 					}
 
 				}
 			}
 		}
-		// resolve associations
+		// resolve associations for allOf
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (isObject(schema)) {
 				if(!schema.getAllOf().isEmpty()) {
-					
+					for (Schema property : schema.getAllOf().get(1).getProperties()) {
+						if (isObject(property) || isArrayOfObjects(property)) {
+							Association association = createAssociation(map, schema, property);
+							package_.getPackagedElements().add(association);
+						}
+
+					}
 				}
 			}
 		}
@@ -276,6 +257,34 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
+	private Association createAssociation(Map<Schema, Class> map, Schema schema, Schema property) {
+		Association association = umlFactory.createAssociation();
+		association.setName(schema.getName() + "_" + property.getName());
+		Property firstOwnedEnd = umlFactory.createProperty();
+		association.getOwnedEnds().add(firstOwnedEnd);
+		Property secondOwnedEnd = umlFactory.createProperty();
+		association.getOwnedEnds().add(secondOwnedEnd);
+		firstOwnedEnd.setName(schema.getName());
+		firstOwnedEnd.setType(map.get(schema));
+		secondOwnedEnd.setName(property.getName());
+		secondOwnedEnd.setAggregation(AggregationKind.COMPOSITE_LITERAL);
+		if (schema.getRequired().contains(property))
+			secondOwnedEnd.setLower(1);
+		else
+			secondOwnedEnd.setLower(0);
+		if (!property.getType().equals(JSONDataType.ARRAY)) {
+			Class type = map.get(property.getValue());
+			secondOwnedEnd.setType(type);
+
+		} else {
+			secondOwnedEnd.setUpper(-1);
+			secondOwnedEnd.setType(map.get(property.getItems()));
+
+		}
+		association.getNavigableOwnedEnds().add(secondOwnedEnd);
+		return association;
+	}
+
 	private void addProperties(Package types, Schema schema, Class clazz) {
 		for (Schema property : schema.getProperties()) {
 			if (isPrimitive(property)) {
@@ -313,7 +322,7 @@ public class ClassDiagramGenerator implements Serializable {
 				if (!property.getType().equals(JSONDataType.ARRAY)) {
 					if (!property.getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(property.getEnum(),
-								schema.getName() + StringUtils.capitalize(property.getName()), types));
+								clazz.getName() + StringUtils.capitalize(property.getName()), types));
 					else
 						umlProperty.setType(getUMLType(types, property.getType(), property.getFormat()));
 					if (schema.getRequired().contains(property))
@@ -329,7 +338,7 @@ public class ClassDiagramGenerator implements Serializable {
 						umlProperty.setLower(0);
 					if (!property.getItems().getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(property.getItems().getEnum(),
-								schema.getName() + StringUtils.capitalize(property.getName()), types));
+								clazz.getName() + StringUtils.capitalize(property.getName()), types));
 					else
 						umlProperty.setType(
 								getUMLType(types, property.getItems().getType(), property.getItems().getFormat()));
