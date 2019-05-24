@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_XLjg0H40EemKyfps4bl3mg" name="allOf-enum">
+  <packagedElement xmi:type="uml:Package" xmi:id="_XLyKUH40EemKyfps4bl3mg" name="allOf-enum">
+    <packagedElement xmi:type="uml:Class" xmi:id="_XLyKUX40EemKyfps4bl3mg" name="Pet">
+      <ownedAttribute xmi:id="_XLyKUn40EemKyfps4bl3mg" name="name" type="_XMHhiX40EemKyfps4bl3mg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XLyKU340EemKyfps4bl3mg" value="1"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_XLyKVH40EemKyfps4bl3mg" name="petType" type="_XMHhiX40EemKyfps4bl3mg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XLyKVX40EemKyfps4bl3mg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_XLyKVn40EemKyfps4bl3mg" name="Cat">
+      <generalization xmi:id="_XL1NoH40EemKyfps4bl3mg" general="_XLyKUX40EemKyfps4bl3mg"/>
+      <ownedAttribute xmi:id="_XL1NoX40EemKyfps4bl3mg" name="huntingSkill" type="_XMHhin40EemKyfps4bl3mg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XL1Non40EemKyfps4bl3mg" value="1"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_XL1No340EemKyfps4bl3mg" value="&quot;lazy&quot;"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_XL1NpH40EemKyfps4bl3mg" name="getCats">
+        <ownedParameter xmi:id="_XL1NpX40EemKyfps4bl3mg" type="_XLyKVn40EemKyfps4bl3mg" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XL10sH40EemKyfps4bl3mg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_XL10sX40EemKyfps4bl3mg" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_XL10sn40EemKyfps4bl3mg" name="Dog">
+      <ownedRule xmi:id="_XL10s340EemKyfps4bl3mg" name="Dog-packSize-minimumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_XL10tH40EemKyfps4bl3mg">
+          <language>OCL</language>
+          <body>self.packSize >= 0.0</body>
+        </specification>
+      </ownedRule>
+      <generalization xmi:id="_XL10tX40EemKyfps4bl3mg" general="_XLyKUX40EemKyfps4bl3mg"/>
+      <ownedAttribute xmi:id="_XL10tn40EemKyfps4bl3mg" name="packSize" type="_XMIIlH40EemKyfps4bl3mg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XMHhgH40EemKyfps4bl3mg" value="1"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_XMHhgX40EemKyfps4bl3mg" value="0"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_XMHhgn40EemKyfps4bl3mg" name="Fish">
+      <ownedRule xmi:id="_XMHhg340EemKyfps4bl3mg" name="Fish-fins-minimumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_XMHhhH40EemKyfps4bl3mg">
+          <language>OCL</language>
+          <body>self.fins >= 0.0</body>
+        </specification>
+      </ownedRule>
+      <generalization xmi:id="_XMHhhX40EemKyfps4bl3mg" general="_XLyKUX40EemKyfps4bl3mg"/>
+      <ownedAttribute xmi:id="_XMHhhn40EemKyfps4bl3mg" name="fins" type="_XMIIlH40EemKyfps4bl3mg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_XMHhh340EemKyfps4bl3mg" value="1"/>
+      </ownedAttribute>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_XMHhiH40EemKyfps4bl3mg" name="types">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_XMHhiX40EemKyfps4bl3mg" name="String"/>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_XMHhin40EemKyfps4bl3mg" name="CatHuntingSkill">
+      <ownedLiteral xmi:id="_XMIIkH40EemKyfps4bl3mg" name="clueless"/>
+      <ownedLiteral xmi:id="_XMIIkX40EemKyfps4bl3mg" name="lazy"/>
+      <ownedLiteral xmi:id="_XMIIkn40EemKyfps4bl3mg" name="adventurous"/>
+      <ownedLiteral xmi:id="_XMIIk340EemKyfps4bl3mg" name="aggressive"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_XMIIlH40EemKyfps4bl3mg" name="Integer"/>
+  </packagedElement>
+</uml:Model>

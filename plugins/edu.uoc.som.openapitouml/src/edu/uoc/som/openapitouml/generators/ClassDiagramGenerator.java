@@ -322,7 +322,7 @@ public class ClassDiagramGenerator implements Serializable {
 				if (!property.getType().equals(JSONDataType.ARRAY)) {
 					if (!property.getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(property.getEnum(),
-								schema.getName() + StringUtils.capitalize(property.getName()), types));
+								clazz.getName() + StringUtils.capitalize(property.getName()), types));
 					else
 						umlProperty.setType(getUMLType(types, property.getType(), property.getFormat()));
 					if (schema.getRequired().contains(property))
@@ -338,7 +338,7 @@ public class ClassDiagramGenerator implements Serializable {
 						umlProperty.setLower(0);
 					if (!property.getItems().getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(property.getItems().getEnum(),
-								schema.getName() + StringUtils.capitalize(property.getName()), types));
+								clazz.getName() + StringUtils.capitalize(property.getName()), types));
 					else
 						umlProperty.setType(
 								getUMLType(types, property.getItems().getType(), property.getItems().getFormat()));
