@@ -1,7 +1,7 @@
 
 # OpenAPItoUML
 
-![OpenAPItoUML](https://som-research.github.io/openapi-to-uml/images/logo.png)
+![OpenAPItoUML](https://opendata-for-all.github.io/openapi-to-uml/images/logo.png)
 
 A tool to generate UML models from OpenAPI definitions.
 
@@ -15,13 +15,13 @@ To visualize the generated UML models:
 ## Installation
 1. Open Eclipse IDE
 2. Click on *Help / Install New Software...*
-3. Click on *Add...* and fill in the form as indicated (the update site is https://som-research.github.io/openapi-to-uml/update/) then click on *OK*.
+3. Click on *Add...* and fill in the form as indicated (the update site is https://opendata-for-all.github.io/openapi-to-uml/update/) then click on *OK*.
 
-![Add repository](https://som-research.github.io/openapi-to-uml/images/add-eclipse.PNG)
+![Add repository](https://opendata-for-all.github.io/openapi-to-uml/images/add-eclipse.PNG)
 
 4. Select *OpenAPI to UML* then click on *Next*.
 
-![Install](https://som-research.github.io/openapi-to-uml/images/install-eclipse.PNG)
+![Install](https://opendata-for-all.github.io/openapi-to-uml/images/install-eclipse.PNG)
 
 5. Follow the the rest of the steps (license, etc...) and reboot Eclipse.
 
@@ -34,7 +34,7 @@ To visualize the generated UML models:
 ## Visualizing the Class diagram using Papyrus
 
 The Petstore example:
-![Petstore](https://som-research.github.io/openapi-to-uml/images/petstore.png)
+![Petstore](https://opendata-for-all.github.io/openapi-to-uml/images/petstore.png)
 
 Instructions:
 
