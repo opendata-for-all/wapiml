@@ -1,57 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_6EtvAC5xEeilNroh5Ox4Fw" name="parameters">
-  <packagedElement xmi:type="uml:Class" xmi:id="_6EtvAS5xEeilNroh5Ox4Fw" name="Concept">
-    <ownedAttribute xmi:id="_6EtvAi5xEeilNroh5Ox4Fw" name="id" type="_6EtvGy5xEeilNroh5Ox4Fw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6EtvAy5xEeilNroh5Ox4Fw"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:id="_6EtvBC5xEeilNroh5Ox4Fw" name="attributeWithMaxItem" type="_6EtvHC5xEeilNroh5Ox4Fw">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6EtvBS5xEeilNroh5Ox4Fw" value="1"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6EtvBi5xEeilNroh5Ox4Fw" value="*"/>
-    </ownedAttribute>
-    <ownedOperation xmi:id="_6EtvBy5xEeilNroh5Ox4Fw" name="findConcepts">
-      <ownedRule xmi:id="_6EtvCC5xEeilNroh5Ox4Fw" name="findConcepts-parameterWithMinLength-minLengthConstraint">
-        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6EtvCS5xEeilNroh5Ox4Fw">
-          <language>OCL</language>
-          <body>self.parameterWithMinLength.size() >= 3</body>
-        </specification>
-      </ownedRule>
-      <ownedRule xmi:id="_6EtvCi5xEeilNroh5Ox4Fw" name="findConcepts-parameterWithMaxLength-maxLengthConstraint">
-        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6EtvCy5xEeilNroh5Ox4Fw">
-          <language>OCL</language>
-          <body>self.parameterWithMaxLength.size() &lt;= 10</body>
-        </specification>
-      </ownedRule>
-      <ownedRule xmi:id="_6EtvDC5xEeilNroh5Ox4Fw" name="findConcepts-parameterWithMinimum-minimumConstraint">
-        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6EtvDS5xEeilNroh5Ox4Fw">
-          <language>OCL</language>
-          <body>self.parameterWithMinimum >= 10.0</body>
-        </specification>
-      </ownedRule>
-      <ownedRule xmi:id="_6EtvDi5xEeilNroh5Ox4Fw" name="findConcepts-parameterWithMaximum-maximumConstraint">
-        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6EtvDy5xEeilNroh5Ox4Fw">
-          <language>OCL</language>
-          <body>self.parameterWithMaximum &lt;= 10.0</body>
-        </specification>
-      </ownedRule>
-      <ownedParameter xmi:id="_6EtvEC5xEeilNroh5Ox4Fw" name="parameterWithMinLength" type="_6EtvHC5xEeilNroh5Ox4Fw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6EtvES5xEeilNroh5Ox4Fw"/>
-      </ownedParameter>
-      <ownedParameter xmi:id="_6EtvEi5xEeilNroh5Ox4Fw" name="parameterWithMaxLength" type="_6EtvHC5xEeilNroh5Ox4Fw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6EtvEy5xEeilNroh5Ox4Fw"/>
-      </ownedParameter>
-      <ownedParameter xmi:id="_6EtvFC5xEeilNroh5Ox4Fw" name="parameterWithMinimum" type="_6EtvHS5xEeilNroh5Ox4Fw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6EtvFS5xEeilNroh5Ox4Fw"/>
-      </ownedParameter>
-      <ownedParameter xmi:id="_6EtvFi5xEeilNroh5Ox4Fw" name="parameterWithMaximum" type="_6EtvHS5xEeilNroh5Ox4Fw">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6EtvFy5xEeilNroh5Ox4Fw"/>
-      </ownedParameter>
-      <ownedParameter xmi:id="_6EtvGC5xEeilNroh5Ox4Fw" type="_6EtvAS5xEeilNroh5Ox4Fw" direction="return">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6EtvGS5xEeilNroh5Ox4Fw"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6EtvGi5xEeilNroh5Ox4Fw" value="*"/>
-      </ownedParameter>
-    </ownedOperation>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_LIiEkH4YEemvB5yz_aNbFg" name="parameters">
+  <packagedElement xmi:type="uml:Package" xmi:id="_LIiEkX4YEemvB5yz_aNbFg" name="parameters">
+    <packagedElement xmi:type="uml:Class" xmi:id="_LIiEkn4YEemvB5yz_aNbFg" name="Concept">
+      <ownedAttribute xmi:id="_LIiEk34YEemvB5yz_aNbFg" name="id" type="_LIiron4YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LIiElH4YEemvB5yz_aNbFg"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_LIiElX4YEemvB5yz_aNbFg" name="attributeWithMaxItem" type="_LIiro34YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LIiEln4YEemvB5yz_aNbFg" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_LIiEl34YEemvB5yz_aNbFg" value="*"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_LIiEmH4YEemvB5yz_aNbFg" name="findConcepts">
+        <ownedRule xmi:id="_LIiEmX4YEemvB5yz_aNbFg" name="findConcepts-parameterWithMinLength-minLengthConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_LIiEmn4YEemvB5yz_aNbFg">
+            <language>OCL</language>
+            <body>self.parameterWithMinLength.size() >= 3</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_LIiEm34YEemvB5yz_aNbFg" name="findConcepts-parameterWithMaxLength-maxLengthConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_LIiEnH4YEemvB5yz_aNbFg">
+            <language>OCL</language>
+            <body>self.parameterWithMaxLength.size() &lt;= 10</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_LIiEnX4YEemvB5yz_aNbFg" name="findConcepts-parameterWithMinimum-minimumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_LIiEnn4YEemvB5yz_aNbFg">
+            <language>OCL</language>
+            <body>self.parameterWithMinimum >= 10.0</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_LIiEn34YEemvB5yz_aNbFg" name="findConcepts-parameterWithMaximum-maximumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_LIiEoH4YEemvB5yz_aNbFg">
+            <language>OCL</language>
+            <body>self.parameterWithMaximum &lt;= 10.0</body>
+          </specification>
+        </ownedRule>
+        <ownedParameter xmi:id="_LIiEoX4YEemvB5yz_aNbFg" name="parameterWithMinLength" type="_LIiro34YEemvB5yz_aNbFg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LIiEon4YEemvB5yz_aNbFg"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_LIiEo34YEemvB5yz_aNbFg" name="parameterWithMaxLength" type="_LIiro34YEemvB5yz_aNbFg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LIiEpH4YEemvB5yz_aNbFg"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_LIiEpX4YEemvB5yz_aNbFg" name="parameterWithMinimum" type="_LIirpH4YEemvB5yz_aNbFg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LIiEpn4YEemvB5yz_aNbFg"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_LIiEp34YEemvB5yz_aNbFg" name="parameterWithMaximum" type="_LIirpH4YEemvB5yz_aNbFg">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LIiEqH4YEemvB5yz_aNbFg"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_LIiEqX4YEemvB5yz_aNbFg" type="_LIiEkn4YEemvB5yz_aNbFg" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_LIiEqn4YEemvB5yz_aNbFg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_LIiroH4YEemvB5yz_aNbFg" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
   </packagedElement>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6EtvGy5xEeilNroh5Ox4Fw" name="Long"/>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6EtvHC5xEeilNroh5Ox4Fw" name="String"/>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6EtvHS5xEeilNroh5Ox4Fw" name="Integer"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_LIiroX4YEemvB5yz_aNbFg" name="types">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_LIiron4YEemvB5yz_aNbFg" name="Long"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_LIiro34YEemvB5yz_aNbFg" name="String"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_LIirpH4YEemvB5yz_aNbFg" name="Integer"/>
+  </packagedElement>
 </uml:Model>

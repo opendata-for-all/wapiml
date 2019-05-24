@@ -1,61 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_YnfJsDBzEeifNYFVTA479w" name="allOf">
-  <packagedElement xmi:type="uml:Package" xmi:id="_YnfJsTBzEeifNYFVTA479w" name="allOf">
-    <packagedElement xmi:type="uml:Class" xmi:id="_YnfJsjBzEeifNYFVTA479w" name="Pet">
-      <ownedAttribute xmi:id="_YnfJszBzEeifNYFVTA479w" name="name" type="_YnfJzjBzEeifNYFVTA479w">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YnfJtDBzEeifNYFVTA479w" value="1"/>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_K90CUH4YEemvB5yz_aNbFg" name="allOf">
+  <packagedElement xmi:type="uml:Package" xmi:id="_K91QcH4YEemvB5yz_aNbFg" name="allOf">
+    <packagedElement xmi:type="uml:Class" xmi:id="_K913gH4YEemvB5yz_aNbFg" name="Pet">
+      <ownedAttribute xmi:id="_K913gX4YEemvB5yz_aNbFg" name="name" type="_K913nH4YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_K913gn4YEemvB5yz_aNbFg" value="1"/>
       </ownedAttribute>
-      <ownedAttribute xmi:id="_YnfJtTBzEeifNYFVTA479w" name="petType" type="_YnfJzjBzEeifNYFVTA479w">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YnfJtjBzEeifNYFVTA479w" value="1"/>
+      <ownedAttribute xmi:id="_K913g34YEemvB5yz_aNbFg" name="petType" type="_K913nH4YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_K913hH4YEemvB5yz_aNbFg" value="1"/>
       </ownedAttribute>
     </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="_YnfJtzBzEeifNYFVTA479w" name="Cat">
-      <generalization xmi:id="_YnfJuDBzEeifNYFVTA479w" general="_YnfJsjBzEeifNYFVTA479w"/>
-      <ownedAttribute xmi:id="_YnfJuTBzEeifNYFVTA479w" name="huntingSkill" type="_YnfJzzBzEeifNYFVTA479w">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YnfJujBzEeifNYFVTA479w" value="1"/>
-        <defaultValue xmi:type="uml:LiteralString" xmi:id="_YnfJuzBzEeifNYFVTA479w" value="&quot;lazy&quot;"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_K913hX4YEemvB5yz_aNbFg" name="Cat">
+      <generalization xmi:id="_K913hn4YEemvB5yz_aNbFg" general="_K913gH4YEemvB5yz_aNbFg"/>
+      <ownedAttribute xmi:id="_K913h34YEemvB5yz_aNbFg" name="huntingSkill" type="_K913nX4YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_K913iH4YEemvB5yz_aNbFg" value="1"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_K913iX4YEemvB5yz_aNbFg" value="&quot;lazy&quot;"/>
       </ownedAttribute>
-      <ownedOperation xmi:id="_YnfJvDBzEeifNYFVTA479w" name="getCats">
-        <ownedParameter xmi:id="_YnfJvTBzEeifNYFVTA479w" type="_YnfJtzBzEeifNYFVTA479w" direction="return">
-          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YnfJvjBzEeifNYFVTA479w"/>
-          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_YnfJvzBzEeifNYFVTA479w" value="*"/>
+      <ownedOperation xmi:id="_K913in4YEemvB5yz_aNbFg" name="getCats">
+        <ownedParameter xmi:id="_K913i34YEemvB5yz_aNbFg" type="_K913hX4YEemvB5yz_aNbFg" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_K913jH4YEemvB5yz_aNbFg"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_K913jX4YEemvB5yz_aNbFg" value="*"/>
         </ownedParameter>
       </ownedOperation>
     </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="_YnfJwDBzEeifNYFVTA479w" name="Dog">
-      <ownedRule xmi:id="_YnfJwTBzEeifNYFVTA479w" name="Dog-packSize-minimumConstraint">
-        <specification xmi:type="uml:OpaqueExpression" xmi:id="_YnfJwjBzEeifNYFVTA479w">
+    <packagedElement xmi:type="uml:Class" xmi:id="_K913jn4YEemvB5yz_aNbFg" name="Dog">
+      <ownedRule xmi:id="_K913j34YEemvB5yz_aNbFg" name="Dog-packSize-minimumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_K913kH4YEemvB5yz_aNbFg">
           <language>OCL</language>
           <body>self.packSize >= 0.0</body>
         </specification>
       </ownedRule>
-      <generalization xmi:id="_YnfJwzBzEeifNYFVTA479w" general="_YnfJsjBzEeifNYFVTA479w"/>
-      <ownedAttribute xmi:id="_YnfJxDBzEeifNYFVTA479w" name="packSize" type="_YnfJ1DBzEeifNYFVTA479w">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YnfJxTBzEeifNYFVTA479w" value="1"/>
-        <defaultValue xmi:type="uml:LiteralString" xmi:id="_YnfJxjBzEeifNYFVTA479w" value="0"/>
+      <generalization xmi:id="_K913kX4YEemvB5yz_aNbFg" general="_K913gH4YEemvB5yz_aNbFg"/>
+      <ownedAttribute xmi:id="_K913kn4YEemvB5yz_aNbFg" name="packSize" type="_K92ekn4YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_K913k34YEemvB5yz_aNbFg" value="1"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_K913lH4YEemvB5yz_aNbFg" value="0"/>
       </ownedAttribute>
     </packagedElement>
-    <packagedElement xmi:type="uml:Class" xmi:id="_YnfJxzBzEeifNYFVTA479w" name="Fish">
-      <ownedRule xmi:id="_YnfJyDBzEeifNYFVTA479w" name="Fish-fins-minimumConstraint">
-        <specification xmi:type="uml:OpaqueExpression" xmi:id="_YnfJyTBzEeifNYFVTA479w">
+    <packagedElement xmi:type="uml:Class" xmi:id="_K913lX4YEemvB5yz_aNbFg" name="Fish">
+      <ownedRule xmi:id="_K913ln4YEemvB5yz_aNbFg" name="Fish-fins-minimumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_K913l34YEemvB5yz_aNbFg">
           <language>OCL</language>
           <body>self.fins >= 0.0</body>
         </specification>
       </ownedRule>
-      <generalization xmi:id="_YnfJyjBzEeifNYFVTA479w" general="_YnfJsjBzEeifNYFVTA479w"/>
-      <ownedAttribute xmi:id="_YnfJyzBzEeifNYFVTA479w" name="fins" type="_YnfJ1DBzEeifNYFVTA479w">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_YnfJzDBzEeifNYFVTA479w" value="1"/>
+      <generalization xmi:id="_K913mH4YEemvB5yz_aNbFg" general="_K913gH4YEemvB5yz_aNbFg"/>
+      <ownedAttribute xmi:id="_K913mX4YEemvB5yz_aNbFg" name="fins" type="_K92ekn4YEemvB5yz_aNbFg">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_K913mn4YEemvB5yz_aNbFg" value="1"/>
       </ownedAttribute>
     </packagedElement>
   </packagedElement>
-  <packagedElement xmi:type="uml:Package" xmi:id="_YnfJzTBzEeifNYFVTA479w" name="types">
-    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_YnfJzjBzEeifNYFVTA479w" name="String"/>
-    <packagedElement xmi:type="uml:Enumeration" xmi:id="_YnfJzzBzEeifNYFVTA479w" name="nullHuntingSkill">
-      <ownedLiteral xmi:id="_YnfJ0DBzEeifNYFVTA479w" name="clueless"/>
-      <ownedLiteral xmi:id="_YnfJ0TBzEeifNYFVTA479w" name="lazy"/>
-      <ownedLiteral xmi:id="_YnfJ0jBzEeifNYFVTA479w" name="adventurous"/>
-      <ownedLiteral xmi:id="_YnfJ0zBzEeifNYFVTA479w" name="aggressive"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_K913m34YEemvB5yz_aNbFg" name="types">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_K913nH4YEemvB5yz_aNbFg" name="String"/>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_K913nX4YEemvB5yz_aNbFg" name="nullHuntingSkill">
+      <ownedLiteral xmi:id="_K913nn4YEemvB5yz_aNbFg" name="clueless"/>
+      <ownedLiteral xmi:id="_K913n34YEemvB5yz_aNbFg" name="lazy"/>
+      <ownedLiteral xmi:id="_K92ekH4YEemvB5yz_aNbFg" name="adventurous"/>
+      <ownedLiteral xmi:id="_K92ekX4YEemvB5yz_aNbFg" name="aggressive"/>
     </packagedElement>
-    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_YnfJ1DBzEeifNYFVTA479w" name="Integer"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_K92ekn4YEemvB5yz_aNbFg" name="Integer"/>
   </packagedElement>
 </uml:Model>
