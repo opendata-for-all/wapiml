@@ -2,24 +2,21 @@ package edu.uoc.som.openapitouml.facade;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.uml2.uml.Model;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import com.github.fge.jsonschema.core.report.ProcessingReport;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.io.OpenAPIImporter;
 import edu.uoc.som.openapitouml.exception.OpenAPIValidationException;
-import edu.uoc.som.openapitouml.exception.OpenAPItoUMLRuntimeException;
 import edu.uoc.som.openapitouml.generators.ClassDiagramGenerator;
 import edu.uoc.som.openapitouml.model.OpenAPIValidationReport;
 import edu.uoc.som.openapitouml.validator.OpenAPIValidator;
