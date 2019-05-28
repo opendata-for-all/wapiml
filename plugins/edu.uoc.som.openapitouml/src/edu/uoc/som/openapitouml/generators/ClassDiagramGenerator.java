@@ -1,12 +1,16 @@
 package edu.uoc.som.openapitouml.generators;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -27,11 +31,11 @@ import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Property;
+import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
-
 import edu.uoc.som.openapi.JSONDataType;
 import edu.uoc.som.openapi.Operation;
 import edu.uoc.som.openapi.Parameter;
@@ -39,6 +43,7 @@ import edu.uoc.som.openapi.ParameterLocation;
 import edu.uoc.som.openapi.Path;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
+import edu.uoc.som.openapitouml.utils.OpenAPIProfileUtils;
 import edu.uoc.som.openapitouml.utils.OpenAPIUtils;
 
 public class ClassDiagramGenerator implements Serializable {
@@ -48,20 +53,56 @@ public class ClassDiagramGenerator implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private UMLFactory umlFactory;
 	private ResourceSet resourceSet;
+	Resource openAPIProfileResource;
+	Resource umlModelResource;
+	URI resourceURI;
 
-	public ClassDiagramGenerator() {
+	public ClassDiagramGenerator() throws IOException {
 
 		umlFactory = UMLFactory.eINSTANCE;
 		resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"),
+				URI.createPlatformPluginURI("edu.uoc.som.openapi.profile/resources/openapi.profile.uml", true));
+		resourceSet.getURIConverter().getURIMap().put(
+				URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"), URI.createPlatformPluginURI(
+						"org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml", true));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.LIBRARIES_PATHMAP),
+				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("libraries")
+						.appendSegment(""));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.METAMODELS_PATHMAP),
+				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("metamodels")
+						.appendSegment(""));
+		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.PROFILES_PATHMAP),
+				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("profiles")
+						.appendSegment(""));
+
+		openAPIProfileResource = resourceSet
+				.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
+		
 
 	}
 
-	public Model generateClassDiagramFromOpenAPI(Root root, String modelName) {
-		Model model = umlFactory.createModel();
-		model.setName(modelName);
+	public Model generateClassDiagramFromOpenAPI(Root root, String modelName, File target, boolean applyProfile)
+			throws IOException {
+		Model model = null;
+		if (applyProfile) {
+			resourceURI = URI.createFileURI(target.getPath());
+			URL original = new URL("platform:/plugin/edu.uoc.som.openapitouml/resources/template-profile.uml");
+			FileUtils.copyURLToFile(original, target);
+			umlModelResource = resourceSet.getResource(resourceURI, true);
+			model = (Model) umlModelResource.getContents().get(0);
+			model.setName(modelName);
+		} else {
+			resourceURI = URI.createFileURI(target.getPath());
+			URL original = new URL("platform:/plugin/edu.uoc.som.openapitouml/resources/template-no-profile.uml");
+			FileUtils.copyURLToFile(original, target);
+			umlModelResource = resourceSet.getResource(resourceURI, true);
+			model = (Model) umlModelResource.getContents().get(0);
+			model.setName(modelName);
+		}
 		Package package_ = umlFactory.createPackage();
 		package_.setName(modelName);
 		model.getPackagedElements().add(package_);
@@ -70,6 +111,12 @@ public class ClassDiagramGenerator implements Serializable {
 		model.getPackagedElements().add(types);
 
 		Map<Schema, Class> map = new HashMap<Schema, Class>();
+		
+		if (applyProfile) {
+			OpenAPIProfileUtils.applyAPIStereotype(model, root.getApi());
+			OpenAPIProfileUtils.applyAPIInfoStereotype(model, root.getApi().getInfo());
+			OpenAPIProfileUtils.applyExternalDocsStereotype(model, root.getApi().getExternalDocs());
+		}
 
 		// generate classes
 		for (Schema schema : root.getApi().getDefinitions()) {
@@ -80,9 +127,9 @@ public class ClassDiagramGenerator implements Serializable {
 				package_.getOwnedTypes().add(clazz);
 				map.put(schema, clazz);
 				addProperties(types, schema, clazz);
-				if(!schema.getAllOf().isEmpty()) {
-					for(Schema allOfItem : schema.getAllOf()) {
-						if(allOfItem.getDeclaringContext()!= null && allOfItem.getDeclaringContext().equals(schema)) {
+				if (!schema.getAllOf().isEmpty()) {
+					for (Schema allOfItem : schema.getAllOf()) {
+						if (allOfItem.getDeclaringContext() != null && allOfItem.getDeclaringContext().equals(schema)) {
 							addProperties(types, allOfItem, clazz);
 						}
 					}
@@ -92,21 +139,21 @@ public class ClassDiagramGenerator implements Serializable {
 		// resolve superclasses
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (isObject(schema)) {
-						if(!schema.getAllOf().isEmpty()) {
-							Class child = map.get(schema);
-							if(child != null)
-							for(Schema allOfItem : schema.getAllOf()) {
-							Class parent =	map.get(allOfItem);
-							
-							if(parent != null) {
+				if (!schema.getAllOf().isEmpty()) {
+					Class child = map.get(schema);
+					if (child != null)
+						for (Schema allOfItem : schema.getAllOf()) {
+							Class parent = map.get(allOfItem);
+
+							if (parent != null) {
 								Generalization generation = umlFactory.createGeneralization();
 								generation.setGeneral(parent);
 								child.getGeneralizations().add(generation);
 							}
-							}
 						}
-					}
 				}
+			}
+		}
 		// resolve associations
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (isObject(schema)) {
@@ -122,7 +169,7 @@ public class ClassDiagramGenerator implements Serializable {
 		// resolve associations for allOf
 		for (Schema schema : root.getApi().getDefinitions()) {
 			if (isObject(schema)) {
-				if(!schema.getAllOf().isEmpty()) {
+				if (!schema.getAllOf().isEmpty()) {
 					for (Schema property : schema.getAllOf().get(1).getProperties()) {
 						if (isObject(property) || isArrayOfObjects(property)) {
 							Association association = createAssociation(map, schema, property);
@@ -464,10 +511,9 @@ public class ClassDiagramGenerator implements Serializable {
 		this.umlFactory = umlFactory;
 	}
 
-	public void saveClassDiagram(Model model, URI resourceURI) throws IOException {
-		Resource resource = resourceSet.createResource(resourceURI);
-		resource.getContents().add(model);
-		resource.save(Collections.EMPTY_MAP);
+	public void saveClassDiagram() throws IOException {
+
+		umlModelResource.save(Collections.EMPTY_MAP);
 
 	}
 
@@ -505,16 +551,12 @@ public class ClassDiagramGenerator implements Serializable {
 	/**
 	 * Adds a OCL constraint to a concept
 	 * 
-	 * @param concept
-	 *            The concept which holds the constraint
-	 * @param constraintName
-	 *            The name of the constraint (will be eventually formed as
-	 *            conceptName-constraintName-constraintType
-	 * @param constraintType
-	 *            The type of the constraint being applied (e.g.,
-	 *            macLengthConstraint)
-	 * @param constraintExp
-	 *            The OCL expression
+	 * @param concept        The concept which holds the constraint
+	 * @param constraintName The name of the constraint (will be eventually formed
+	 *                       as conceptName-constraintName-constraintType
+	 * @param constraintType The type of the constraint being applied (e.g.,
+	 *                       macLengthConstraint)
+	 * @param constraintExp  The OCL expression
 	 */
 	private void addConstraint(Namespace namespace, String constraintName, String constraintType,
 			String constraintExp) {
@@ -526,6 +568,18 @@ public class ClassDiagramGenerator implements Serializable {
 		expression.getBodies().add(constraintExp);
 		constraint.setSpecification(expression);
 		namespace.getOwnedRules().add(constraint);
+	}
+
+	public Stereotype getStereotypeByName(String name) throws FileNotFoundException, IOException {
+		switch (name) {
+		case "OpenAPIProfile::API":
+			return (Stereotype) openAPIProfileResource.getEObject("_msWVIHyHEemaV87q0fd26g");
+
+		default:
+			break;
+		}
+		return null;
+
 	}
 
 }
