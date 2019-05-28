@@ -18,7 +18,8 @@ Bundle-ClassPath: .,
  lib/json-schema-validator-2.2.6-lib.jar,
  lib/json-schema-validator-2.2.6.jar,
  lib/log4j-api-2.7.jar,
- lib/log4j-core-2.7.jar
+ lib/log4j-core-2.7.jar,
+ lib/commons-io-20030203.000550.jar
 Export-Package: com.github.fge.jsonschema.core.exceptions,
  edu.uoc.som.openapitouml.exception,
  edu.uoc.som.openapitouml.facade,
