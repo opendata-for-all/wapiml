@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
@@ -56,20 +57,23 @@ public class ConvertToClassDiagramWithProfile extends AbstractHandler {
 									target.getLocation().toFile().mkdirs();
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
-								OpenAPItoUMLFacade openAPItoUMLFacade = new OpenAPItoUMLFacade();
-								File inputFile = new File(iFile.getLocation().toString());
 
-								openAPItoUMLFacade.generateAndSaveStereotypedClassDiagram(inputFile,
-										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),
-										target.getLocation().toFile(), true);
+								File inputFile = new File(iFile.getLocation().toString());
+								OpenAPItoUMLFacade openAPItoUMLFacade = new OpenAPItoUMLFacade();
+								openAPItoUMLFacade.generateAndSaveClassDiagram(inputFile,
+										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')), target.getLocation()
+										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
+										.addFileExtension("uml").toFile(),true, true);
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
 					} catch (IOException | CoreException | ProcessingException e) {
+						e.printStackTrace();
 						return new Status(IStatus.ERROR, OpenAPIToUMLUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 
 					} catch (OpenAPIValidationException e) {
+						e.printStackTrace();
 						return new Status(IStatus.ERROR, OpenAPIToUMLUIPlugin.PLUGIN_ID, e.getLocalizedMessage());
 					} finally {
 						monitor.done();

@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -59,12 +60,12 @@ public class ConvertToClassDiagram extends AbstractHandler {
 									target.getLocation().toFile().mkdirs();
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
-								OpenAPItoUMLFacade openAPItoUMLFacade = new OpenAPItoUMLFacade();
 								File inputFile = new File(iFile.getLocation().toString());
-
+								OpenAPItoUMLFacade openAPItoUMLFacade = new OpenAPItoUMLFacade();
 								openAPItoUMLFacade.generateAndSaveClassDiagram(inputFile,
-										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),
-										target.getLocation().toFile(), true);
+										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),target.getLocation()
+										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
+										.addFileExtension("uml").toFile(), false, true);
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
