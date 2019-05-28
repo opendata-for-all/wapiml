@@ -53,6 +53,11 @@
             id="edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagram"
             name="Generate Class diagram">
       </command>
+      <command
+            defaultHandler="edu.uoc.som.openapitouml.ui.handlers.ConvertToClassDiagramWithProfile"
+            id="edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagramWithProfile"
+            name="Generate a Class diagram + OpenAPI profile">
+      </command>
    </extension>
 
 </plugin>
