@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import edu.uoc.som.openapi.API;
+import edu.uoc.som.openapi.Definition;
 import edu.uoc.som.openapi.Operation;
 import edu.uoc.som.openapi.Path;
 import edu.uoc.som.openapi.Root;
@@ -26,18 +27,18 @@ public class OpenAPIUtils {
 		return operationList;
 		
 	}
-	public static List<Operation> getAllRelatedOperations(Root root, Schema schema){
+	public static List<Operation> getAllRelatedOperations(Root root, Definition definition){
 		List<Operation> operationList = new ArrayList<Operation>();
 		for(Operation operation : root.getApi().getAllOperations()) {
-			if(isSchemaInTags(schema, operation.getTagReferences()))
+			if(isDefinitionInTags(definition, operation.getTagReferences()))
 				operationList.add(operation);
 			else {
 				Schema p =operation.getProducedSchema();
-				if(p!= null && p.equals(schema))
+				if(p!= null && p.equals(definition.getSchema()))
 				operationList.add(operation);
 				else {
 					Schema c = operation.getConsumedSchema();
-					if(c!=null && c.equals(schema))
+					if(c!=null && c.equals(definition.getSchema()))
 						operationList.add(operation);
 				}
 				
@@ -65,29 +66,29 @@ public class OpenAPIUtils {
 			return operation.getOperationId();
 		else {
 		
-			return operation.getMethod()+(((operation.getProducedSchema()!=null && operation.getProducedSchema().getName()!=null) )?operation.getProducedSchema().getName():"Unknown");
+			return operation.getMethod();
 		}
 		
 	}
 	
-	public static boolean isSchemaInTags(Schema schema, List<String> tags) {
-		if(schema.getName()== null)
+	public static boolean isDefinitionInTags(Definition definition, List<String> tags) {
+		if(definition.getName()== null)
 			return false;
 		for(String tag: tags)
-			if(tag.equalsIgnoreCase(schema.getName()))
+			if(tag.equalsIgnoreCase(definition.getName()))
 				return true;
 		return false;
 	}
-	public static Schema getAppropriateLocation(API api, Operation operation) {
-		for(Schema schema: api.getDefinitions())
-			if(isSchemaInTags(schema, operation.getTagReferences()))
-		return schema;
+	public static Definition getAppropriateLocation(API api, Operation operation) {
+		for(Definition definition: api.getDefinitions())
+			if(isDefinitionInTags(definition, operation.getTagReferences()))
+		return definition;
 		Schema produced =operation.getProducedSchema();
 		if(produced!= null)
-			return produced;
+			return getDefinitionFromSchema(api, produced);
 		Schema consumed =operation.getConsumedSchema();
 		if(consumed != null)
-			return consumed;
+			return getDefinitionFromSchema(api, consumed);
 		return null;
 	}
 
@@ -102,5 +103,12 @@ public class OpenAPIUtils {
 		}
 		}
 		return "Resource";
+	}
+	public static Definition getDefinitionFromSchema(API api, Schema schema) {
+		for(Definition definition: api.getDefinitions()) {
+			if(definition.getSchema().equals(schema))
+				return definition;
+		}
+		return null;
 	}
 }
