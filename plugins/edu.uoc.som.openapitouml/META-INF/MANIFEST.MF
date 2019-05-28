@@ -9,7 +9,8 @@ Require-Bundle: org.eclipse.uml2.uml,
  edu.uoc.som.openapi;bundle-version="1.0.2",
  edu.uoc.som.openapi.io;bundle-version="1.0.3",
  org.eclipse.osgi,
- org.eclipse.equinox.registry
+ org.eclipse.equinox.registry,
+ edu.uoc.som.openapi.profile;bundle-version="1.0.0"
 Bundle-Version: 1.0.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
@@ -17,7 +18,8 @@ Bundle-ClassPath: .,
  lib/json-schema-validator-2.2.6-lib.jar,
  lib/json-schema-validator-2.2.6.jar,
  lib/log4j-api-2.7.jar,
- lib/log4j-core-2.7.jar
+ lib/log4j-core-2.7.jar,
+ lib/commons-io-20030203.000550.jar
 Export-Package: com.github.fge.jsonschema.core.exceptions,
  edu.uoc.som.openapitouml.exception,
  edu.uoc.som.openapitouml.facade,

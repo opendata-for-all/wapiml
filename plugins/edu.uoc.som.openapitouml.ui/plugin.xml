@@ -26,6 +26,23 @@
                   </iterate>
                </visibleWhen>
             </command>
+            <command
+                  commandId="edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagramWithProfile"
+                  label="Generate a Class diagram + OpenAPI profile"
+                  style="push"
+                  tooltip="Generate Class diagram and and apply the OpenAPI profile">
+               <visibleWhen
+                     checkEnabled="false">
+                  <iterate>
+                     <and>
+                        <test
+                              property="org.eclipse.core.resources.extension"
+                              value="json">
+                        </test>
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -35,6 +52,11 @@
             defaultHandler="edu.uoc.som.openapitouml.ui.handlers.ConvertToClassDiagram"
             id="edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagram"
             name="Generate Class diagram">
+      </command>
+      <command
+            defaultHandler="edu.uoc.som.openapitouml.ui.handlers.ConvertToClassDiagramWithProfile"
+            id="edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagramWithProfile"
+            name="Generate a Class diagram + OpenAPI profile">
       </command>
    </extension>
 

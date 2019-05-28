@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/commons-io-20030203.000550.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/json-schema-validator-2.2.6-lib.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/json-schema-validator-2.2.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/log4j-api-2.7.jar"/>

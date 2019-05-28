@@ -17,11 +17,8 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
@@ -30,9 +27,9 @@ import edu.uoc.som.openapitouml.exception.OpenAPIValidationException;
 import edu.uoc.som.openapitouml.facade.OpenAPItoUMLFacade;
 import edu.uoc.som.openapitouml.ui.OpenAPIToUMLUIPlugin;
 
-public class ConvertToClassDiagram extends AbstractHandler {
+public class ConvertToClassDiagramWithProfile extends AbstractHandler {
 
-	public static final String ID = "edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagram";
+	public static final String ID = "edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagramWithProfile";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -60,20 +57,23 @@ public class ConvertToClassDiagram extends AbstractHandler {
 									target.getLocation().toFile().mkdirs();
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
+
 								File inputFile = new File(iFile.getLocation().toString());
 								OpenAPItoUMLFacade openAPItoUMLFacade = new OpenAPItoUMLFacade();
 								openAPItoUMLFacade.generateAndSaveClassDiagram(inputFile,
-										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),target.getLocation()
+										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')), target.getLocation()
 										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
-										.addFileExtension("uml").toFile(), false, true);
+										.addFileExtension("uml").toFile(),true, true);
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
 					} catch (IOException | CoreException | ProcessingException e) {
+						e.printStackTrace();
 						return new Status(IStatus.ERROR, OpenAPIToUMLUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 
 					} catch (OpenAPIValidationException e) {
+						e.printStackTrace();
 						return new Status(IStatus.ERROR, OpenAPIToUMLUIPlugin.PLUGIN_ID, e.getLocalizedMessage());
 					} finally {
 						monitor.done();
