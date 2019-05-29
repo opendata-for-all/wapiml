@@ -117,7 +117,15 @@ public class ClassDiagramGenerator implements Serializable {
 		if (applyProfile) {
 			OpenAPIProfileUtils.applyAPIStereotype(model, root.getApi());
 			OpenAPIProfileUtils.applyAPIInfoStereotype(model, root.getApi().getInfo());
-			OpenAPIProfileUtils.applyExternalDocsStereotype(model, root.getApi().getExternalDocs());
+			if(root.getApi().getExternalDocs()!= null)
+				OpenAPIProfileUtils.applyExternalDocsStereotype(model, root.getApi().getExternalDocs());
+			if(!root.getApi().getSecurityDefinitions().isEmpty()){
+				OpenAPIProfileUtils.applySecurityDefinitionsStereotype(model, root.getApi().getSecurityDefinitions());
+			}
+			if(!root.getApi().getSecurityRequirements().isEmpty()){
+				OpenAPIProfileUtils.applySecurityRequirementsStereotype(model, root.getApi().getSecurityRequirements());
+			}
+			
 		}
 
 		// generate classes
@@ -126,14 +134,18 @@ public class ClassDiagramGenerator implements Serializable {
 			if (isObject(definition.getSchema())) {
 				Class clazz = umlFactory.createClass();
 				clazz.setName(definition.getName());
-
 				package_.getOwnedTypes().add(clazz);
+				if (applyProfile) {
+					OpenAPIProfileUtils.applySchemaStereotype(clazz, definition.getSchema());
+					if(definition.getSchema().getExternalDocs()!= null)
+						OpenAPIProfileUtils.applyExternalDocsStereotype(clazz, definition.getSchema().getExternalDocs());
+				}
 				map.put(definition, clazz);
-				addProperties(types, definition.getSchema(), definition.getName(), clazz);
+				addProperties(types, definition.getSchema(), definition.getName(), clazz, applyProfile);
 				if (!schema.getAllOf().isEmpty()) {
 					for (Schema allOfItem : schema.getAllOf()) {
 						if (allOfItem.getDeclaringContext() != null && allOfItem.getDeclaringContext().equals(schema)) {
-							addProperties(types, allOfItem, definition.getName(),clazz);
+							addProperties(types, allOfItem, definition.getName(),clazz, applyProfile);
 						}
 					}
 				}
@@ -212,10 +224,20 @@ public class ClassDiagramGenerator implements Serializable {
 			org.eclipse.uml2.uml.Operation umlOperation = umlFactory.createOperation();
 			umlOperation.setName(OpenAPIUtils.getOperationName(operation));
 			clazz.getOwnedOperations().add(umlOperation);
+			if (applyProfile) {
+				OpenAPIProfileUtils.applyAPIOperationeStereotype(umlOperation, operation);
+				if(operation.getExternalDocs()!= null)
+					OpenAPIProfileUtils.applyExternalDocsStereotype(umlOperation, operation.getExternalDocs());
+				if(!operation.getSecurityRequirements().isEmpty())
+					OpenAPIProfileUtils.applySecurityRequirementsStereotype(umlOperation, operation.getSecurityRequirements());
+			}
 			for (Parameter parameter : operation.getParameters()) {
 				org.eclipse.uml2.uml.Parameter umlParameter = umlFactory.createParameter();
 				umlParameter.setName(parameter.getName());
 				umlParameter.setDirection(ParameterDirectionKind.IN_LITERAL);
+				if(applyProfile) {
+					OpenAPIProfileUtils.applyAPIParameterStereotype(umlParameter, parameter);
+				}
 				if (parameter.getDefault() != null)
 					umlParameter.setDefault(parameter.getDefault());
 				if (parameter.getMultipleOf() != null)
@@ -298,6 +320,9 @@ public class ClassDiagramGenerator implements Serializable {
 					returnedParameter.setUpper(-1);
 					returnedParameter.setLower(0);
 				}
+				if(applyProfile) {
+					// TODO response stereotype
+				}
 				umlOperation.getOwnedParameters().add(returnedParameter);
 				returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
 
@@ -337,13 +362,15 @@ public class ClassDiagramGenerator implements Serializable {
 		return association;
 	}
 
-	private void addProperties(Package types, Schema schema, String definitionName, Class clazz) {
+	private void addProperties(Package types, Schema schema, String definitionName, Class clazz, boolean applyProfile) {
 		for (edu.uoc.som.openapi.Property openAPIproperty : schema.getProperties()) {
 			if (isPrimitive(openAPIproperty.getSchema())) {
 				Property umlProperty = umlFactory.createProperty();
 				Schema propertySchema = openAPIproperty.getSchema();
 				umlProperty.setName(openAPIproperty.getName());
-				
+				if (applyProfile) {
+					OpenAPIProfileUtils.applyAPIPropertyStereotype(umlProperty, openAPIproperty);
+				}
 				if (propertySchema.getMultipleOf() != null)
 					addConstraint(clazz, umlProperty.getName(), "multipleOfConstraint",
 							"self." + umlProperty.getName() + ".div(" + propertySchema.getMultipleOf() + ") = 0");

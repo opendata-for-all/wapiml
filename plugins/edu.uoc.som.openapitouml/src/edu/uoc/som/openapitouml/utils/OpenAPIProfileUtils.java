@@ -82,9 +82,9 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(clazz, schemaStereotype, "additionalPropertiesAllowed", schema.getAdditonalPropertiesAllowed());
 	}
 	public static void applyAPIPropertyStereotype (org.eclipse.uml2.uml.Property property, Property apiProperty) {
-		Stereotype apiPropertyStereotype = property.getApplicableStereotype("OpenAPIProfile::APIProperty");
-		if(!property.isStereotypeApplied(apiPropertyStereotype))
-			property.applyStereotype(apiPropertyStereotype);
+//		Stereotype apiPropertyStereotype = property.getApplicableStereotype("OpenAPIProfile::APIProperty");
+//		if(!property.isStereotypeApplied(apiPropertyStereotype))
+//			property.applyStereotype(apiPropertyStereotype);
 		// TODO APIProperty
 		
 	}
@@ -102,8 +102,8 @@ public class OpenAPIProfileUtils {
 	}
 	public static void applyAPIParameterStereotype (Parameter parameter, edu.uoc.som.openapi.Parameter apiParameter) {
 		Stereotype apiParameterStereotype = parameter.getApplicableStereotype("OpenAPIProfile::APIParameter");
-		if(!parameter.isStereotypeApplied(apiParameterStereotype))
-			parameter.applyStereotype(apiParameterStereotype);
+//		if(!parameter.isStereotypeApplied(apiParameterStereotype))
+//			parameter.applyStereotype(apiParameterStereotype);
 		// TODO APIParameter
 	}
 	
