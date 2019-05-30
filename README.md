@@ -56,4 +56,4 @@ Instructions:
 	- the `required` field in the OpenAPI definition (note that a required parameter or property of type `array` doesn't not mean that the lower bound should be 1. Empty arrays are still valid).
 	- `minItems` and `maxItems` for `array` types.
 
-N.B. This tool relies on the OpenAPI metamodel located [here](https://github.com/SOM-Research/openapi-metamodel).
+N.B. This tool relies on the OpenAPI metamodel located [here](https://github.com/opendata-for-all/openapi-metamodel).
