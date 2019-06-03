@@ -1,5 +1,6 @@
 package edu.uoc.som.openapitouml.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -11,6 +12,7 @@ import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
+import edu.som.uoc.openapiprofile.SchemeType;
 import edu.uoc.som.openapi.API;
 import edu.uoc.som.openapi.ExternalDocs;
 import edu.uoc.som.openapi.Info;
@@ -28,8 +30,12 @@ public class OpenAPIProfileUtils {
 		}
 		UMLUtil.setTaggedValue(model, apiStereotype, "host", api.getHost());
 		UMLUtil.setTaggedValue(model, apiStereotype, "basePath", api.getBasePath());
-		if (!api.getSchemes().isEmpty())
-			UMLUtil.setTaggedValue(model, apiStereotype, "schemes", api.getSchemes());
+		if (!api.getSchemes().isEmpty()) {
+			List<SchemeType> schemeTypes = new ArrayList<SchemeType>();
+			for(edu.uoc.som.openapi.SchemeType from: api.getSchemes())
+				schemeTypes.add(transformSchemeType(from));
+			UMLUtil.setTaggedValue(model, apiStereotype, "schemes", schemeTypes);
+		}
 		if (!api.getConsumes().isEmpty())
 			UMLUtil.setTaggedValue(model, apiStereotype, "consumes", api.getConsumes());
 		if (!api.getProduces().isEmpty())
@@ -82,9 +88,9 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(clazz, schemaStereotype, "additionalPropertiesAllowed", schema.getAdditonalPropertiesAllowed());
 	}
 	public static void applyAPIPropertyStereotype (org.eclipse.uml2.uml.Property property, Property apiProperty) {
-//		Stereotype apiPropertyStereotype = property.getApplicableStereotype("OpenAPIProfile::APIProperty");
-//		if(!property.isStereotypeApplied(apiPropertyStereotype))
-//			property.applyStereotype(apiPropertyStereotype);
+		Stereotype apiPropertyStereotype = property.getApplicableStereotype("OpenAPIProfile::APIProperty");
+		if(!property.isStereotypeApplied(apiPropertyStereotype))
+			property.applyStereotype(apiPropertyStereotype);
 		// TODO APIProperty
 		
 	}
@@ -158,4 +164,9 @@ public class OpenAPIProfileUtils {
 	// TODO SecurityRequirements for Operation
 	}
 
+	public static SchemeType transformSchemeType(edu.uoc.som.openapi.SchemeType from) {
+		if (from.equals(edu.uoc.som.openapi.SchemeType.HTTP))
+			return SchemeType.HTTP;
+		return null;
+	}
 }
