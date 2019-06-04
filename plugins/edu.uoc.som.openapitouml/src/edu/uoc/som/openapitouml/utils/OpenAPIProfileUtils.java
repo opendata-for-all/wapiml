@@ -1,5 +1,18 @@
 package edu.uoc.som.openapitouml.utils;
 
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_INFO;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.EXTERNAL_DOCS;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.TAGS;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.SCHEMA;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_PROPERTY;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_DATA_TYPE;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_PARAMETER;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_RESPONSE;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_OPERATION;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.SECURITY_DEFINITIONS;
+import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.SECURITY;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +25,7 @@ import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
-import edu.som.uoc.openapiprofile.SchemeType;
+import edu.som.uoc.openapiprofile.types.SchemeType;
 import edu.uoc.som.openapi.API;
 import edu.uoc.som.openapi.ExternalDocs;
 import edu.uoc.som.openapi.Info;
@@ -23,8 +36,23 @@ import edu.uoc.som.openapi.SecurityScheme;
 import edu.uoc.som.openapi.Tag;
 
 public class OpenAPIProfileUtils {
+	
+	
+	private static final String API_QN = OpenAPIStereotypesUtils.getStereotypeQn(API);
+	private static final String API_INFO_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_INFO);
+	private static final String EXTERNAL_DOCS_QN = OpenAPIStereotypesUtils.getStereotypeQn(EXTERNAL_DOCS);
+	private static final String TAGS_QN = OpenAPIStereotypesUtils.getStereotypeQn(TAGS);
+	private static final String SCHEMA_QN = OpenAPIStereotypesUtils.getStereotypeQn(SCHEMA);
+	private static final String API_PROPERTY_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PROPERTY);
+	private static final String API_DATA_TYPE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_DATA_TYPE);
+	private static final String API_PARAMETER_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PARAMETER);
+	private static final String API_RESPONSE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_RESPONSE);
+	private static final String API_OPERATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_OPERATION);
+	private static final String SECURITY_DEFINITIONS_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY_DEFINITIONS);
+	private static final String SECURITY_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY);
+	
 	public static void applyAPIStereotype(Model model, API api) {
-		Stereotype apiStereotype = model.getApplicableStereotype("OpenAPIProfile::API");
+		Stereotype apiStereotype = model.getApplicableStereotype(API_QN);
 		if (!model.isStereotypeApplied(apiStereotype)) {
 			model.applyStereotype(apiStereotype);
 		}
@@ -44,7 +72,7 @@ public class OpenAPIProfileUtils {
 	}
 
 	public static void applyAPIInfoStereotype(Model model, Info info) {
-		Stereotype infoStereotype = model.getApplicableStereotype("OpenAPIProfile::APIInfo");
+		Stereotype infoStereotype = model.getApplicableStereotype(API_INFO_QN);
 		if (!model.isStereotypeApplied(infoStereotype)) {
 			model.applyStereotype(infoStereotype);
 		}
@@ -64,7 +92,7 @@ public class OpenAPIProfileUtils {
 	}
 
 	public static void applyExternalDocsStereotype(Model model, ExternalDocs externalDocs) {
-		Stereotype externalDocsStereotype = model.getApplicableStereotype("OpenAPIProfile::ExternalDocs");
+		Stereotype externalDocsStereotype = model.getApplicableStereotype(EXTERNAL_DOCS_QN);
 		if (!model.isStereotypeApplied(externalDocsStereotype)) {
 			model.applyStereotype(externalDocsStereotype);
 		}
@@ -72,13 +100,13 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(model, externalDocsStereotype, "url", externalDocs.getUrl());
 	}
 	public static void applyTagsStereotype(Model model, List<Tag> tagList) {
-		Stereotype tagsStereotype = model.getApplicableStereotype("OpenAPIProfile::Tags");
+		Stereotype tagsStereotype = model.getApplicableStereotype(TAGS_QN);
 		if(!model.isStereotypeApplied(tagsStereotype))
 			model.applyStereotype(tagsStereotype);
 		// TODO tags
 	}
 	public static void applySchemaStereotype(Class clazz, Schema schema) {
-		Stereotype schemaStereotype = clazz.getApplicableStereotype("OpenAPIProfile::Schema");
+		Stereotype schemaStereotype = clazz.getApplicableStereotype(SCHEMA_QN);
 		if(!clazz.isStereotypeApplied(schemaStereotype))
 			clazz.applyStereotype(schemaStereotype);
 		UMLUtil.setTaggedValue(clazz, schemaStereotype, "title", schema.getTitle());
@@ -88,45 +116,45 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(clazz, schemaStereotype, "additionalPropertiesAllowed", schema.getAdditonalPropertiesAllowed());
 	}
 	public static void applyAPIPropertyStereotype (org.eclipse.uml2.uml.Property property, Property apiProperty) {
-		Stereotype apiPropertyStereotype = property.getApplicableStereotype("OpenAPIProfile::APIProperty");
+		Stereotype apiPropertyStereotype = property.getApplicableStereotype(API_PROPERTY_QN);
 		if(!property.isStereotypeApplied(apiPropertyStereotype))
 			property.applyStereotype(apiPropertyStereotype);
 		// TODO APIProperty
 		
 	}
 	public static void applyAPIDataTypeStereotype (org.eclipse.uml2.uml.PrimitiveType primitiveType, Schema schema) {
-		Stereotype apiDataTypeStereotype = primitiveType.getApplicableStereotype("OpenAPIProfile::APIDataType");
+		Stereotype apiDataTypeStereotype = primitiveType.getApplicableStereotype(API_DATA_TYPE_QN);
 		if(!primitiveType.isStereotypeApplied(apiDataTypeStereotype))
 			primitiveType.applyStereotype(apiDataTypeStereotype);
 		// TODO APIDataType
 	}
 	public static void applyAPIDataTypeStereotype (Enumeration enumeration, Schema schema) {
-		Stereotype apiDataTypeStereotype = enumeration.getApplicableStereotype("OpenAPIProfile::APIDataType");
+		Stereotype apiDataTypeStereotype = enumeration.getApplicableStereotype(API_DATA_TYPE_QN);
 		if(!enumeration.isStereotypeApplied(apiDataTypeStereotype))
 			enumeration.applyStereotype(apiDataTypeStereotype);
 		// TODO APIProperty
 	}
 	public static void applyAPIParameterStereotype (Parameter parameter, edu.uoc.som.openapi.Parameter apiParameter) {
-		Stereotype apiParameterStereotype = parameter.getApplicableStereotype("OpenAPIProfile::APIParameter");
-//		if(!parameter.isStereotypeApplied(apiParameterStereotype))
-//			parameter.applyStereotype(apiParameterStereotype);
+		Stereotype apiParameterStereotype = parameter.getApplicableStereotype(API_PARAMETER_QN);
+		if(!parameter.isStereotypeApplied(apiParameterStereotype))
+			parameter.applyStereotype(apiParameterStereotype);
 		// TODO APIParameter
 	}
 	
 	public static void applyAPIResponseStereotype (Parameter parameter, edu.uoc.som.openapi.Response apiResponse) {
-		Stereotype apiResponseStereotype = parameter.getApplicableStereotype("OpenAPIProfile::APIResponse");
+		Stereotype apiResponseStereotype = parameter.getApplicableStereotype(API_RESPONSE_QN);
 		if(!parameter.isStereotypeApplied(apiResponseStereotype))
 			parameter.applyStereotype(apiResponseStereotype);
 		// TODO APiResponse
 	}
 	public static void applyAPIOperationeStereotype (Operation operation, edu.uoc.som.openapi.Operation apiOperation) {
-		Stereotype apiOperationStereotype = operation.getApplicableStereotype("OpenAPIProfile::APIOperation");
+		Stereotype apiOperationStereotype = operation.getApplicableStereotype(API_OPERATION_QN);
 		if(!operation.isStereotypeApplied(apiOperationStereotype))
 			operation.applyStereotype(apiOperationStereotype);
 		// TODO APIOperation
 	}
 	public static void applyExternalDocsStereotype(Class clazz, ExternalDocs externalDocs) {
-		Stereotype externalDocsStereotype = clazz.getApplicableStereotype("OpenAPIProfile::ExternalDocs");
+		Stereotype externalDocsStereotype = clazz.getApplicableStereotype(EXTERNAL_DOCS_QN);
 		if (!clazz.isStereotypeApplied(externalDocsStereotype)) {
 			clazz.applyStereotype(externalDocsStereotype);
 		}
@@ -134,7 +162,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(clazz, externalDocsStereotype, "url", externalDocs.getUrl());
 	}
 	public static void applyExternalDocsStereotype(Operation operation, ExternalDocs externalDocs) {
-		Stereotype externalDocsStereotype = operation.getApplicableStereotype("OpenAPIProfile::ExternalDocs");
+		Stereotype externalDocsStereotype = operation.getApplicableStereotype(EXTERNAL_DOCS_QN);
 		if (!operation.isStereotypeApplied(externalDocsStereotype)) {
 			operation.applyStereotype(externalDocsStereotype);
 		}
@@ -143,21 +171,21 @@ public class OpenAPIProfileUtils {
 	}
 	
 	public static void applySecurityDefinitionsStereotype(Model model, List<SecurityScheme> securitySchemes) {
-		Stereotype securityDefinitionsStereotype = model.getApplicableStereotype("OpenAPIProfile::SecurityDefinitions");
+		Stereotype securityDefinitionsStereotype = model.getApplicableStereotype(SECURITY_DEFINITIONS_QN);
 		if (!model.isStereotypeApplied(securityDefinitionsStereotype)) {
 			model.applyStereotype(securityDefinitionsStereotype);
 		}
 	// TODO SecurityDefinitions
 	}
 	public static void applySecurityRequirementsStereotype(Model model, List<SecurityRequirement> securityRequirements) {
-		Stereotype securityRequirementsStereotype = model.getApplicableStereotype("OpenAPIProfile::SecurityRequirements");
+		Stereotype securityRequirementsStereotype = model.getApplicableStereotype(SECURITY_QN);
 		if (!model.isStereotypeApplied(securityRequirementsStereotype)) {
 			model.applyStereotype(securityRequirementsStereotype);
 		}
 	// TODO SecurityRequirements for Model
 	}
 	public static void applySecurityRequirementsStereotype(Operation operation, List<SecurityRequirement> securityRequirements) {
-		Stereotype securityRequirementsStereotype = operation.getApplicableStereotype("OpenAPIProfile::SecurityRequirements");
+		Stereotype securityRequirementsStereotype = operation.getApplicableStereotype(SECURITY_QN);
 		if (!operation.isStereotypeApplied(securityRequirementsStereotype)) {
 			operation.applyStereotype(securityRequirementsStereotype);
 		}
