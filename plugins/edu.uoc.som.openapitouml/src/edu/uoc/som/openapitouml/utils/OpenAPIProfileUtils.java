@@ -276,7 +276,7 @@ public class OpenAPIProfileUtils {
 		for (SecurityRequirement mSecurityRequirement : securityRequirements) {
 			edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement = OpenapiprofileFactory.eINSTANCE
 					.createSecurityRequirement();
-			pSecurityRequirement.setName(mSecurityRequirement.getSecurityScheme().getRef());
+			pSecurityRequirement.setName(mSecurityRequirement.getSecurityScheme().getReferenceName());
 			for (edu.uoc.som.openapi.SecurityScope mScope : mSecurityRequirement.getSecurityScheme().getScopes()) {
 				pSecurityRequirement.getScopes().add(mScope.getName());
 			}
