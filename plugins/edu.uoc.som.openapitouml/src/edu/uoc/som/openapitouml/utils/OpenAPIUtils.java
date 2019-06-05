@@ -3,11 +3,9 @@ package edu.uoc.som.openapitouml.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 
 import edu.uoc.som.openapi.API;
 import edu.uoc.som.openapi.Operation;
-import edu.uoc.som.openapi.Path;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
 
@@ -26,18 +24,18 @@ public class OpenAPIUtils {
 		return operationList;
 		
 	}
-	public static List<Operation> getAllRelatedOperations(Root root, Schema schema){
+	public static List<Operation> getAllRelatedOperations(Root root, Schema definition){
 		List<Operation> operationList = new ArrayList<Operation>();
 		for(Operation operation : root.getApi().getAllOperations()) {
-			if(isSchemaInTags(schema, operation.getTagReferences()))
+			if(isDefinitionInTags(definition, operation.getTagReferences()))
 				operationList.add(operation);
 			else {
 				Schema p =operation.getProducedSchema();
-				if(p!= null && p.equals(schema))
+				if(p!= null && p.equals(definition))
 				operationList.add(operation);
 				else {
 					Schema c = operation.getConsumedSchema();
-					if(c!=null && c.equals(schema))
+					if(c!=null && c.equals(definition))
 						operationList.add(operation);
 				}
 				
@@ -65,23 +63,23 @@ public class OpenAPIUtils {
 			return operation.getOperationId();
 		else {
 		
-			return operation.getMethod()+(((operation.getProducedSchema()!=null && operation.getProducedSchema().getName()!=null) )?operation.getProducedSchema().getName():"Unknown");
+			return operation.getMethod();
 		}
 		
 	}
 	
-	public static boolean isSchemaInTags(Schema schema, List<String> tags) {
-		if(schema.getName()== null)
+	public static boolean isDefinitionInTags(Schema definition, List<String> tags) {
+		if(definition.getReferenceName()== null)
 			return false;
 		for(String tag: tags)
-			if(tag.equalsIgnoreCase(schema.getName()))
+			if(tag.equalsIgnoreCase(definition.getReferenceName()))
 				return true;
 		return false;
 	}
 	public static Schema getAppropriateLocation(API api, Operation operation) {
-		for(Schema schema: api.getDefinitions())
-			if(isSchemaInTags(schema, operation.getTagReferences()))
-		return schema;
+		for(Schema definition: api.getDefinitions())
+			if(isDefinitionInTags(definition, operation.getTagReferences()))
+		return definition;
 		Schema produced =operation.getProducedSchema();
 		if(produced!= null)
 			return produced;
@@ -103,4 +101,5 @@ public class OpenAPIUtils {
 		}
 		return "Resource";
 	}
+	
 }
