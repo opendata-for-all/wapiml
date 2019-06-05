@@ -107,16 +107,17 @@ public class ClassDiagramGenerator implements Serializable {
 		
 		if (applyProfile) {
 			OpenAPIProfileUtils.applyAPIStereotype(model, root.getApi());
-			OpenAPIProfileUtils.applyAPIInfoStereotype(model, root.getApi().getInfo());
+			if(root.getApi().getInfo()!=null)
+				OpenAPIProfileUtils.applyAPIInfoStereotype(model, root.getApi().getInfo());
 			if(root.getApi().getExternalDocs()!= null)
 				OpenAPIProfileUtils.applyExternalDocsStereotype(model, root.getApi().getExternalDocs());
-			if(!root.getApi().getSecurityDefinitions().isEmpty()){
+			if(!root.getApi().getSecurityDefinitions().isEmpty())
 				OpenAPIProfileUtils.applySecurityDefinitionsStereotype(model, root.getApi().getSecurityDefinitions());
-			}
-			if(!root.getApi().getSecurity().isEmpty()){
-				OpenAPIProfileUtils.applySecurityRequirementsStereotype(model, root.getApi().getSecurity());
-			}
-			
+			if(!root.getApi().getTags().isEmpty())
+				OpenAPIProfileUtils.applyTagsStereotype(model, root.getApi().getTags());
+			if(!root.getApi().getSecurity().isEmpty())
+				OpenAPIProfileUtils.applySecurityStereotype(model, root.getApi().getSecurity());
+
 		}
 
 		// generate classes
@@ -217,7 +218,7 @@ public class ClassDiagramGenerator implements Serializable {
 				if(operation.getExternalDocs()!= null)
 					OpenAPIProfileUtils.applyExternalDocsStereotype(umlOperation, operation.getExternalDocs());
 				if(!operation.getSecurity().isEmpty())
-					OpenAPIProfileUtils.applySecurityRequirementsStereotype(umlOperation, operation.getSecurity());
+					OpenAPIProfileUtils.applySecurityStereotype(umlOperation, operation.getSecurity());
 			}
 			for (Parameter parameter : operation.getParameters()) {
 				org.eclipse.uml2.uml.Parameter umlParameter = umlFactory.createParameter();
