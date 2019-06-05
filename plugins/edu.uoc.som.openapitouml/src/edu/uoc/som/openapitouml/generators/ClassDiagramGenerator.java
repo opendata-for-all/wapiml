@@ -18,6 +18,7 @@ import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Constraint;
+import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
@@ -414,7 +415,8 @@ public class ClassDiagramGenerator implements Serializable {
 				}
 				clazz.getOwnedAttributes().add(umlProperty);
 				if (applyProfile) {
-					OpenAPIProfileUtils.applyAPIPropertyStereotype(umlProperty, openAPIproperty);
+					OpenAPIProfileUtils.applySchemaStereotype(umlProperty, openAPIproperty.getSchema());
+					OpenAPIProfileUtils.applyAPIDataTypeStereotype((DataType)umlProperty.getType(), propertySchema);
 				}
 			}
 		}
