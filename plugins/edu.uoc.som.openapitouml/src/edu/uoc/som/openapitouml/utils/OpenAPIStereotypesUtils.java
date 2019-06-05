@@ -1,7 +1,5 @@
 package edu.uoc.som.openapitouml.utils;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
