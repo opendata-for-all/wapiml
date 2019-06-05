@@ -252,6 +252,7 @@ public class OpenAPIProfileUtils {
 			UMLUtil.setTaggedValue(operation, apiOperationStereotype, "produces", mOperation.getProduces());
 		UMLUtil.setTaggedValue(operation, apiOperationStereotype, "description", mOperation.getDescription());
 		UMLUtil.setTaggedValue(operation, apiOperationStereotype, "summary", mOperation.getSummary());
+		UMLUtil.setTaggedValue(operation, apiOperationStereotype, "deprecated", mOperation.getDeprecated());
 		if (!mOperation.getTagReferences().isEmpty()) {
 			UMLUtil.setTaggedValue(operation, apiOperationStereotype, "tags", mOperation.getTagReferences());
 		}
@@ -309,10 +310,10 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static void applySecurityStereotype(Model model, List<SecurityRequirement> securityRequirements) {
-		Stereotype securityRequirementsStereotype = model.getApplicableStereotype(SECURITY_QN);
-		if (!model.isStereotypeApplied(securityRequirementsStereotype)) {
-			model.applyStereotype(securityRequirementsStereotype);
+	public static void applySecurityStereotype(Element element, List<SecurityRequirement> securityRequirements) {
+		Stereotype securityRequirementsStereotype = element.getApplicableStereotype(SECURITY_QN);
+		if (!element.isStereotypeApplied(securityRequirementsStereotype)) {
+			element.applyStereotype(securityRequirementsStereotype);
 		}
 		List<edu.som.uoc.openapiprofile.SecurityRequirement> pSecurityRequirements = new ArrayList<edu.som.uoc.openapiprofile.SecurityRequirement>();
 		for (SecurityRequirement mSecurityRequirement : securityRequirements) {
@@ -324,26 +325,9 @@ public class OpenAPIProfileUtils {
 			}
 			pSecurityRequirements.add(pSecurityRequirement);
 		}
-		UMLUtil.setTaggedValue(model, securityRequirementsStereotype, "securityRequirements", pSecurityRequirements);
+		UMLUtil.setTaggedValue(element, securityRequirementsStereotype, "securityRequirements", pSecurityRequirements);
 	}
 
-	public static void applySecurityStereotype(Operation operation, List<SecurityRequirement> securityRequirements) {
-		Stereotype securityRequirementsStereotype = operation.getApplicableStereotype(SECURITY_QN);
-		if (!operation.isStereotypeApplied(securityRequirementsStereotype)) {
-			operation.applyStereotype(securityRequirementsStereotype);
-		}
-		List<edu.som.uoc.openapiprofile.SecurityRequirement> pSecurityRequirements = new ArrayList<edu.som.uoc.openapiprofile.SecurityRequirement>();
-		for (SecurityRequirement mSecurityRequirement : securityRequirements) {
-			edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement = OpenapiprofileFactory.eINSTANCE
-					.createSecurityRequirement();
-			pSecurityRequirement.setName(mSecurityRequirement.getSecurityScheme().getRef());
-			for (edu.uoc.som.openapi.SecurityScope mScope : mSecurityRequirement.getSecurityScheme().getScopes()) {
-				pSecurityRequirement.getScopes().add(mScope.getName());
-			}
-			pSecurityRequirements.add(pSecurityRequirement);
-		}
-		UMLUtil.setTaggedValue(operation, securityRequirementsStereotype, "securityRequirements", pSecurityRequirements);
-	}
 
 	public static SchemeType transformSchemeType(edu.uoc.som.openapi.SchemeType from) {
 		switch (from) {

@@ -42,6 +42,7 @@ import edu.uoc.som.openapi.Operation;
 import edu.uoc.som.openapi.Parameter;
 import edu.uoc.som.openapi.ParameterLocation;
 import edu.uoc.som.openapi.Path;
+import edu.uoc.som.openapi.Response;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
 import edu.uoc.som.openapitouml.utils.OpenAPIProfileUtils;
@@ -300,22 +301,33 @@ public class ClassDiagramGenerator implements Serializable {
 					OpenAPIProfileUtils.applyAPIParameterStereotype(umlParameter, parameter);
 				}
 			}
-			Schema s = operation.getProducedSchema();
-			if (s != null) {
+			if(!operation.getResponses().isEmpty()) {
+				for(Response response : operation.getResponses()) {
+			
 				org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
-				Class producedClass = map.get(s);
-				if (producedClass != null)
-					returnedParameter.setType(producedClass);
-				if (operation.IsProducingList()) {
-					returnedParameter.setUpper(-1);
-					returnedParameter.setLower(0);
+				if(response.getSchema()!=null) {
+					Schema returnedSchema = response.getSchema();
+					boolean isObject = isObject(returnedSchema);
+					boolean isArrayOfObjects = isArrayOfObjects(returnedSchema);
+					Schema returnedObject = isObject? returnedSchema:(isArrayOfObjects?returnedSchema.getItems():null);
+					if(returnedObject!=null) {
+						Class returnedClass = map.get(returnedObject);
+						if (returnedClass != null)
+							returnedParameter.setType(returnedClass);
+						if (isArrayOfObjects) {
+							returnedParameter.setUpper(-1);
+							returnedParameter.setLower(0);
+						}
+						returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
+						umlOperation.getOwnedParameters().add(returnedParameter);
+						if(applyProfile) {
+						OpenAPIProfileUtils.applyAPIResponseStereotype(returnedParameter, response);
+						
+					}
+					}
 				}
-				returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
-				umlOperation.getOwnedParameters().add(returnedParameter);
-				if(applyProfile) {
-				//	TODO
+				
 				}
-
 			}
 
 		}
@@ -449,12 +461,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 	private boolean isArrayOfObjects(Schema schema) {
 
-		if (schema.getType().equals(JSONDataType.ARRAY) && (schema.getItems().getType().equals(JSONDataType.OBJECT)))
-			return true;
-
-		if (schema.getType().equals(JSONDataType.ARRAY) && !schema.getItems().getProperties().isEmpty())
-			return true;
-		if (schema.getType().equals(JSONDataType.ARRAY) && !schema.getItems().getAllOf().isEmpty())
+		if (schema.getType().equals(JSONDataType.ARRAY) && isObject(schema.getItems()))
 			return true;
 
 		return false;
