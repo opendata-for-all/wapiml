@@ -16,9 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
@@ -27,12 +25,14 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
 import edu.som.uoc.openapiprofile.APIKeyLocation;
+import edu.som.uoc.openapiprofile.CollectionFormat;
 import edu.som.uoc.openapiprofile.Contact;
 import edu.som.uoc.openapiprofile.HTTPMethod;
 import edu.som.uoc.openapiprofile.JSONDataType;
 import edu.som.uoc.openapiprofile.License;
 import edu.som.uoc.openapiprofile.OAuth2FlowType;
 import edu.som.uoc.openapiprofile.OpenapiprofileFactory;
+import edu.som.uoc.openapiprofile.ParameterLocation;
 import edu.som.uoc.openapiprofile.SchemeType;
 import edu.som.uoc.openapiprofile.SecuritySchemeType;
 import edu.som.uoc.openapiprofile.SecurityScope;
@@ -172,11 +172,17 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "format",schema.getFormat());
 	}
 
-	public static void applyAPIParameterStereotype(Parameter parameter, edu.uoc.som.openapi.Parameter apiParameter) {
+	public static void applyAPIParameterStereotype(Parameter parameter, edu.uoc.som.openapi.Parameter mParameter) {
 		Stereotype apiParameterStereotype = parameter.getApplicableStereotype(API_PARAMETER_QN);
 		if (!parameter.isStereotypeApplied(apiParameterStereotype))
 			parameter.applyStereotype(apiParameterStereotype);
-		// TODO APIParameter
+		UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "description", mParameter.getDescription());
+		if(mParameter.getLocation()!= null)
+			UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "location", transformParameterLocation(mParameter.getLocation()));
+		UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "allowEmptyValues", mParameter.getAllowEmplyValue());
+		if(mParameter.getCollectionFormat()!=null)
+			UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "collectionFormat", transformCollectionFormat(mParameter.getCollectionFormat()));
+	addJSONSchemaSubsetAttribute(parameter, apiParameterStereotype, mParameter);
 	}
 
 	public static void applyAPIResponseStereotype(Parameter parameter, edu.uoc.som.openapi.Response apiResponse) {
@@ -382,10 +388,47 @@ public class OpenAPIProfileUtils {
 			return HTTPMethod.OPTIONS;
 		case "PATCH":
 			return HTTPMethod.PATCH;
+		case "HEAD":
+			return HTTPMethod.HEAD;
+		default:
+			return null;
+		}	
+	}
+	public static ParameterLocation transformParameterLocation(edu.uoc.som.openapi.ParameterLocation from) {
+		switch (from) {
+		case BODY:
+			return ParameterLocation.BODY;
+		case HEADER:
+			return ParameterLocation.HEADER;
+		case QUERY:
+			return ParameterLocation.QUERY;
+		case FORM_DATA:
+			return ParameterLocation.FORM_DATA;
+		case PATH:
+			return ParameterLocation.PATH;
+		case UNSPECIFIED:
+			return ParameterLocation.UNDEFINED;
+		}
+		return null;
+	}
+	
+	public static CollectionFormat transformCollectionFormat(edu.uoc.som.openapi.CollectionFormat from) {
+		switch (from) {
+		case CSV:
+			return CollectionFormat.CSV;
+		case MULTI:
+			return CollectionFormat.MULTI;
+		case PIPES:
+			return CollectionFormat.PIPES;
+		case SSV:
+			return CollectionFormat.SSV;
+		case TSV:
+			return CollectionFormat.TSV;
+		case UNSPECIFIED:
+			return CollectionFormat.UNDEFINED;
 		default:
 			return null;
 		}
-		
 	}
 	private static void addJSONSchemaSubsetAttribute(Element element, Stereotype stereotype, JSONSchemaSubset jsonSchemaSubset) {
 		UMLUtil.setTaggedValue(element, stereotype, "pattern", jsonSchemaSubset.getPattern());
