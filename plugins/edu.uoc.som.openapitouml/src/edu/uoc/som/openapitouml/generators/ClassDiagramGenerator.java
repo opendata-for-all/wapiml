@@ -310,11 +310,11 @@ public class ClassDiagramGenerator implements Serializable {
 					returnedParameter.setUpper(-1);
 					returnedParameter.setLower(0);
 				}
-				if(applyProfile) {
-					// TODO response stereotype
-				}
-				umlOperation.getOwnedParameters().add(returnedParameter);
 				returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
+				umlOperation.getOwnedParameters().add(returnedParameter);
+				if(applyProfile) {
+				//	TODO
+				}
 
 			}
 

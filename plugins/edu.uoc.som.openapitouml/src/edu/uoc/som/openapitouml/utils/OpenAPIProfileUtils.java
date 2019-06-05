@@ -27,6 +27,7 @@ import org.eclipse.uml2.uml.util.UMLUtil;
 import edu.som.uoc.openapiprofile.APIKeyLocation;
 import edu.som.uoc.openapiprofile.CollectionFormat;
 import edu.som.uoc.openapiprofile.Contact;
+import edu.som.uoc.openapiprofile.Example;
 import edu.som.uoc.openapiprofile.HTTPMethod;
 import edu.som.uoc.openapiprofile.JSONDataType;
 import edu.som.uoc.openapiprofile.License;
@@ -39,6 +40,7 @@ import edu.som.uoc.openapiprofile.SecurityScope;
 import edu.som.uoc.openapiprofile.XMLElement;
 import edu.uoc.som.openapi.API;
 import edu.uoc.som.openapi.ExternalDocs;
+import edu.uoc.som.openapi.Header;
 import edu.uoc.som.openapi.Info;
 import edu.uoc.som.openapi.JSONSchemaSubset;
 import edu.uoc.som.openapi.Path;
@@ -185,11 +187,51 @@ public class OpenAPIProfileUtils {
 	addJSONSchemaSubsetAttribute(parameter, apiParameterStereotype, mParameter);
 	}
 
-	public static void applyAPIResponseStereotype(Parameter parameter, edu.uoc.som.openapi.Response apiResponse) {
+	public static void applyAPIResponseStereotype(Parameter parameter, edu.uoc.som.openapi.Response mResponse) {
 		Stereotype apiResponseStereotype = parameter.getApplicableStereotype(API_RESPONSE_QN);
 		if (!parameter.isStereotypeApplied(apiResponseStereotype))
 			parameter.applyStereotype(apiResponseStereotype);
-		// TODO APiResponse
+		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "description", mResponse.getDeclaringContext());
+		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "code", mResponse.getCode());
+		if(!mResponse.getHeaders().isEmpty()) {
+			List<edu.som.uoc.openapiprofile.Header> pHeaders = new ArrayList<edu.som.uoc.openapiprofile.Header>();
+			for(Header mHeader : mResponse.getHeaders()) {
+				edu.som.uoc.openapiprofile.Header pHeader = OpenapiprofileFactory.eINSTANCE.createHeader();
+				pHeader.setName(mHeader.getName());
+				pHeader.setDescription(mHeader.getDescription());
+				if(mHeader.getType()!=null)
+					pHeader.setType(transformJSONDataType(mHeader.getType()));
+				pHeader.setFormat(mHeader.getFormat());
+				if(mHeader.getCollectionFormat()!=null)
+					pHeader.setCollectionFormat(transformCollectionFormat(mHeader.getCollectionFormat()));
+				pHeader.setMinItems(mHeader.getMinItems());
+				pHeader.setPattern(mHeader.getPattern());
+				pHeader.setExclusiveMinimum(mHeader.getExclusiveMinimum());
+				pHeader.setMinimum(mHeader.getMinimum());
+				pHeader.setMinLength(mHeader.getMinLength());
+				pHeader.setMaxLength(mHeader.getMaxLength());
+				pHeader.setMaximum(mHeader.getMaximum());
+				pHeader.setMaxItems(mHeader.getMaxItems());
+				pHeader.setExclusiveMaximum(mHeader.getExclusiveMaximum());
+				pHeader.setDefault(mHeader.getDefault());
+				pHeader.setUniqueItems(mHeader.getUniqueItems());
+				pHeader.setMultipleOf(mHeader.getMultipleOf());
+				pHeader.getEnum().addAll(mHeader.getEnum());
+				pHeaders.add(pHeader);
+				
+			}
+			UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "headers", pHeaders);
+		}
+		if(!mResponse.getExamples().isEmpty()) {
+			List<Example> pExamples = new ArrayList<Example>();
+			for(edu.uoc.som.openapi.Example mExample: mResponse.getExamples()) {
+				Example  pExample = OpenapiprofileFactory.eINSTANCE.createExample();
+				pExample.setMimeType(mExample.getMimeType());
+				pExample.setValue(mExample.getValue());
+				pExamples.add(pExample);
+			}
+			UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "examples", pExamples);
+		}
 	}
 
 	public static void applyAPIOperationeStereotype(Operation operation, edu.uoc.som.openapi.Operation mOperation) {
