@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Operation;
@@ -33,9 +34,11 @@ import edu.som.uoc.openapiprofile.SchemeType;
 import edu.som.uoc.openapiprofile.SecurityDefinitions;
 import edu.som.uoc.openapiprofile.SecuritySchemeType;
 import edu.som.uoc.openapiprofile.SecurityScope;
+import edu.som.uoc.openapiprofile.XMLElement;
 import edu.uoc.som.openapi.API;
 import edu.uoc.som.openapi.ExternalDocs;
 import edu.uoc.som.openapi.Info;
+import edu.uoc.som.openapi.JSONSchemaSubset;
 import edu.uoc.som.openapi.Property;
 import edu.uoc.som.openapi.Schema;
 import edu.uoc.som.openapi.SecurityRequirement;
@@ -138,6 +141,23 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(clazz, schemaStereotype, "discriminator", schema.getDiscriminator());
 		UMLUtil.setTaggedValue(clazz, schemaStereotype, "additionalPropertiesAllowed",
 				schema.getAdditonalPropertiesAllowed());
+		UMLUtil.setTaggedValue(clazz, schemaStereotype, "example",
+				schema.getExample());
+		UMLUtil.setTaggedValue(clazz, schemaStereotype, "readOnly",
+				schema.getReadOnly());
+		
+		if(schema.getXml()!= null) {
+			XMLElement pXMLElement = OpenapiprofileFactory.eINSTANCE.createXMLElement();
+			pXMLElement.setAttribute(schema.getXml().getAttribute());
+			pXMLElement.setName(schema.getXml().getName());
+			pXMLElement.setNamespace(schema.getXml().getNamespace());
+			pXMLElement.setPrefix(schema.getXml().getPrefix());
+			pXMLElement.setWrapped(schema.getXml().getWrapped());
+			UMLUtil.setTaggedValue(clazz, schemaStereotype, "xml", pXMLElement);
+		}
+		addJSONSchemaSubsetAttribute(clazz, schemaStereotype, schema);
+	
+
 	}
 
 	public static void applyAPIPropertyStereotype(org.eclipse.uml2.uml.Property property, Property apiProperty) {
@@ -226,7 +246,7 @@ public class OpenAPIProfileUtils {
 				for (edu.uoc.som.openapi.SecurityScope mSecurityScope : mSecurityScheme.getScopes()) {
 					SecurityScope pSecurityScope = OpenapiprofileFactory.eINSTANCE.createSecurityScope();
 					pSecurityScope.setDescription(mSecurityScope.getDescription());
-					pSecurityScheme.setName(mSecurityScheme.getName());
+					pSecurityScope.setName(mSecurityScope.getName());
 					pSecurityScheme.getScopes().add(pSecurityScope);
 				}
 			}
@@ -323,5 +343,20 @@ public class OpenAPIProfileUtils {
 		default:
 			return OAuth2FlowType.UNDEFINED;
 		}
+	}
+	private static void addJSONSchemaSubsetAttribute(Element element, Stereotype stereotype, JSONSchemaSubset jsonSchemaSubset) {
+		UMLUtil.setTaggedValue(element, stereotype, "pattern", jsonSchemaSubset.getPattern());
+		UMLUtil.setTaggedValue(element, stereotype, "exclusiveMinimum", jsonSchemaSubset.getExclusiveMinimum());
+		UMLUtil.setTaggedValue(element, stereotype, "maximum", jsonSchemaSubset.getMaximum());
+		UMLUtil.setTaggedValue(element, stereotype, "minimum", jsonSchemaSubset.getMinimum());
+		UMLUtil.setTaggedValue(element, stereotype, "maxLength", jsonSchemaSubset.getMaxLength());
+		UMLUtil.setTaggedValue(element, stereotype, "exclusiveMaximum", jsonSchemaSubset.getExclusiveMaximum());
+		UMLUtil.setTaggedValue(element, stereotype, "minLength", jsonSchemaSubset.getMinLength());
+		UMLUtil.setTaggedValue(element, stereotype, "maxItems", jsonSchemaSubset.getMaxItems());
+		UMLUtil.setTaggedValue(element, stereotype, "minItems", jsonSchemaSubset.getMinItems());
+		UMLUtil.setTaggedValue(element, stereotype, "description", jsonSchemaSubset.getDescription());
+		UMLUtil.setTaggedValue(element, stereotype, "uniqueItems", jsonSchemaSubset.getUniqueItems());
+		UMLUtil.setTaggedValue(element, stereotype, "default", jsonSchemaSubset.getDefault());
+		UMLUtil.setTaggedValue(element, stereotype, "multipleOf", jsonSchemaSubset.getMultipleOf());
 	}
 }
