@@ -43,6 +43,23 @@
                   </iterate>
                </visibleWhen>
             </command>
+            <command
+                  commandId="edu.uoc.som.openapitouml.ui.handlers.ConvertToJson"
+                  label="Generate Json definition"
+                  style="push"
+                  tooltip="Generate an OpenAPI definition from a UML model">
+               <visibleWhen
+                     checkEnabled="false">
+                  <iterate>
+                     <and>
+                        <test
+                              property="org.eclipse.core.resources.extension"
+                              value="uml">
+                        </test>
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -57,6 +74,11 @@
             defaultHandler="edu.uoc.som.openapitouml.ui.handlers.ConvertToClassDiagramWithProfile"
             id="edu.uoc.som.openapitouml.ui.popup.handlers.ConvertToClassDiagramWithProfile"
             name="Generate a Class diagram + OpenAPI profile">
+      </command>
+      <command
+            defaultHandler="edu.uoc.som.openapitouml.ui.handlers.ConvertToJson"
+            id="edu.uoc.som.openapitouml.ui.handlers.ConvertToJson"
+            name="Generate Json definition">
       </command>
    </extension>
 
