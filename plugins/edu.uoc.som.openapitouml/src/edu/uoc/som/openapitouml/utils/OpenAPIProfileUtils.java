@@ -13,10 +13,8 @@ import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.SECURITY
 import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.SECURITY;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Model;
@@ -47,7 +45,6 @@ import edu.uoc.som.openapi.Info;
 import edu.uoc.som.openapi.JSONSchemaSubset;
 import edu.uoc.som.openapi.OpenAPIFactory;
 import edu.uoc.som.openapi.Path;
-import edu.uoc.som.openapi.Property;
 import edu.uoc.som.openapi.Schema;
 import edu.uoc.som.openapi.SecurityRequirement;
 import edu.uoc.som.openapi.SecurityScheme;
@@ -55,18 +52,18 @@ import edu.uoc.som.openapi.Tag;
 
 public class OpenAPIProfileUtils {
 
-	private static final String API_QN = OpenAPIStereotypesUtils.getStereotypeQn(API);
-	private static final String API_INFO_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_INFO);
-	private static final String EXTERNAL_DOCS_QN = OpenAPIStereotypesUtils.getStereotypeQn(EXTERNAL_DOCS);
-	private static final String TAGS_QN = OpenAPIStereotypesUtils.getStereotypeQn(TAGS);
-	private static final String SCHEMA_QN = OpenAPIStereotypesUtils.getStereotypeQn(SCHEMA);
-	private static final String API_DATA_TYPE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_DATA_TYPE);
-	private static final String API_PARAMETER_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PARAMETER);
-	private static final String API_RESPONSE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_RESPONSE);
-	private static final String API_OPERATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_OPERATION);
-	private static final String SECURITY_DEFINITIONS_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY_DEFINITIONS);
-	private static final String SECURITY_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY);
-	private static final OpenAPIFactory OPENAPIF_API_FACTORY = OpenAPIFactory.eINSTANCE;
+	public static final String API_QN = OpenAPIStereotypesUtils.getStereotypeQn(API);
+	public static final String API_INFO_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_INFO);
+	public static final String EXTERNAL_DOCS_QN = OpenAPIStereotypesUtils.getStereotypeQn(EXTERNAL_DOCS);
+	public static final String TAGS_QN = OpenAPIStereotypesUtils.getStereotypeQn(TAGS);
+	public static final String SCHEMA_QN = OpenAPIStereotypesUtils.getStereotypeQn(SCHEMA);
+	public static final String API_DATA_TYPE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_DATA_TYPE);
+	public static final String API_PARAMETER_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PARAMETER);
+	public static final String API_RESPONSE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_RESPONSE);
+	public static final String API_OPERATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_OPERATION);
+	public static final String SECURITY_DEFINITIONS_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY_DEFINITIONS);
+	public static final String SECURITY_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY);
+	public static final OpenAPIFactory OPENAPIF_API_FACTORY = OpenAPIFactory.eINSTANCE;
 
 	public static void applyAPIStereotype(Model model, API api) {
 		Stereotype apiStereotype = model.getApplicableStereotype(API_QN);
@@ -88,139 +85,8 @@ public class OpenAPIProfileUtils {
 
 	}
 
-	public static API extractAPI(Model model) {
-		Stereotype apiStereotype = model.getApplicableStereotype(API_QN);
-		if (!model.isStereotypeApplied(apiStereotype)) {
-			return null;
-		}
-		API api = OPENAPIF_API_FACTORY.createAPI();
-		api.setHost((String) UMLUtil.getTaggedValue(model, API_QN, "host"));
-		api.setBasePath((String) UMLUtil.getTaggedValue(model, API_QN, "basePath"));
-		api.setSwagger("2.0");
-		List<SchemeType> pSchemes = (List<SchemeType>) UMLUtil.getTaggedValue(model, API_QN, "schemes");
-		if (pSchemes != null && !pSchemes.isEmpty()) {
-			for (SchemeType from : pSchemes)
-				api.getSchemes().add(transformSchemeType(from));
-		}
-		List<String> consumes = (List<String>) UMLUtil.getTaggedValue(model, API_QN, "consumes");
-		if (consumes != null && !consumes.isEmpty())
-			api.getConsumes().addAll(consumes);
-		List<String> produces = (List<String>) UMLUtil.getTaggedValue(model, API_QN, "produces");
-		if (produces != null && !produces.isEmpty())
-			api.getProduces().addAll(produces);
-		api.setInfo(extractInfo(model));
-		api.setExternalDocs(extractExternalDocs(model));
-		if (model.isStereotypeApplied(model.getApplicableStereotype(SECURITY_DEFINITIONS_QN))) {
-			List<edu.som.uoc.openapiprofile.SecurityScheme> pSecuritySchemes = (List<edu.som.uoc.openapiprofile.SecurityScheme>) UMLUtil
-					.getTaggedValue(model, SECURITY_DEFINITIONS_QN, "securitySchemes");
-			if (pSecuritySchemes != null && !pSecuritySchemes.isEmpty()) {
-				for (edu.som.uoc.openapiprofile.SecurityScheme pSecurityScheme : pSecuritySchemes) {
-					SecurityScheme mSecurityScheme = extractSecurityScheme(pSecurityScheme);
-					if (mSecurityScheme != null) {
-						api.getSecurityDefinitions().add(mSecurityScheme);
-					}
-				}
-			}
-		}
-		if (model.isStereotypeApplied(model.getApplicableStereotype(SECURITY_QN))) {
-			List<edu.som.uoc.openapiprofile.SecurityRequirement> pSecurityRequirements = (List<edu.som.uoc.openapiprofile.SecurityRequirement>) UMLUtil
-					.getTaggedValue(model, SECURITY_QN, "securityRequirements");
-			if (pSecurityRequirements != null && !pSecurityRequirements.isEmpty()) {
-				for (edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement : pSecurityRequirements) {
-					SecurityRequirement mSecurityRequirement = extractSecurity(pSecurityRequirement);
-					if (mSecurityRequirement != null) {
-						api.getSecurity().add(mSecurityRequirement);
-					}
-				}
-			}
-		}
 
-		List<org.eclipse.uml2.uml.Package> packages = new ArrayList<org.eclipse.uml2.uml.Package>();
-		for (Iterator<EObject> it = model.eAllContents(); it.hasNext();) {
-			EObject eObject = it.next();
-			if (eObject instanceof org.eclipse.uml2.uml.Package) {
-				packages.add((org.eclipse.uml2.uml.Package) eObject);
-			}
-		}
-		for (org.eclipse.uml2.uml.Package pkg : packages) {
 
-			for (Iterator<EObject> it = pkg.eAllContents(); it.hasNext();) {
-				EObject child = it.next();
-				if (child instanceof Class) {
-					if (((Class) child).isStereotypeApplied(((Class) child).getApplicableStereotype(SCHEMA_QN))) {
-						Schema definition = extractSchema((Class) child);
-						if(definition != null) {
-						api.getDefinitions().add(definition);
-						}
-
-					}
-				}
-			}
-		}
-		return api;
-	}
-
-	private static Schema extractSchema(Class clazz) {
-		Stereotype schemaStereotype = clazz.getApplicableStereotype(SCHEMA_QN);
-		if (clazz.isStereotypeApplied(schemaStereotype)) {
-		Schema schema = OPENAPIF_API_FACTORY.createSchema();
-		schema.setReferenceName(clazz.getName());
-		schema.setTitle((String) UMLUtil.getTaggedValue(clazz, SCHEMA_QN, "title"));
-		schema.setMaxProperties((Integer) UMLUtil.getTaggedValue(clazz, SCHEMA_QN, "maxProperties"));
-		schema.setMinProperties((Integer) UMLUtil.getTaggedValue(clazz, SCHEMA_QN, "minProperties"));
-		schema.setDiscriminator((String) UMLUtil.getTaggedValue(clazz, SCHEMA_QN, "discriminator"));
-		schema.setAdditonalPropertiesAllowed((Boolean) UMLUtil.getTaggedValue(clazz, SCHEMA_QN, "additionalPropertiesAllowed"));
-		schema.setExample((String) UMLUtil.getTaggedValue(clazz, SCHEMA_QN, "example"));
-		schema.setReadOnly((Boolean) UMLUtil.getTaggedValue(clazz, SCHEMA_QN, "readOnly"));
-		XMLElement pXMLElement  = (XMLElement) UMLUtil.getTaggedValue(clazz, SCHEMA_QN, "xml");
-		if (pXMLElement != null) {
-			edu.uoc.som.openapi.XMLElement mXMLElement = OPENAPIF_API_FACTORY.createXMLElement();
-			mXMLElement.setAttribute(pXMLElement.getAttribute());
-			mXMLElement.setName(pXMLElement.getName());
-			mXMLElement.setNamespace(pXMLElement.getNamespace());
-			mXMLElement.setPrefix(pXMLElement.getPrefix());
-			mXMLElement.setWrapped(pXMLElement.getWrapped());
-			schema.setXml(mXMLElement);
-		}
-		extractJSONSchemaSubsetproperties(clazz,schema);
-		for(org.eclipse.uml2.uml.Property attribute : clazz.getAllAttributes()) {
-			if(attribute.isStereotypeApplied(schemaStereotype)) {
-				Property mProperty = OPENAPIF_API_FACTORY.createProperty();
-				mProperty.setReferenceName(attribute.getName());
-			}
-		}
-		return schema;
-	}
-return null;
-	}
-	public static Info extractInfo(Model model) {
-		if (model.isStereotypeApplied(model.getApplicableStereotype(API_INFO_QN))) {
-			Info info = OPENAPIF_API_FACTORY.createInfo();
-			edu.som.uoc.openapiprofile.Contact pContact = (edu.som.uoc.openapiprofile.Contact) UMLUtil
-					.getTaggedValue(model, API_INFO_QN, "contact");
-			if (pContact != null) {
-				edu.uoc.som.openapi.Contact mContact = OPENAPIF_API_FACTORY.createContact();
-				mContact.setEmail(pContact.getEmail());
-				mContact.setName(pContact.getName());
-				mContact.setUrl(pContact.getUrl());
-				info.setContact(mContact);
-			}
-			info.setDescription((String) UMLUtil.getTaggedValue(model, API_INFO_QN, "description"));
-			info.setTermsOfService((String) UMLUtil.getTaggedValue(model, API_INFO_QN, "termsOfService"));
-			info.setTitle((String) UMLUtil.getTaggedValue(model, API_INFO_QN, "title"));
-			info.setVersion((String) UMLUtil.getTaggedValue(model, API_INFO_QN, "version"));
-			edu.som.uoc.openapiprofile.License pLicense = (edu.som.uoc.openapiprofile.License) UMLUtil
-					.getTaggedValue(model, API_INFO_QN, "license");
-			if (pLicense != null) {
-				edu.uoc.som.openapi.License mLicense = OPENAPIF_API_FACTORY.createLicense();
-				mLicense.setName(pLicense.getName());
-				mLicense.setUrl(pLicense.getUrl());
-				info.setLicense(mLicense);
-			}
-			return info;
-		}
-		return null;
-	}
 
 	public static void applyAPIInfoStereotype(Model model, Info info) {
 		Stereotype infoStereotype = model.getApplicableStereotype(API_INFO_QN);
@@ -255,15 +121,7 @@ return null;
 		UMLUtil.setTaggedValue(model, externalDocsStereotype, "url", externalDocs.getUrl());
 	}
 
-	public static ExternalDocs extractExternalDocs(Element element) {
-		if (element.isStereotypeApplied(element.getApplicableStereotype(EXTERNAL_DOCS_QN))) {
-			ExternalDocs mExternalDocs = OPENAPIF_API_FACTORY.createExternalDocs();
-			mExternalDocs.setDescription((String) UMLUtil.getTaggedValue(element, EXTERNAL_DOCS_QN, "description"));
-			mExternalDocs.setUrl((String) UMLUtil.getTaggedValue(element, EXTERNAL_DOCS_QN, "url"));
-			return mExternalDocs;
-		}
-		return null;
-	}
+
 
 	public static void applyTagsStereotype(Model model, List<Tag> tagList) {
 		Stereotype tagsStereotype = model.getApplicableStereotype(TAGS_QN);
@@ -325,7 +183,7 @@ return null;
 		if (mParameter.getLocation() != null)
 			UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "location",
 					transformParameterLocation(mParameter.getLocation()));
-		UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "allowEmptyValues", mParameter.getAllowEmplyValue());
+		UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "allowEmptyValue", mParameter.getAllowEmplyValue());
 		if (mParameter.getCollectionFormat() != null)
 			UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "collectionFormat",
 					transformCollectionFormat(mParameter.getCollectionFormat()));
@@ -336,7 +194,7 @@ return null;
 		Stereotype apiResponseStereotype = parameter.getApplicableStereotype(API_RESPONSE_QN);
 		if (!parameter.isStereotypeApplied(apiResponseStereotype))
 			parameter.applyStereotype(apiResponseStereotype);
-		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "description", mResponse.getDeclaringContext());
+		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "description", mResponse.getDescription());
 		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "code", mResponse.getCode());
 		if (!mResponse.getHeaders().isEmpty()) {
 			List<edu.som.uoc.openapiprofile.Header> pHeaders = new ArrayList<edu.som.uoc.openapiprofile.Header>();
@@ -456,32 +314,7 @@ return null;
 		}
 	}
 
-	private static SecurityScheme extractSecurityScheme(edu.som.uoc.openapiprofile.SecurityScheme pSecurityScheme) {
 
-		SecurityScheme mSecurityScheme = OPENAPIF_API_FACTORY.createSecurityScheme();
-		mSecurityScheme.setReferenceName(pSecurityScheme.getReferenceName());
-		mSecurityScheme.setName(pSecurityScheme.getName());
-		if (pSecurityScheme.getType() != null) {
-			mSecurityScheme.setType(transformSecuritySchemeType(pSecurityScheme.getType()));
-		}
-		mSecurityScheme.setDescription(pSecurityScheme.getDescription());
-		if (pSecurityScheme.getLocation() != null)
-			mSecurityScheme.setLocation(transformAPIKeyLocation(pSecurityScheme.getLocation()));
-		if (pSecurityScheme.getFlow() != null)
-			pSecurityScheme.setFlow(transformOAuth2FlowType(mSecurityScheme.getFlow()));
-		mSecurityScheme.setAuthorizationUrl(mSecurityScheme.getAuthorizationUrl());
-		mSecurityScheme.setTokenUrl(pSecurityScheme.getTokenURL());
-		if (!pSecurityScheme.getScopes().isEmpty()) {
-			for (SecurityScope pSecurityScope : pSecurityScheme.getScopes()) {
-				edu.uoc.som.openapi.SecurityScope mSecurityScope = OPENAPIF_API_FACTORY.createSecurityScope();
-				mSecurityScope.setDescription(pSecurityScope.getDescription());
-				mSecurityScope.setName(pSecurityScope.getName());
-				mSecurityScheme.getScopes().add(mSecurityScope);
-			}
-		}
-		return mSecurityScheme;
-
-	}
 
 	public static void applySecurityStereotype(Element element, List<SecurityRequirement> securityRequirements) {
 		Stereotype securityRequirementsStereotype = element.getApplicableStereotype(SECURITY_QN);
@@ -501,14 +334,7 @@ return null;
 		UMLUtil.setTaggedValue(element, securityRequirementsStereotype, "securityRequirements", pSecurityRequirements);
 	}
 
-	private static SecurityRequirement extractSecurity(
-			edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement) {
-		SecurityRequirement mSecurityRequirement = OPENAPIF_API_FACTORY.createSecurityRequirement();
-		// TODO
 
-		return null;
-
-	}
 
 	public static SchemeType transformSchemeType(edu.uoc.som.openapi.SchemeType from) {
 		switch (from) {
@@ -767,7 +593,7 @@ return null;
 		UMLUtil.setTaggedValue(element, stereotype, "default", jsonSchemaSubset.getDefault());
 		UMLUtil.setTaggedValue(element, stereotype, "multipleOf", jsonSchemaSubset.getMultipleOf());
 	}
-	private static void extractJSONSchemaSubsetproperties(Element element,
+	public static void extractJSONSchemaSubsetproperties(Element element,
 			JSONSchemaSubset jsonSchemaSubset) {
 		jsonSchemaSubset.setPattern((String) UMLUtil.getTaggedValue(element, SCHEMA_QN, "pattern"));
 		jsonSchemaSubset.setExclusiveMinimum((Boolean) UMLUtil.getTaggedValue(element, SCHEMA_QN, "exclusiveMinimum"));
