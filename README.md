@@ -15,7 +15,7 @@ To visualize the generated UML models:
 ## Installation
 1. Open Eclipse IDE
 2. Click on *Help / Install New Software...*
-3. Click on *Add...* and fill in the form as indicated (the update site is https://opendata-for-all.github.io/openapi-to-uml/update/) then click on *OK*.
+3. Click on *Add...* and fill in the form as indicated (the update site is https://opendata-for-all.github.io/openapi-to-uml/update/openaî-to-uml) then click on *OK*.
 
 ![Add repository](https://opendata-for-all.github.io/openapi-to-uml/images/add-eclipse.PNG)
 
