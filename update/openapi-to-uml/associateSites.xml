@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<associateSites>
+	<associateSite url="http://download.eclipse.org/releases/oxygen/" label="Oxygen"/>
+</associateSites>
