@@ -65,16 +65,16 @@ public class OpenAPIUtils {
 			return operation.getOperationId();
 		else {
 		
-			return operation.getMethod()+(((operation.getProducedSchema()!=null && operation.getProducedSchema().getName()!=null) )?operation.getProducedSchema().getName():"Unknown");
+			return operation.getMethod()+(((operation.getProducedSchema()!=null && operation.getProducedSchema().getReferenceName()!=null) )?operation.getProducedSchema().getReferenceName():"Unknown");
 		}
 		
 	}
 	
 	public static boolean isSchemaInTags(Schema schema, List<String> tags) {
-		if(schema.getName()== null)
+		if(schema.getReferenceName()== null)
 			return false;
 		for(String tag: tags)
-			if(tag.equalsIgnoreCase(schema.getName()))
+			if(tag.equalsIgnoreCase(schema.getReferenceName()))
 				return true;
 		return false;
 	}
