@@ -43,7 +43,6 @@ import edu.uoc.som.openapi.ExternalDocs;
 import edu.uoc.som.openapi.Header;
 import edu.uoc.som.openapi.Info;
 import edu.uoc.som.openapi.JSONSchemaSubset;
-import edu.uoc.som.openapi.OpenAPIFactory;
 import edu.uoc.som.openapi.Path;
 import edu.uoc.som.openapi.Schema;
 import edu.uoc.som.openapi.SecurityRequirement;
@@ -63,7 +62,6 @@ public class OpenAPIProfileUtils {
 	public static final String API_OPERATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_OPERATION);
 	public static final String SECURITY_DEFINITIONS_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY_DEFINITIONS);
 	public static final String SECURITY_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY);
-	public static final OpenAPIFactory OPENAPIF_API_FACTORY = OpenAPIFactory.eINSTANCE;
 
 	public static void applyAPIStereotype(Model model, API api) {
 		Stereotype apiStereotype = model.getApplicableStereotype(API_QN);
