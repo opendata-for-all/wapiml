@@ -36,6 +36,7 @@ import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
+import org.eclipse.uml2.uml.util.UMLUtil;
 
 import edu.uoc.som.openapi.JSONDataType;
 import edu.uoc.som.openapi.Operation;
@@ -46,6 +47,7 @@ import edu.uoc.som.openapi.Response;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
 import edu.uoc.som.openapitouml.utils.OpenAPIProfileUtils;
+import edu.uoc.som.openapitouml.utils.OpenAPIStereotypesUtils;
 import edu.uoc.som.openapitouml.utils.OpenAPIUtils;
 
 public class ClassDiagramGenerator implements Serializable {
@@ -158,6 +160,25 @@ public class ClassDiagramGenerator implements Serializable {
 								child.getGeneralizations().add(generation);
 							}
 						}
+				}
+			}
+		}
+		
+		// resolve additionalProperties
+		for (Schema definition : root.getApi().getDefinitions()) {
+			if (isObject(definition)) {
+				if (definition.getAdditonalProperties()!=null) {
+					Class clazz = map.get(definition);
+					Schema additionalPropertiesSchema = definition.getAdditonalProperties();
+					if(isPrimitive(additionalPropertiesSchema)) {
+						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN), "additionalProperties",getUMLType(types, additionalPropertiesSchema.getType(), additionalPropertiesSchema.getFormat()));
+					}
+					if(isObject(additionalPropertiesSchema)) {
+						Class referencedClass = map.get(additionalPropertiesSchema);
+						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN), "additionalProperties",referencedClass);
+					}
+						
+						
 				}
 			}
 		}
@@ -431,7 +452,7 @@ public class ClassDiagramGenerator implements Serializable {
 				}
 				clazz.getOwnedAttributes().add(umlProperty);
 				if (applyProfile) {
-					OpenAPIProfileUtils.applySchemaStereotype(umlProperty, openAPIproperty.getSchema());
+					OpenAPIProfileUtils.applyAPIPropertyStereotype(umlProperty, openAPIproperty);
 					OpenAPIProfileUtils.applyAPIDataTypeStereotype((DataType) umlProperty.getType(), propertySchema);
 				}
 			}

@@ -148,24 +148,14 @@ public class OpenAPIProfileUtils {
 		if (!element.isStereotypeApplied(schemaStereotype))
 			element.applyStereotype(schemaStereotype);
 		UMLUtil.setTaggedValue(element, schemaStereotype, "title", schema.getTitle());
+		UMLUtil.setTaggedValue(element, schemaStereotype, "description", schema.getDescription());
 		UMLUtil.setTaggedValue(element, schemaStereotype, "maxProperties", schema.getMaxProperties());
 		UMLUtil.setTaggedValue(element, schemaStereotype, "minProperties", schema.getMinProperties());
 		UMLUtil.setTaggedValue(element, schemaStereotype, "discriminator", schema.getDiscriminator());
 		UMLUtil.setTaggedValue(element, schemaStereotype, "additionalPropertiesAllowed",
 				schema.getAdditonalPropertiesAllowed());
 		UMLUtil.setTaggedValue(element, schemaStereotype, "example", schema.getExample());
-		UMLUtil.setTaggedValue(element, schemaStereotype, "readOnly", schema.getReadOnly());
-
-		if (schema.getXml() != null) {
-			XMLElement pXMLElement = OpenapiprofileFactory.eINSTANCE.createXMLElement();
-			pXMLElement.setAttribute(schema.getXml().getAttribute());
-			pXMLElement.setName(schema.getXml().getName());
-			pXMLElement.setNamespace(schema.getXml().getNamespace());
-			pXMLElement.setPrefix(schema.getXml().getPrefix());
-			pXMLElement.setWrapped(schema.getXml().getWrapped());
-			UMLUtil.setTaggedValue(element, schemaStereotype, "xml", pXMLElement);
-		}
-		addJSONSchemaSubsetAttribute(element, schemaStereotype, schema);
+		UMLUtil.setTaggedValue(element, schemaStereotype, "default", schema.getDefault());
 
 	}
 	
