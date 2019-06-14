@@ -205,6 +205,7 @@ public class OpenAPIProfileUtils {
 		if (mParameter.getCollectionFormat() != null)
 			UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "collectionFormat",
 					transformCollectionFormat(mParameter.getCollectionFormat()));
+		UMLUtil.setTaggedValue(parameter, apiParameterStereotype, "required", mParameter.getRequired());
 		addJSONSchemaSubsetAttribute(parameter, apiParameterStereotype, mParameter);
 	}
 
@@ -604,8 +605,6 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(element, stereotype, "maxLength", jsonSchemaSubset.getMaxLength());
 		UMLUtil.setTaggedValue(element, stereotype, "exclusiveMaximum", jsonSchemaSubset.getExclusiveMaximum());
 		UMLUtil.setTaggedValue(element, stereotype, "minLength", jsonSchemaSubset.getMinLength());
-		UMLUtil.setTaggedValue(element, stereotype, "maxItems", jsonSchemaSubset.getMaxItems());
-		UMLUtil.setTaggedValue(element, stereotype, "minItems", jsonSchemaSubset.getMinItems());
 		UMLUtil.setTaggedValue(element, stereotype, "uniqueItems", jsonSchemaSubset.getUniqueItems());
 		UMLUtil.setTaggedValue(element, stereotype, "multipleOf", jsonSchemaSubset.getMultipleOf());
 	}
