@@ -204,7 +204,7 @@ public class OpenAPIModelGenerator {
 								Property mProperty = extractProperty(attribute);
 								schema.getProperties().add(mProperty);
 								if (attribute.getLower() == 1) {
-									schema.getRequired().add(mProperty);
+									mProperty.setRequired(true);
 								}
 
 							}
@@ -230,7 +230,7 @@ public class OpenAPIModelGenerator {
 								Schema schema = classMap.get(firstEnd.getType());
 								schema.getProperties().add(mProperty);
 								if (secondEnd.getLower() == 1)
-									schema.getRequired().add(mProperty);
+									mProperty.setRequired(true);
 
 							}
 

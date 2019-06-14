@@ -349,7 +349,7 @@ public class ClassDiagramGenerator implements Serializable {
 		firstOwnedEnd.setType(map.get(definition));
 		secondOwnedEnd.setName(property.getReferenceName());
 		secondOwnedEnd.setAggregation(AggregationKind.COMPOSITE_LITERAL);
-		if (definition.getRequired().contains(property))
+		if (property.getRequired()!=null && property.getRequired())
 			secondOwnedEnd.setLower(1);
 		else
 			secondOwnedEnd.setLower(0);
@@ -410,7 +410,7 @@ public class ClassDiagramGenerator implements Serializable {
 								clazz.getName() + StringUtils.capitalize(openAPIproperty.getReferenceName()), types));
 					else
 						umlProperty.setType(getUMLType(types, propertySchema.getType(), propertySchema.getFormat()));
-					if (schema.getRequired().contains(openAPIproperty))
+					if (openAPIproperty.getRequired()!=null && openAPIproperty.getRequired())
 						umlProperty.setLower(1);
 					else
 						umlProperty.setLower(0);
