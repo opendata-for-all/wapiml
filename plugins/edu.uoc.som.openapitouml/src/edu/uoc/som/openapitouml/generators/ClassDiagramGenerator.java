@@ -424,6 +424,8 @@ public class ClassDiagramGenerator implements Serializable {
 
 				if (propertySchema.getDefault() != null)
 					umlProperty.setDefault(propertySchema.getDefault());
+				if(propertySchema.getReadOnly()!= null && propertySchema.getReadOnly().equals(Boolean.TRUE))
+					umlProperty.setIsReadOnly(true);
 
 				if (!propertySchema.getType().equals(JSONDataType.ARRAY)) {
 					if (!propertySchema.getEnum().isEmpty())
