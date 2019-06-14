@@ -346,6 +346,7 @@ public class OpenAPIModelGenerator {
 		Response mResponse = factory.createResponse();
 		String code = (String) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "code");
 		mResponse.setCode(code);
+		mResponse.setDescription((String) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "description"));
 		return mResponse;
 	}
 
@@ -432,7 +433,7 @@ public class OpenAPIModelGenerator {
 			edu.som.uoc.openapiprofile.Contact pContact = (edu.som.uoc.openapiprofile.Contact) UMLUtil
 					.getTaggedValue(model, OpenAPIProfileUtils.API_INFO_QN, "contact");
 			if (pContact != null) {
-				edu.uoc.som.openapi.Contact mContact = OpenAPIProfileUtils.OPENAPIF_API_FACTORY.createContact();
+				edu.uoc.som.openapi.Contact mContact = factory.createContact();
 				mContact.setEmail(pContact.getEmail());
 				mContact.setName(pContact.getName());
 				mContact.setUrl(pContact.getUrl());
