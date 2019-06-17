@@ -371,7 +371,8 @@ public class OpenAPIModelGenerator {
 			mSchema.setMaxItems(property.getUpper());
 		if(property.getLower() != 0 )
 			mSchema.setMinItems(property.getLower());
-			mProperty.setSchema(mSchema);
+		mSchema.setDefault(property.getDefault());
+		mProperty.setSchema(mSchema);
 		return mProperty;
 
 	}
