@@ -43,6 +43,7 @@ import edu.som.uoc.openapiprofile.XMLElement;
 import edu.uoc.som.openapi.API;
 import edu.uoc.som.openapi.ExternalDocs;
 import edu.uoc.som.openapi.Info;
+import edu.uoc.som.openapi.ItemsDefinition;
 import edu.uoc.som.openapi.OpenAPIFactory;
 import edu.uoc.som.openapi.ParameterLocation;
 import edu.uoc.som.openapi.Path;
@@ -258,19 +259,19 @@ public class OpenAPIModelGenerator {
 					edu.uoc.som.openapi.Operation mOperation = extractOperation(operation, api);
 					switch (httpMethod) {
 					case DELETE:
-						mRelativePath.setDelete(mOperation);
+						mRelativePath.setDelete(mOperation);  break;
 					case GET:
-						mRelativePath.setGet(mOperation);
+						mRelativePath.setGet(mOperation); break;
 					case HEAD:
-						mRelativePath.setHead(mOperation);
+						mRelativePath.setHead(mOperation);  break;
 					case OPTIONS:
-						mRelativePath.setOptions(mOperation);
+						mRelativePath.setOptions(mOperation);  break;
 					case PATCH:
-						mRelativePath.setPatch(mOperation);
+						mRelativePath.setPatch(mOperation);  break;
 					case POST:
-						mRelativePath.setPost(mOperation);
+						mRelativePath.setPost(mOperation);  break;
 					case PUT:
-						mRelativePath.setPut(mOperation);
+						mRelativePath.setPut(mOperation);  break;
 					default:
 						continue;
 					}
@@ -352,13 +353,21 @@ public class OpenAPIModelGenerator {
 		Schema schema = extractDataType(type);
 		if (type instanceof PrimitiveType != type instanceof Enumeration) {
 			{
-				
-				
-
+				if (parameter.getUpper() == -1 || parameter.getUpper() > 1) {
+					ItemsDefinition items = factory.createItemsDefinition();
+					items.setType(schema.getType());
+					items.setFormat(schema.getFormat());
+					if (type instanceof Enumeration)
+						items.getEnum().addAll(schema.getEnum());
+					mParameter.setItems(items);
+					mParameter.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
+				}
+				else {
 				mParameter.setType(schema.getType());
 				mParameter.setFormat(schema.getFormat());
 				if (type instanceof Enumeration)
 					mParameter.getEnum().addAll(schema.getEnum());
+			}
 			}
 		}
 		if (type instanceof Class) {
@@ -367,7 +376,7 @@ public class OpenAPIModelGenerator {
 				arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
 				arraySchema.setItems(schema);
 				schema = arraySchema;
-			} 
+			}
 				mParameter.setSchema(schema);
 		}
 
