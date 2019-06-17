@@ -291,9 +291,9 @@ public class ClassDiagramGenerator implements Serializable {
 						}
 					}
 				} else {
-					if (parameter.getRequired() != null && parameter.getRequired().equals(Boolean.TRUE))
-						umlParameter.setLower(1);
-					else
+//					if (parameter.getRequired() != null && parameter.getRequired().equals(Boolean.TRUE))
+//						umlParameter.setLower(1);
+//					else
 						umlParameter.setLower(0);
 					if (parameter.getType().equals(JSONDataType.ARRAY)) {
 						if (parameter.getMaxItems() != null)
@@ -370,9 +370,9 @@ public class ClassDiagramGenerator implements Serializable {
 		firstOwnedEnd.setType(map.get(definition));
 		secondOwnedEnd.setName(property.getReferenceName());
 		secondOwnedEnd.setAggregation(AggregationKind.COMPOSITE_LITERAL);
-		if (property.getRequired()!=null && property.getRequired())
-			secondOwnedEnd.setLower(1);
-		else
+//		if (property.getRequired()!=null && property.getRequired())
+//			secondOwnedEnd.setLower(1);
+//		else
 			secondOwnedEnd.setLower(0);
 		if (!property.getSchema().getType().equals(JSONDataType.ARRAY)) {
 			Class type = map.get(property.getSchema());
@@ -433,9 +433,9 @@ public class ClassDiagramGenerator implements Serializable {
 								clazz.getName() + StringUtils.capitalize(openAPIproperty.getReferenceName()), types));
 					else
 						umlProperty.setType(getUMLType(types, propertySchema.getType(), propertySchema.getFormat()));
-					if (openAPIproperty.getRequired()!=null && openAPIproperty.getRequired())
-						umlProperty.setLower(1);
-					else
+//					if (openAPIproperty.getRequired()!=null && openAPIproperty.getRequired())
+//						umlProperty.setLower(1);
+//					else
 						umlProperty.setLower(0);
 				} else {
 
