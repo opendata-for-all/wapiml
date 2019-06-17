@@ -364,8 +364,13 @@ public class OpenAPIModelGenerator {
 			Schema arraySchema = factory.createSchema();
 			arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
 			arraySchema.setItems(mSchema);
-			mProperty.setSchema(arraySchema);
-		} else
+			mSchema = arraySchema;
+		}
+		
+		if(property.getUpper() != -1 && property.getUpper() != 0)
+			mSchema.setMaxItems(property.getUpper());
+		if(property.getLower() != 0 )
+			mSchema.setMinItems(property.getLower());
 			mProperty.setSchema(mSchema);
 		return mProperty;
 
