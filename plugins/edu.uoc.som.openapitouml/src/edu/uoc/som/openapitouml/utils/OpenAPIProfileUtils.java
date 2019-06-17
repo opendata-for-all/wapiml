@@ -16,6 +16,8 @@ import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_PROP
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Model;
@@ -608,20 +610,16 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(element, stereotype, "uniqueItems", jsonSchemaSubset.getUniqueItems());
 		UMLUtil.setTaggedValue(element, stereotype, "multipleOf", jsonSchemaSubset.getMultipleOf());
 	}
-	public static void extractJSONSchemaSubsetproperties(Element element,
+	public static void extractJSONSchemaSubsetproperties(Element element, String stereotypeQN,
 			JSONSchemaSubset jsonSchemaSubset) {
-		jsonSchemaSubset.setPattern((String) UMLUtil.getTaggedValue(element, SCHEMA_QN, "pattern"));
-		jsonSchemaSubset.setExclusiveMinimum((Boolean) UMLUtil.getTaggedValue(element, SCHEMA_QN, "exclusiveMinimum"));
-		jsonSchemaSubset.setMaximum((Double) UMLUtil.getTaggedValue(element, SCHEMA_QN, "maximum"));
-		jsonSchemaSubset.setMinimum((Double) UMLUtil.getTaggedValue(element, SCHEMA_QN, "minimum"));
-		jsonSchemaSubset.setMaxLength((Integer) UMLUtil.getTaggedValue(element, SCHEMA_QN, "maxLength"));
-		jsonSchemaSubset.setExclusiveMaximum((Boolean) UMLUtil.getTaggedValue(element, SCHEMA_QN, "exclusiveMaximum"));
-		jsonSchemaSubset.setMinLength((Integer) UMLUtil.getTaggedValue(element, SCHEMA_QN, "minLength"));
-		jsonSchemaSubset.setMaxItems((Integer) UMLUtil.getTaggedValue(element, SCHEMA_QN, "maxItems"));
-		jsonSchemaSubset.setMinItems((Integer) UMLUtil.getTaggedValue(element, SCHEMA_QN, "minItems"));
-		jsonSchemaSubset.setDescription((String) UMLUtil.getTaggedValue(element, SCHEMA_QN, "description"));
-		jsonSchemaSubset.setUniqueItems((Boolean) UMLUtil.getTaggedValue(element, SCHEMA_QN, "uniqueItems"));
-		jsonSchemaSubset.setDefault((String) UMLUtil.getTaggedValue(element, SCHEMA_QN, "default"));
-		jsonSchemaSubset.setMultipleOf((Double) UMLUtil.getTaggedValue(element, SCHEMA_QN, "multipleOf"));
+		jsonSchemaSubset.setPattern((String) UMLUtil.getTaggedValue(element, stereotypeQN, "pattern"));
+		jsonSchemaSubset.setExclusiveMinimum((Boolean) UMLUtil.getTaggedValue(element, stereotypeQN, "exclusiveMinimum"));
+		jsonSchemaSubset.setMaximum((Double) UMLUtil.getTaggedValue(element, stereotypeQN, "maximum"));
+		jsonSchemaSubset.setMinimum((Double) UMLUtil.getTaggedValue(element, stereotypeQN, "minimum"));
+		jsonSchemaSubset.setMaxLength((Integer) UMLUtil.getTaggedValue(element, stereotypeQN, "maxLength"));
+		jsonSchemaSubset.setExclusiveMaximum((Boolean) UMLUtil.getTaggedValue(element, stereotypeQN, "exclusiveMaximum"));
+		jsonSchemaSubset.setMinLength((Integer) UMLUtil.getTaggedValue(element, stereotypeQN, "minLength"));
+		jsonSchemaSubset.setUniqueItems((Boolean) UMLUtil.getTaggedValue(element, stereotypeQN, "uniqueItems"));
+		jsonSchemaSubset.setMultipleOf((Double) UMLUtil.getTaggedValue(element, stereotypeQN, "multipleOf"));
 	}
 }
