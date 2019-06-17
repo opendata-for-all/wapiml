@@ -352,6 +352,8 @@ public class OpenAPIModelGenerator {
 		Schema schema = extractDataType(type);
 		if (type instanceof PrimitiveType != type instanceof Enumeration) {
 			{
+				
+				
 
 				mParameter.setType(schema.getType());
 				mParameter.setFormat(schema.getFormat());
@@ -360,7 +362,7 @@ public class OpenAPIModelGenerator {
 			}
 		}
 		if (type instanceof Class) {
-			if (parameter.getUpper() == -1) {
+			if (parameter.getUpper() == -1 || parameter.getUpper() > 1) {
 				Schema arraySchema = factory.createSchema();
 				arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
 				arraySchema.setItems(schema);
@@ -380,6 +382,19 @@ public class OpenAPIModelGenerator {
 		mResponse.setCode(code);
 		mResponse.setDescription(
 				(String) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "description"));
+		Type type = parameter.getType();
+		Schema schema = extractDataType(type);
+		
+			if (parameter.getUpper() == -1 || parameter.getUpper() > 1 ) {
+				Schema arraySchema = factory.createSchema();
+				arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
+				arraySchema.setItems(schema);
+				schema = arraySchema;
+			} 
+			mResponse.setSchema(schema);
+		
+
+	
 		return mResponse;
 	}
 
