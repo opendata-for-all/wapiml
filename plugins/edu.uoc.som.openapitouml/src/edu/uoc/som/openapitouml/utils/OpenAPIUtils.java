@@ -8,6 +8,9 @@ import edu.uoc.som.openapi.API;
 import edu.uoc.som.openapi.Operation;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
+import edu.uoc.som.openapi.SecurityRequirement;
+import edu.uoc.som.openapi.SecurityScheme;
+import edu.uoc.som.openapi.SecurityScope;
 
 
 
@@ -101,5 +104,16 @@ public class OpenAPIUtils {
 		}
 		return "Resource";
 	}
-	
+	public static SecurityScheme getSecurityDeiitionByName(String securityName, API api) {
+		for (SecurityScheme  securityScheme : api.getSecurityDefinitions())
+			if(securityScheme.getReferenceName().equals(securityName))
+				return securityScheme;
+		return null;
+	}
+	public static SecurityScope getSecurityScopeByName(String scope, SecurityScheme securityScheme) {
+		for(SecurityScope s : securityScheme.getScopes())
+				if(scope.equals(s.getName()))
+					return s;
+		return null;
+	}
 }

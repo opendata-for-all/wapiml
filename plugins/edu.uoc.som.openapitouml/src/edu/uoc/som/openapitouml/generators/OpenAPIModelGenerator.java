@@ -11,6 +11,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.osgi.internal.messages.Msg;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
@@ -52,6 +53,7 @@ import edu.uoc.som.openapi.Schema;
 import edu.uoc.som.openapi.SecurityRequirement;
 import edu.uoc.som.openapi.SecurityScheme;
 import edu.uoc.som.openapitouml.utils.OpenAPIProfileUtils;
+import edu.uoc.som.openapitouml.utils.OpenAPIUtils;
 
 public class OpenAPIModelGenerator {
 
@@ -157,7 +159,7 @@ public class OpenAPIModelGenerator {
 					.getTaggedValue(model, OpenAPIProfileUtils.SECURITY_QN, "securityRequirements");
 			if (pSecurityRequirements != null && !pSecurityRequirements.isEmpty()) {
 				for (edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement : pSecurityRequirements) {
-					SecurityRequirement mSecurityRequirement = extractSecurity(pSecurityRequirement);
+					SecurityRequirement mSecurityRequirement = extractSecurity(pSecurityRequirement, api);
 					if (mSecurityRequirement != null) {
 						api.getSecurity().add(mSecurityRequirement);
 					}
@@ -253,7 +255,7 @@ public class OpenAPIModelGenerator {
 					api.getPaths().add(mRelativePath);
 					HTTPMethod httpMethod = (HTTPMethod) UMLUtil.getTaggedValue(operation,
 							OpenAPIProfileUtils.API_OPERATION_QN, "method");
-					edu.uoc.som.openapi.Operation mOperation = extractOperation(operation);
+					edu.uoc.som.openapi.Operation mOperation = extractOperation(operation, api);
 					switch (httpMethod) {
 					case DELETE:
 						mRelativePath.setDelete(mOperation);
@@ -279,7 +281,7 @@ public class OpenAPIModelGenerator {
 		return api;
 	}
 
-	private edu.uoc.som.openapi.Operation extractOperation(Operation operation) {
+	private edu.uoc.som.openapi.Operation extractOperation(Operation operation, API api) {
 		edu.uoc.som.openapi.Operation mOperation = factory.createOperation();
 		mOperation.setOperationId(operation.getName());
 		mOperation.setDeprecated(
@@ -288,9 +290,34 @@ public class OpenAPIModelGenerator {
 				(String) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN, "description"));
 		mOperation.setSummary(
 				(String) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN, "summary"));
+		
+		List<SchemeType> pSchemes = (List<SchemeType>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN,
+				"schemes");
+		if (pSchemes != null && !pSchemes.isEmpty()) {
+			for (SchemeType from : pSchemes)
+				mOperation.getSchemes().add(OpenAPIProfileUtils.transformSchemeType(from));
+		}
+		List<String> consumes = (List<String>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN, "consumes");
+		if (consumes != null && !consumes.isEmpty())
+			mOperation.getConsumes().addAll(consumes);
+		List<String> produces = (List<String>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN, "produces");
+		if (produces != null && !produces.isEmpty())
+			mOperation.getProduces().addAll(produces);
 		if (operation.isStereotypeApplied(operation.getApplicableStereotype(OpenAPIProfileUtils.EXTERNAL_DOCS_QN))) {
 			ExternalDocs mExternalDocs = extractExternalDocs(operation);
 			mOperation.setExternalDocs(mExternalDocs);
+		}
+		if (operation.isStereotypeApplied(operation.getApplicableStereotype(OpenAPIProfileUtils.SECURITY_QN))) {
+			List<edu.som.uoc.openapiprofile.SecurityRequirement> pSecurityRequirements = (List<edu.som.uoc.openapiprofile.SecurityRequirement>) UMLUtil
+					.getTaggedValue(operation, OpenAPIProfileUtils.SECURITY_QN, "securityRequirements");
+			if (pSecurityRequirements != null && !pSecurityRequirements.isEmpty()) {
+				for (edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement : pSecurityRequirements) {
+					SecurityRequirement mSecurityRequirement = extractSecurity(pSecurityRequirement, api);
+					if (mSecurityRequirement != null) {
+						mOperation.getSecurity().add(mSecurityRequirement);
+					}
+				}
+			}
 		}
 		for (Parameter parameter : operation.getOwnedParameters()) {
 			if (parameter.getDirection().equals(ParameterDirectionKind.IN_LITERAL)) {
@@ -302,6 +329,7 @@ public class OpenAPIModelGenerator {
 				mOperation.getResponses().add(mResponse);
 			}
 		}
+		
 		return mOperation;
 	}
 
@@ -523,11 +551,18 @@ public class OpenAPIModelGenerator {
 
 	}
 
-	private SecurityRequirement extractSecurity(edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement) {
+	private SecurityRequirement extractSecurity(edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement, API api) {
 		SecurityRequirement mSecurityRequirement = factory.createSecurityRequirement();
-		// TODO
-
-		return null;
+		
+		SecurityScheme securityScheme = OpenAPIUtils.getSecurityDeiitionByName(pSecurityRequirement.getName(),api);
+		mSecurityRequirement.setSecurityScheme(securityScheme);
+		for(String s: pSecurityRequirement.getScopes()) {
+			edu.uoc.som.openapi.SecurityScope scope = OpenAPIUtils.getSecurityScopeByName(s, securityScheme);
+			if(scope!= null)
+				mSecurityRequirement.getSecurityScopes().add(scope);
+		}
+			
+		return mSecurityRequirement;
 
 	}
 
