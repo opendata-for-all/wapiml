@@ -317,8 +317,9 @@ public class OpenAPIModelGenerator {
 		mParameter.setLocation(
 				OpenAPIProfileUtils.transformParameterLocation((edu.som.uoc.openapiprofile.ParameterLocation) UMLUtil
 						.getTaggedValue(parameter, OpenAPIProfileUtils.API_PARAMETER_QN, "location")));
-		if (parameter.getLower() == 1)
-			mParameter.setRequired(true);
+		mParameter.setRequired(
+				(Boolean) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_PARAMETER_QN, "required"));
+
 		Type type = parameter.getType();
 		Schema schema = extractDataType(type);
 		if (type instanceof PrimitiveType != type instanceof Enumeration) {
@@ -335,12 +336,13 @@ public class OpenAPIModelGenerator {
 				Schema arraySchema = factory.createSchema();
 				arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
 				arraySchema.setItems(schema);
-				mParameter.setSchema(arraySchema);
-			} else
+				schema = arraySchema;
+			} 
 				mParameter.setSchema(schema);
 		}
 
-//		OpenAPIProfileUtils.extractJSONSchemaSubsetproperties(parameter,)
+		OpenAPIProfileUtils.extractJSONSchemaSubsetproperties(parameter, OpenAPIProfileUtils.API_PARAMETER_QN, schema);
+		schema.setDefault(mParameter.getDefault());
 		return mParameter;
 	}
 
@@ -367,7 +369,7 @@ public class OpenAPIModelGenerator {
 			mSchema = arraySchema;
 		}
 		
-		if(property.getUpper() != -1 && property.getUpper() != 0)
+		if(property.getUpper() != -1 && property.getUpper() != 0  && property.getUpper() != 1)
 			mSchema.setMaxItems(property.getUpper());
 		if(property.getLower() != 0 )
 			mSchema.setMinItems(property.getLower());
