@@ -1,35 +1,22 @@
 
-# OpenAPItoUML
+# WAPIml
 
-![OpenAPItoUML](https://opendata-for-all.github.io/openapi-to-uml/images/logo.png)
+An OpenAPI round-trip tool that leverages on model-driven techniques to create, visualize, manage, and generate OpenAPI
+definitions. WAPIml embeds an OpenAPI metamodel but also a UML profile to enable working with Web APIs in any UML-compatible modeling tool
 
-A tool to generate UML models from OpenAPI definitions.
+N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI definitions, can be found under the branch *openapi-to-uml*.
 
 ## Requirements
-To generate UML models:
-- Eclipse Modeling tools (it can be found [here](http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/oxygen2)).
 
-To visualize the generated UML models:
-- A UML 2.5 modeling environment in Eclipse such as [Papyrus](https://www.eclipse.org/papyrus/) or [UMLDesigner](https://marketplace.eclipse.org/content/uml-designer) (we tested the tool with Papyrus).
+Coming soon...
 
 ## Installation
-1. Open Eclipse IDE
-2. Click on *Help / Install New Software...*
-3. Click on *Add...* and fill in the form as indicated (the update site is https://opendata-for-all.github.io/openapi-to-uml/update/openaî-to-uml) then click on *OK*.
 
-![Add repository](https://opendata-for-all.github.io/openapi-to-uml/images/add-eclipse.PNG)
-
-4. Select *OpenAPI to UML* then click on *Next*.
-
-![Install](https://opendata-for-all.github.io/openapi-to-uml/images/install-eclipse.PNG)
-
-5. Follow the the rest of the steps (license, etc...) and reboot Eclipse.
+Coming soon...
 
 ## Using the plugin
 
-1. Create a Project or use an existing project in your workspace.
-2. Import the JSON file of your OpenAPI definition. 
-3. Right-click on the definition file and select *OpenAPI to UML/Generate a Class diagram*. This will generate the UML model corresponding to the input definition under the folder *src-gen* of your project (check [petstore.uml](https://raw.githubusercontent.com/SOM-Research/openapi-to-uml/master/examples/edu.uoc.som.openapitouml.example/src-gen/petstore.uml), the generated model from the Petstore example).
+Coming soon...
 
 ## Visualizing the Class diagram using Papyrus
 
