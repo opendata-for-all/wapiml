@@ -555,7 +555,7 @@ public class OpenAPIModelGenerator {
 		if (pSecurityScheme.getLocation() != null)
 			mSecurityScheme.setLocation(OpenAPIProfileUtils.transformAPIKeyLocation(pSecurityScheme.getLocation()));
 		if (pSecurityScheme.getFlow() != null)
-			pSecurityScheme.setFlow(OpenAPIProfileUtils.transformOAuth2FlowType(mSecurityScheme.getFlow()));
+			mSecurityScheme.setFlow(OpenAPIProfileUtils.transformOAuth2FlowType(pSecurityScheme.getFlow()));
 		mSecurityScheme.setAuthorizationUrl(mSecurityScheme.getAuthorizationUrl());
 		mSecurityScheme.setTokenUrl(pSecurityScheme.getTokenURL());
 		if (!pSecurityScheme.getScopes().isEmpty()) {
