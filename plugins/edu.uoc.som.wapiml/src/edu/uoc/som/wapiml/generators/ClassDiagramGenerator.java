@@ -614,16 +614,5 @@ public class ClassDiagramGenerator implements Serializable {
 		namespace.getOwnedRules().add(constraint);
 	}
 
-	public Stereotype getStereotypeByName(String name) throws FileNotFoundException, IOException {
-		switch (name) {
-		case "OpenAPIProfile::API":
-			return (Stereotype) openAPIProfileResource.getEObject("_msWVIHyHEemaV87q0fd26g");
-
-		default:
-			break;
-		}
-		return null;
-
-	}
 
 }
