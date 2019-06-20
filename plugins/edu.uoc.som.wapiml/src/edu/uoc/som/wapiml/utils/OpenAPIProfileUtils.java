@@ -187,12 +187,12 @@ public class OpenAPIProfileUtils {
 	}
 
 
-	public static void applyAPIDataTypeStereotype(Type type, Schema schema) {
+	public static void applyAPIDataTypeStereotype(Type type, edu.uoc.som.openapi.JSONDataType jsonDataType, String format) {
 		Stereotype apiDataTypeStereotype = type.getApplicableStereotype(API_DATA_TYPE_QN);
 		if (!type.isStereotypeApplied(apiDataTypeStereotype))
 			type.applyStereotype(apiDataTypeStereotype);
-		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "type", transformJSONDataType(schema.getType()));
-		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "format", schema.getFormat());
+		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "type", transformJSONDataType(jsonDataType));
+		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "format", format);
 	}
 
 	public static void applyAPIParameterStereotype(Parameter parameter, edu.uoc.som.openapi.Parameter mParameter) {
