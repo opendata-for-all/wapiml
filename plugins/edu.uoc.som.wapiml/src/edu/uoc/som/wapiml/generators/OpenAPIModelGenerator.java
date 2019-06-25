@@ -414,7 +414,6 @@ public class OpenAPIModelGenerator {
 					mHeader.setDescription(pHeader.getDescription());
 					mHeader.setExclusiveMaximum(pHeader.getExclusiveMaximum());
 					mHeader.setFormat(pHeader.getFormat());
-					// TODO items
 					mHeader.setMaximum(pHeader.getMaximum());
 					mHeader.setMaxItems(pHeader.getMaxItems());
 					mHeader.setMaxLength(pHeader.getMaxLength());
