@@ -325,8 +325,8 @@ public class ClassDiagramGenerator implements Serializable {
 				for (Response response : operation.getResponses()) {
 
 					org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
-					if (response.getSchema() != null) {
-						Schema returnedSchema = response.getSchema();
+					if (response.getResponseDefinition().getSchema() != null) {
+						Schema returnedSchema = response.getResponseDefinition().getSchema();
 						boolean isObject = isObject(returnedSchema);
 						boolean isArrayOfObjects = isArrayOfObjects(returnedSchema);
 						Schema returnedObject = isObject ? returnedSchema
