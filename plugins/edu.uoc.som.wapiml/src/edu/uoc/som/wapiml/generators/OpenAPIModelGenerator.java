@@ -44,6 +44,7 @@ import edu.uoc.som.openapi.OpenAPIFactory;
 import edu.uoc.som.openapi.Path;
 import edu.uoc.som.openapi.Property;
 import edu.uoc.som.openapi.Response;
+import edu.uoc.som.openapi.ResponseDefinition;
 import edu.uoc.som.openapi.Root;
 import edu.uoc.som.openapi.Schema;
 import edu.uoc.som.openapi.SecurityRequirement;
@@ -180,6 +181,7 @@ public class OpenAPIModelGenerator {
 							((Class) child).getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN))) {
 						Schema definition = extractSchema((Class) child, null);
 						if (definition != null) {
+							definition.setDeclaringContext(api);
 							api.getDefinitions().add(definition);
 							classMap.put((Class) child, definition);
 						}
@@ -382,20 +384,26 @@ public class OpenAPIModelGenerator {
 
 	private Response extractResponse(Parameter parameter) {
 		Response mResponse = factory.createResponse();
-		String code = (String) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "code");
+		ResponseDefinition responseDefinition = factory.createResponseDefinition();
+		mResponse.setResponseDefinition(responseDefinition);
+		responseDefinition.setDeclaringContext(mResponse);
+		Integer code = (Integer) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "code");
+		Boolean defaultFlag = (Boolean) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "default");
+		mResponse.setDefault(defaultFlag);
 		mResponse.setCode(code);
-		mResponse.setDescription(
+		responseDefinition.setDescription(
 				(String) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "description"));
 		Type type = parameter.getType();
 		Schema schema = extractDataType(type);
 		
 			if (parameter.getUpper() == -1 || parameter.getUpper() > 1 ) {
 				Schema arraySchema = factory.createSchema();
+				arraySchema.setDeclaringContext(responseDefinition);
 				arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
 				arraySchema.setItems(schema);
 				schema = arraySchema;
 			} 
-			mResponse.setSchema(schema);
+			responseDefinition.setSchema(schema);
 		
 
 	
@@ -411,6 +419,7 @@ public class OpenAPIModelGenerator {
 		mSchema = extractSchema(property, mSchema);
 		if (property.getUpper() == -1) {
 			Schema arraySchema = factory.createSchema();
+			arraySchema.setDeclaringContext(mProperty);
 			arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
 			arraySchema.setItems(mSchema);
 			mSchema = arraySchema;
@@ -555,8 +564,8 @@ public class OpenAPIModelGenerator {
 		if (pSecurityScheme.getLocation() != null)
 			mSecurityScheme.setLocation(OpenAPIProfileUtils.transformAPIKeyLocation(pSecurityScheme.getLocation()));
 		if (pSecurityScheme.getFlow() != null)
-			pSecurityScheme.setFlow(OpenAPIProfileUtils.transformOAuth2FlowType(mSecurityScheme.getFlow()));
-		mSecurityScheme.setAuthorizationUrl(mSecurityScheme.getAuthorizationUrl());
+			mSecurityScheme.setFlow(OpenAPIProfileUtils.transformOAuth2FlowType(pSecurityScheme.getFlow()));
+		mSecurityScheme.setAuthorizationUrl(pSecurityScheme.getAuthorizationURL());
 		mSecurityScheme.setTokenUrl(pSecurityScheme.getTokenURL());
 		if (!pSecurityScheme.getScopes().isEmpty()) {
 			for (SecurityScope pSecurityScope : pSecurityScheme.getScopes()) {

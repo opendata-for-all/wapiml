@@ -187,12 +187,12 @@ public class OpenAPIProfileUtils {
 	}
 
 
-	public static void applyAPIDataTypeStereotype(Type type, Schema schema) {
+	public static void applyAPIDataTypeStereotype(Type type, edu.uoc.som.openapi.JSONDataType jsonDataType, String format) {
 		Stereotype apiDataTypeStereotype = type.getApplicableStereotype(API_DATA_TYPE_QN);
 		if (!type.isStereotypeApplied(apiDataTypeStereotype))
 			type.applyStereotype(apiDataTypeStereotype);
-		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "type", transformJSONDataType(schema.getType()));
-		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "format", schema.getFormat());
+		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "type", transformJSONDataType(jsonDataType));
+		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "format", format);
 	}
 
 	public static void applyAPIParameterStereotype(Parameter parameter, edu.uoc.som.openapi.Parameter mParameter) {
@@ -215,11 +215,12 @@ public class OpenAPIProfileUtils {
 		Stereotype apiResponseStereotype = parameter.getApplicableStereotype(API_RESPONSE_QN);
 		if (!parameter.isStereotypeApplied(apiResponseStereotype))
 			parameter.applyStereotype(apiResponseStereotype);
-		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "description", mResponse.getDescription());
+		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "description", mResponse.getResponseDefinition().getDescription());
+		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "default", mResponse.getDefault());
 		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "code", mResponse.getCode());
-		if (!mResponse.getHeaders().isEmpty()) {
+		if (!mResponse.getResponseDefinition().getHeaders().isEmpty()) {
 			List<edu.som.uoc.openapiprofile.Header> pHeaders = new ArrayList<edu.som.uoc.openapiprofile.Header>();
-			for (Header mHeader : mResponse.getHeaders()) {
+			for (Header mHeader : mResponse.getResponseDefinition().getHeaders()) {
 				edu.som.uoc.openapiprofile.Header pHeader = OpenapiprofileFactory.eINSTANCE.createHeader();
 				pHeader.setName(mHeader.getName());
 				pHeader.setDescription(mHeader.getDescription());
@@ -246,9 +247,9 @@ public class OpenAPIProfileUtils {
 			}
 			UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "headers", pHeaders);
 		}
-		if (!mResponse.getExamples().isEmpty()) {
+		if (!mResponse.getResponseDefinition().getExamples().isEmpty()) {
 			List<Example> pExamples = new ArrayList<Example>();
-			for (edu.uoc.som.openapi.Example mExample : mResponse.getExamples()) {
+			for (edu.uoc.som.openapi.Example mExample : mResponse.getResponseDefinition().getExamples()) {
 				Example pExample = OpenapiprofileFactory.eINSTANCE.createExample();
 				pExample.setMimeType(mExample.getMimeType());
 				pExample.setValue(mExample.getValue());

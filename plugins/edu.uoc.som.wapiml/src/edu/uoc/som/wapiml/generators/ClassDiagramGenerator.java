@@ -171,7 +171,7 @@ public class ClassDiagramGenerator implements Serializable {
 					Class clazz = map.get(definition);
 					Schema additionalPropertiesSchema = definition.getAdditonalProperties();
 					if(isPrimitive(additionalPropertiesSchema)) {
-						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN), "additionalProperties",getUMLType(types, additionalPropertiesSchema.getType(), additionalPropertiesSchema.getFormat()));
+						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN), "additionalProperties",getUMLType(types, additionalPropertiesSchema.getType(), additionalPropertiesSchema.getFormat(), applyProfile));
 					}
 					if(isObject(additionalPropertiesSchema)) {
 						Class referencedClass = map.get(additionalPropertiesSchema);
@@ -302,15 +302,15 @@ public class ClassDiagramGenerator implements Serializable {
 							umlParameter.setUpper(-1);
 						if (!parameter.getItems().getEnum().isEmpty())
 							umlParameter.setType(getOrCreateEnumeration(parameter.getItems().getEnum(),
-									clazz.getName() + StringUtils.capitalize(parameter.getName()), types));
+									clazz.getName() + StringUtils.capitalize(parameter.getName()), types, applyProfile));
 						else
 							umlParameter.setType(getUMLType(types, parameter.getItems().getType(),
-									parameter.getItems().getFormat()));
+									parameter.getItems().getFormat(),applyProfile));
 					} else if (!parameter.getEnum().isEmpty())
 						umlParameter.setType(getOrCreateEnumeration(parameter.getEnum(),
-								clazz.getName() + StringUtils.capitalize(parameter.getName()), types));
+								clazz.getName() + StringUtils.capitalize(parameter.getName()), types,applyProfile));
 					else
-						umlParameter.setType(getUMLType(types, parameter.getType(), parameter.getFormat()));
+						umlParameter.setType(getUMLType(types, parameter.getType(), parameter.getFormat(),applyProfile));
 					if (parameter.getDefault() != null) {
 						umlParameter.setDefault(parameter.getDefault());
 					}
@@ -325,8 +325,8 @@ public class ClassDiagramGenerator implements Serializable {
 				for (Response response : operation.getResponses()) {
 
 					org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
-					if (response.getSchema() != null) {
-						Schema returnedSchema = response.getSchema();
+					if (response.getResponseDefinition().getSchema() != null) {
+						Schema returnedSchema = response.getResponseDefinition().getSchema();
 						boolean isObject = isObject(returnedSchema);
 						boolean isArrayOfObjects = isArrayOfObjects(returnedSchema);
 						Schema returnedObject = isObject ? returnedSchema
@@ -430,9 +430,9 @@ public class ClassDiagramGenerator implements Serializable {
 				if (!propertySchema.getType().equals(JSONDataType.ARRAY)) {
 					if (!propertySchema.getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(propertySchema.getEnum(),
-								clazz.getName() + StringUtils.capitalize(openAPIproperty.getReferenceName()), types));
+								clazz.getName() + StringUtils.capitalize(openAPIproperty.getReferenceName()), types,applyProfile));
 					else
-						umlProperty.setType(getUMLType(types, propertySchema.getType(), propertySchema.getFormat()));
+						umlProperty.setType(getUMLType(types, propertySchema.getType(), propertySchema.getFormat(),applyProfile));
 //					if (openAPIproperty.getRequired()!=null && openAPIproperty.getRequired())
 //						umlProperty.setLower(1);
 //					else
@@ -446,16 +446,15 @@ public class ClassDiagramGenerator implements Serializable {
 						umlProperty.setLower(0);
 					if (!propertySchema.getItems().getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(propertySchema.getItems().getEnum(),
-								clazz.getName() + StringUtils.capitalize(openAPIproperty.getReferenceName()), types));
+								clazz.getName() + StringUtils.capitalize(openAPIproperty.getReferenceName()), types,applyProfile));
 					else
 						umlProperty.setType(getUMLType(types, propertySchema.getItems().getType(),
-								propertySchema.getItems().getFormat()));
+								propertySchema.getItems().getFormat(),applyProfile));
 
 				}
 				clazz.getOwnedAttributes().add(umlProperty);
 				if (applyProfile) {
 					OpenAPIProfileUtils.applyAPIPropertyStereotype(umlProperty, openAPIproperty);
-					OpenAPIProfileUtils.applyAPIDataTypeStereotype((DataType) umlProperty.getType(), propertySchema);
 				}
 			}
 		}
@@ -494,52 +493,52 @@ public class ClassDiagramGenerator implements Serializable {
 		return false;
 	}
 
-	private PrimitiveType getUMLType(Package types, JSONDataType jsonDataType, String format) {
+	private PrimitiveType getUMLType(Package types, JSONDataType jsonDataType, String format, boolean applyProfile) {
 		PrimitiveType type = null;
 		switch (jsonDataType) {
 
 		case INTEGER:
 			if (format == null)
-				type = getOrCreatePrimitiveTypeByCommonName("Integer", types);
+				type = getOrCreatePrimitiveType("Integer", jsonDataType, format, types, applyProfile);
 			else if (format.equals("int32"))
-				type = getOrCreatePrimitiveTypeByCommonName("Integer", types);
+				type = getOrCreatePrimitiveType("Integer",jsonDataType, format, types, applyProfile);
 			else if (format.equals("int64"))
-				type = getOrCreatePrimitiveTypeByCommonName("Long", types);
+				type = getOrCreatePrimitiveType("Long", jsonDataType, format, types, applyProfile);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), types);
+				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types, applyProfile);
 			break;
 		case NUMBER:
 			if (format == null)
-				type = getOrCreatePrimitiveTypeByCommonName("Number", types);
+				type = getOrCreatePrimitiveType("Number", jsonDataType, format, types, applyProfile);
 			else if (format.equals("float"))
-				type = getOrCreatePrimitiveTypeByCommonName("Float", types);
+				type = getOrCreatePrimitiveType("Float", jsonDataType, format, types, applyProfile);
 			else if (format.equals("double"))
-				type = getOrCreatePrimitiveTypeByCommonName("Double", types);
+				type = getOrCreatePrimitiveType("Double", jsonDataType, format, types, applyProfile);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), types);
+				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types, applyProfile);
 			break;
 		case STRING:
 			if (format == null)
-				type = getOrCreatePrimitiveTypeByCommonName("String", types);
+				type = getOrCreatePrimitiveType("String", jsonDataType, format, types, applyProfile);
 			else if (format.equals("byte"))
-				type = getOrCreatePrimitiveTypeByCommonName("Byte", types);
+				type = getOrCreatePrimitiveType("Byte", jsonDataType, format, types, applyProfile);
 			else if (format.equals("binary"))
-				type = getOrCreatePrimitiveTypeByCommonName("Binary", types);
+				type = getOrCreatePrimitiveType("Binary", jsonDataType, format, types, applyProfile);
 			else if (format.equals("date"))
-				type = getOrCreatePrimitiveTypeByCommonName("Date", types);
+				type = getOrCreatePrimitiveType("Date", jsonDataType, format, types, applyProfile);
 			else if (format.equals("date-time"))
-				type = getOrCreatePrimitiveTypeByCommonName("DateTime", types);
+				type = getOrCreatePrimitiveType("DateTime", jsonDataType, format, types, applyProfile);
 			else if (format.equals("password"))
-				type = getOrCreatePrimitiveTypeByCommonName("Password", types);
+				type = getOrCreatePrimitiveType("Password", jsonDataType, format, types, applyProfile);
 			else
-				type = getOrCreatePrimitiveTypeByCommonName(StringUtils.capitalize(format), types);
+				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types, applyProfile);
 
 			break;
 		case BOOLEAN:
-			type = getOrCreatePrimitiveTypeByCommonName("Boolean", types);
+			type = getOrCreatePrimitiveType("Boolean", jsonDataType, format, types, applyProfile);
 			break;
 		case FILE:
-			type = getOrCreatePrimitiveTypeByCommonName("File", types);
+			type = getOrCreatePrimitiveType("File", jsonDataType, format, types, applyProfile);
 		default:
 			break;
 		}
@@ -561,7 +560,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
-	private PrimitiveType getOrCreatePrimitiveTypeByCommonName(String commonName, Package types) {
+	private PrimitiveType getOrCreatePrimitiveType(String commonName,  JSONDataType jsonDataType, String format, Package types,  boolean applyProfile) {
 
 		Type type = types.getOwnedType(commonName, false, UMLPackage.eINSTANCE.getPrimitiveType(), false);
 		if (type != null)
@@ -570,11 +569,14 @@ public class ClassDiagramGenerator implements Serializable {
 			PrimitiveType primitiveType = umlFactory.createPrimitiveType();
 			primitiveType.setName(commonName);
 			types.getOwnedTypes().add(primitiveType);
+			if(applyProfile) {
+				OpenAPIProfileUtils.applyAPIDataTypeStereotype((PrimitiveType) primitiveType, jsonDataType, format);
+			}
 			return primitiveType;
 		}
 	}
 
-	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Package types) {
+	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Package types, boolean applyProfile) {
 
 		Type type = types.getOwnedType(name, false, UMLPackage.eINSTANCE.getEnumeration(), false);
 		if (type != null)
@@ -587,6 +589,9 @@ public class ClassDiagramGenerator implements Serializable {
 				EnumerationLiteral literal = umlFactory.createEnumerationLiteral();
 				literal.setName(l);
 				enumeration.getOwnedLiterals().add(literal);
+			}
+			if(applyProfile) {
+				OpenAPIProfileUtils.applyAPIDataTypeStereotype((Enumeration) enumeration, JSONDataType.STRING, null);
 			}
 			return enumeration;
 		}
@@ -614,16 +619,5 @@ public class ClassDiagramGenerator implements Serializable {
 		namespace.getOwnedRules().add(constraint);
 	}
 
-	public Stereotype getStereotypeByName(String name) throws FileNotFoundException, IOException {
-		switch (name) {
-		case "OpenAPIProfile::API":
-			return (Stereotype) openAPIProfileResource.getEObject("_msWVIHyHEemaV87q0fd26g");
-
-		default:
-			break;
-		}
-		return null;
-
-	}
 
 }
