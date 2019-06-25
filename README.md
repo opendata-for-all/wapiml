@@ -21,7 +21,7 @@ Coming soon...
 ## Visualizing the Class diagram using Papyrus
 
 The Petstore example:
-![Petstore](https://opendata-for-all.github.io/openapi-to-uml/images/petstore.png)
+![Petstore](https://opendata-for-all.github.io/wapiml/images/petstore.png)
 
 Instructions:
 
