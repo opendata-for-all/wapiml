@@ -31,6 +31,7 @@ import org.eclipse.uml2.uml.util.UMLUtil;
 
 import edu.som.uoc.openapiprofile.CollectionFormat;
 import edu.som.uoc.openapiprofile.HTTPMethod;
+import edu.som.uoc.openapiprofile.Header;
 import edu.som.uoc.openapiprofile.JSONDataType;
 import edu.som.uoc.openapiprofile.SchemeType;
 import edu.som.uoc.openapiprofile.SecurityScope;
@@ -404,7 +405,30 @@ public class OpenAPIModelGenerator {
 				schema = arraySchema;
 			} 
 			responseDefinition.setSchema(schema);
-		
+			List<Header> pHeaders= (List<Header>) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "headers");
+			if(pHeaders != null && !pHeaders.isEmpty()) {
+				for(Header pHeader: pHeaders) {
+					edu.uoc.som.openapi.Header mHeader = factory.createHeader();
+					mHeader.setCollectionFormat(OpenAPIProfileUtils.transformCollectionFormat(pHeader.getCollectionFormat()));
+					mHeader.setDefault(pHeader.getDefault());
+					mHeader.setDescription(pHeader.getDescription());
+					mHeader.setExclusiveMaximum(pHeader.getExclusiveMaximum());
+					mHeader.setFormat(pHeader.getFormat());
+					// TODO items
+					mHeader.setMaximum(pHeader.getMaximum());
+					mHeader.setMaxItems(pHeader.getMaxItems());
+					mHeader.setMaxLength(pHeader.getMaxLength());
+					mHeader.setMinimum(pHeader.getMinimum());
+					mHeader.setMinItems(pHeader.getMinItems());
+					mHeader.setMinLength(pHeader.getMinLength());
+					mHeader.setMultipleOf(pHeader.getMultipleOf());
+					mHeader.setName(pHeader.getName());
+					mHeader.setPattern(pHeader.getPattern());
+					mHeader.setType(OpenAPIProfileUtils.transformJSONDataType(pHeader.getType()));
+					mHeader.setUniqueItems(pHeader.getUniqueItems());
+					responseDefinition.getHeaders().add(mHeader);
+				}
+			}
 
 	
 		return mResponse;
