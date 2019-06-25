@@ -4,7 +4,7 @@
 An OpenAPI round-trip tool that leverages on model-driven techniques to create, visualize, manage, and generate OpenAPI
 definitions. WAPIml embeds an OpenAPI metamodel but also a UML profile to enable working with OpenAPI in any Eclipse UML-compatible modeling tool.
 
-N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI definitions, can be found under the branch *openapi-to-uml*.
+N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI definitions, can be found under the branch [*openapi-to-uml*](https://github.com/opendata-for-all/wapiml/tree/openapi-to-uml).
 
 ## Requirements
 
