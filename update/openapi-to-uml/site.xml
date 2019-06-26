@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site
       associateSitesURL="associateSites.xml">
-   <feature url="features/edu.uoc.som.wapiml.feature_1.0.0.201906251218.jar" id="edu.uoc.som.wapiml.feature" version="1.0.0.201906251218">
-      <category name="WAPIml"/>
+   <feature url="features/edu.uoc.som.openapitouml.feature_1.0.1.201906102017.jar" id="edu.uoc.som.openapitouml.feature" version="1.0.1.201906102017">
+      <category name="openapitouml"/>
    </feature>
-   <category-def name="WAPIml" label="WAPIml">
+   <category-def name="openapitouml" label="OpenAPI to UML">
       <description>
-         Manage OpenAPI definitions using UML
+         Generate UML models from OpenAPI definitions
       </description>
    </category-def>
 </site>
