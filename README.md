@@ -40,9 +40,6 @@ The generated models are located under the folder *src-gen*
 
 
 ###### Modeling OpenAPI definitions using Papyrus
-=======
-The Petstore example:
-![Petstore](https://opendata-for-all.github.io/wapiml/images/petstore.png)
 
 From a generated model:
 
