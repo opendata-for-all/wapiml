@@ -13,7 +13,11 @@ N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI d
 
 ## Installation
 
-Coming soon...
+1. Open Eclipse IDE
+2. Click on *Help / Install New Software...*
+3. Click on *Add...* and fill in the form as indicated (the update site is https://opendata-for-all.github.io/wapiml/update/wapiml) then click on *OK*.
+
+![Add repository](https://opendata-for-all.github.io/wapiml/images/wapiml/capture1.PNG)
 
 ## Using the plugin
 
