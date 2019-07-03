@@ -8,7 +8,8 @@ N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI d
 
 ## Requirements
 
-Coming soon...
+- Eclipse Modeling tools (it can be found [here](https://www.eclipse.org/downloads/packages/release/2019-06/r/eclipse-modeling-tools)).
+- [Papyrus](https://www.eclipse.org/papyrus/) to visualize the UML model and manage the profile.
 
 ## Installation
 
