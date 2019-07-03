@@ -27,22 +27,36 @@ N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI d
 
 ## Using the plugin
 
-Coming soon...
+###### Generating UML models 
+1. Create a Project or use an existing project in your workspace.
+2. Import the JSON file of your OpenAPI definition. 
+3. Right-click on the definition file and select:
 
-## Visualizing the Class diagram using Papyrus
+	a. *WAPIml/Generate a Class diagram* to generate a simple UML model.
+	
+	b. *WAPIml/Generate a Class diagram and apply the OpenAPI profile* to generate a UML model annotated with OpenAPI profile.
+	
+The generated models are located under the folder *src-gen*
 
-The Petstore example:
-![Petstore](https://opendata-for-all.github.io/openapi-to-uml/images/petstore.png)
+###### Modeling OpenAPI definitions using Papyrus
 
-Instructions:
+From a generated model:
 
-1. Install Papyrus if you didn't do it yet (You can find the instructions [here](https://www.eclipse.org/papyrus/download.html)).
-2. Open the perspective *Papyrus*.
-3. Right-click on the generated UML model and select *New -> Papyrus Model*.
+1. Open the perspective *Papyrus*.
+2. Right-click on the generated UML model and select *New -> Papyrus Model*.
 4. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initializtion information* step where you should check *Class Diagram* as the Respresentation kind).
 5. Drag-and-drop the UML elements from the *Model Expoler* into the editor.
 6. Align and arrange the layout as you prefer.
 7. Save.
+
+From scratch:
+
+1. Open the perspective *Papyrus*.
+2. Click on *File* then select *New -> Papyrus Model*.
+4. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initializtion information* step where you should check *Class Diagram* as the Respresentation kind and click on *Browse Registrered Profiles* and select *OpenAPI* as shown below).
+
+5. Use the the *Properties* view to apply the streotypes and et the tag values (see the example below)
+
 
 ## Notes
 - Each schema definition  (#/definitions) of type `object` is represented as a class.
