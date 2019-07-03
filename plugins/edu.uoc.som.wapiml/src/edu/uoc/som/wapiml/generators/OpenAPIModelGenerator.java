@@ -16,6 +16,7 @@ import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
+import org.eclipse.uml2.uml.Generalization;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.NamedElement;
 import org.eclipse.uml2.uml.Operation;
@@ -198,15 +199,27 @@ public class OpenAPIModelGenerator {
 				if (child instanceof Class) {
 					if (((Class) child).isStereotypeApplied(
 							((Class) child).getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN))) {
-						Schema schema = classMap.get(child);
-						for (org.eclipse.uml2.uml.Property attribute : ((Class) child).getAllAttributes()) {
-							if (attribute.isStereotypeApplied(
-									attribute.getApplicableStereotype(OpenAPIProfileUtils.API_PROPERTY_QN))) {
-								Property mProperty = extractProperty(attribute);
-								schema.getProperties().add(mProperty);
-								
-
+						Class clazz = (Class) child;
+						Schema schema = classMap.get(clazz);
+						if (!clazz.getGeneralizations().isEmpty()) {
+							for (Generalization generalization : clazz.getGeneralizations()) {
+								if (generalization.getGeneral() != null
+										&& generalization.getGeneral() instanceof Class) {
+									Class parentClass = (Class) generalization.getGeneral();
+									Schema parentSchema = classMap.get(parentClass);
+									if (parentSchema != null) {
+										schema.getAllOf().add(parentSchema);
+									}
+								}
 							}
+							
+								Schema allOfItem = factory.createSchema();
+								allOfItem.setDeclaringContext(schema);
+								schema.getAllOf().add(allOfItem);
+								generateAttributes(clazz, allOfItem);
+							
+						} else {
+							generateAttributes(clazz, schema);
 						}
 					}
 
@@ -227,8 +240,10 @@ public class OpenAPIModelGenerator {
 							Property mProperty = extractProperty(secondEnd);
 							if (firstEnd.getType() instanceof Class) {
 								Schema schema = classMap.get(firstEnd.getType());
-								schema.getProperties().add(mProperty);
-							
+								if(schema.getAllOf().isEmpty())
+									schema.getProperties().add(mProperty);
+								else 
+									schema.getAllOf().get(schema.getAllOf().size()-1).getProperties().add(mProperty);
 
 							}
 
@@ -257,19 +272,26 @@ public class OpenAPIModelGenerator {
 					edu.uoc.som.openapi.Operation mOperation = extractOperation(operation, api);
 					switch (httpMethod) {
 					case DELETE:
-						mRelativePath.setDelete(mOperation);  break;
+						mRelativePath.setDelete(mOperation);
+						break;
 					case GET:
-						mRelativePath.setGet(mOperation); break;
+						mRelativePath.setGet(mOperation);
+						break;
 					case HEAD:
-						mRelativePath.setHead(mOperation);  break;
+						mRelativePath.setHead(mOperation);
+						break;
 					case OPTIONS:
-						mRelativePath.setOptions(mOperation);  break;
+						mRelativePath.setOptions(mOperation);
+						break;
 					case PATCH:
-						mRelativePath.setPatch(mOperation);  break;
+						mRelativePath.setPatch(mOperation);
+						break;
 					case POST:
-						mRelativePath.setPost(mOperation);  break;
+						mRelativePath.setPost(mOperation);
+						break;
 					case PUT:
-						mRelativePath.setPut(mOperation);  break;
+						mRelativePath.setPut(mOperation);
+						break;
 					default:
 						continue;
 					}
@@ -278,6 +300,16 @@ public class OpenAPIModelGenerator {
 		}
 
 		return api;
+	}
+
+	private void generateAttributes(Class clazz, Schema schema) {
+		for (org.eclipse.uml2.uml.Property attribute : clazz.getAllAttributes()) {
+			if (attribute.isStereotypeApplied(attribute.getApplicableStereotype(OpenAPIProfileUtils.API_PROPERTY_QN))) {
+				Property mProperty = extractProperty(attribute);
+				schema.getProperties().add(mProperty);
+
+			}
+		}
 	}
 
 	private edu.uoc.som.openapi.Operation extractOperation(Operation operation, API api) {
@@ -289,17 +321,19 @@ public class OpenAPIModelGenerator {
 				(String) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN, "description"));
 		mOperation.setSummary(
 				(String) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN, "summary"));
-		
-		List<SchemeType> pSchemes = (List<SchemeType>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN,
-				"schemes");
+
+		List<SchemeType> pSchemes = (List<SchemeType>) UMLUtil.getTaggedValue(operation,
+				OpenAPIProfileUtils.API_OPERATION_QN, "schemes");
 		if (pSchemes != null && !pSchemes.isEmpty()) {
 			for (SchemeType from : pSchemes)
 				mOperation.getSchemes().add(OpenAPIProfileUtils.transformSchemeType(from));
 		}
-		List<String> consumes = (List<String>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN, "consumes");
+		List<String> consumes = (List<String>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN,
+				"consumes");
 		if (consumes != null && !consumes.isEmpty())
 			mOperation.getConsumes().addAll(consumes);
-		List<String> produces = (List<String>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN, "produces");
+		List<String> produces = (List<String>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN,
+				"produces");
 		if (produces != null && !produces.isEmpty())
 			mOperation.getProduces().addAll(produces);
 		if (operation.isStereotypeApplied(operation.getApplicableStereotype(OpenAPIProfileUtils.EXTERNAL_DOCS_QN))) {
@@ -328,7 +362,7 @@ public class OpenAPIModelGenerator {
 				mOperation.getResponses().add(mResponse);
 			}
 		}
-		
+
 		return mOperation;
 	}
 
@@ -359,13 +393,12 @@ public class OpenAPIModelGenerator {
 						items.getEnum().addAll(schema.getEnum());
 					mParameter.setItems(items);
 					mParameter.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
+				} else {
+					mParameter.setType(schema.getType());
+					mParameter.setFormat(schema.getFormat());
+					if (type instanceof Enumeration)
+						mParameter.getEnum().addAll(schema.getEnum());
 				}
-				else {
-				mParameter.setType(schema.getType());
-				mParameter.setFormat(schema.getFormat());
-				if (type instanceof Enumeration)
-					mParameter.getEnum().addAll(schema.getEnum());
-			}
 			}
 		}
 		if (type instanceof Class) {
@@ -375,7 +408,7 @@ public class OpenAPIModelGenerator {
 				arraySchema.setItems(schema);
 				schema = arraySchema;
 			}
-				mParameter.setSchema(schema);
+			mParameter.setSchema(schema);
 		}
 
 		OpenAPIProfileUtils.extractJSONSchemaSubsetproperties(parameter, OpenAPIProfileUtils.API_PARAMETER_QN, schema);
@@ -389,47 +422,49 @@ public class OpenAPIModelGenerator {
 		mResponse.setResponseDefinition(responseDefinition);
 		responseDefinition.setDeclaringContext(mResponse);
 		Integer code = (Integer) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "code");
-		Boolean defaultFlag = (Boolean) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "default");
+		Boolean defaultFlag = (Boolean) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN,
+				"default");
 		mResponse.setDefault(defaultFlag);
 		mResponse.setCode(code);
 		responseDefinition.setDescription(
 				(String) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "description"));
 		Type type = parameter.getType();
 		Schema schema = extractDataType(type);
-		
-			if (parameter.getUpper() == -1 || parameter.getUpper() > 1 ) {
-				Schema arraySchema = factory.createSchema();
-				arraySchema.setDeclaringContext(responseDefinition);
-				arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
-				arraySchema.setItems(schema);
-				schema = arraySchema;
-			} 
-			responseDefinition.setSchema(schema);
-			List<Header> pHeaders= (List<Header>) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN, "headers");
-			if(pHeaders != null && !pHeaders.isEmpty()) {
-				for(Header pHeader: pHeaders) {
-					edu.uoc.som.openapi.Header mHeader = factory.createHeader();
-					mHeader.setCollectionFormat(OpenAPIProfileUtils.transformCollectionFormat(pHeader.getCollectionFormat()));
-					mHeader.setDefault(pHeader.getDefault());
-					mHeader.setDescription(pHeader.getDescription());
-					mHeader.setExclusiveMaximum(pHeader.getExclusiveMaximum());
-					mHeader.setFormat(pHeader.getFormat());
-					mHeader.setMaximum(pHeader.getMaximum());
-					mHeader.setMaxItems(pHeader.getMaxItems());
-					mHeader.setMaxLength(pHeader.getMaxLength());
-					mHeader.setMinimum(pHeader.getMinimum());
-					mHeader.setMinItems(pHeader.getMinItems());
-					mHeader.setMinLength(pHeader.getMinLength());
-					mHeader.setMultipleOf(pHeader.getMultipleOf());
-					mHeader.setName(pHeader.getName());
-					mHeader.setPattern(pHeader.getPattern());
-					mHeader.setType(OpenAPIProfileUtils.transformJSONDataType(pHeader.getType()));
-					mHeader.setUniqueItems(pHeader.getUniqueItems());
-					responseDefinition.getHeaders().add(mHeader);
-				}
-			}
 
-	
+		if (parameter.getUpper() == -1 || parameter.getUpper() > 1) {
+			Schema arraySchema = factory.createSchema();
+			arraySchema.setDeclaringContext(responseDefinition);
+			arraySchema.setType(edu.uoc.som.openapi.JSONDataType.ARRAY);
+			arraySchema.setItems(schema);
+			schema = arraySchema;
+		}
+		responseDefinition.setSchema(schema);
+		List<Header> pHeaders = (List<Header>) UMLUtil.getTaggedValue(parameter, OpenAPIProfileUtils.API_RESPONSE_QN,
+				"headers");
+		if (pHeaders != null && !pHeaders.isEmpty()) {
+			for (Header pHeader : pHeaders) {
+				edu.uoc.som.openapi.Header mHeader = factory.createHeader();
+				mHeader.setCollectionFormat(
+						OpenAPIProfileUtils.transformCollectionFormat(pHeader.getCollectionFormat()));
+				mHeader.setDefault(pHeader.getDefault());
+				mHeader.setDescription(pHeader.getDescription());
+				mHeader.setExclusiveMaximum(pHeader.getExclusiveMaximum());
+				mHeader.setFormat(pHeader.getFormat());
+				mHeader.setMaximum(pHeader.getMaximum());
+				mHeader.setMaxItems(pHeader.getMaxItems());
+				mHeader.setMaxLength(pHeader.getMaxLength());
+				mHeader.setMinimum(pHeader.getMinimum());
+				mHeader.setMinItems(pHeader.getMinItems());
+				mHeader.setMinLength(pHeader.getMinLength());
+				mHeader.setMultipleOf(pHeader.getMultipleOf());
+				mHeader.setName(pHeader.getName());
+				mHeader.setPattern(pHeader.getPattern());
+				mHeader.setType(OpenAPIProfileUtils.transformJSONDataType(pHeader.getType()));
+				mHeader.setUniqueItems(pHeader.getUniqueItems());
+				responseDefinition.getHeaders().add(mHeader);
+			}
+		}
+
 		return mResponse;
 	}
 
@@ -447,10 +482,10 @@ public class OpenAPIModelGenerator {
 			arraySchema.setItems(mSchema);
 			mSchema = arraySchema;
 		}
-		
-		if(property.getUpper() != -1 && property.getUpper() != 0  && property.getUpper() != 1)
+
+		if (property.getUpper() != -1 && property.getUpper() != 0 && property.getUpper() != 1)
 			mSchema.setMaxItems(property.getUpper());
-		if(property.getLower() != 0 )
+		if (property.getLower() != 0)
 			mSchema.setMinItems(property.getLower());
 		mSchema.setDefault(property.getDefault());
 		mProperty.setSchema(mSchema);
@@ -490,7 +525,8 @@ public class OpenAPIModelGenerator {
 			schema = factory.createSchema();
 		if (element instanceof Class) {
 			schema.setReferenceName(element.getName());
-			schema.setType(edu.uoc.som.openapi.JSONDataType.OBJECT);
+			if(((Class) element).getGeneralizations().isEmpty())
+				schema.setType(edu.uoc.som.openapi.JSONDataType.OBJECT);
 			classMap.put((Class) element, schema);
 		}
 		if (element instanceof Class) {
@@ -508,21 +544,23 @@ public class OpenAPIModelGenerator {
 			schema.setDefault((String) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.SCHEMA_QN, "default"));
 			schema.setDescription(
 					(String) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.SCHEMA_QN, "description"));
-			Type additionalProperties = (Type) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.SCHEMA_QN,"additionalProperties");
-			if(additionalProperties !=null) {
-				if(additionalProperties instanceof Class) {
+			Type additionalProperties = (Type) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.SCHEMA_QN,
+					"additionalProperties");
+			if (additionalProperties != null) {
+				if (additionalProperties instanceof Class) {
 					Schema additionalPropertiesSchema = classMap.get(additionalProperties);
-					if(additionalPropertiesSchema != null)
+					if (additionalPropertiesSchema != null)
 						schema.setAdditonalProperties(additionalPropertiesSchema);
 				}
-				if(additionalProperties instanceof DataType) {
+				if (additionalProperties instanceof DataType) {
 					Schema additionalPropertiesSchema = extractDataType(additionalProperties);
 					schema.setAdditonalProperties(additionalPropertiesSchema);
 				}
 			}
 		}
 		if (element instanceof org.eclipse.uml2.uml.Property) {
-			XMLElement pXMLElement = (XMLElement) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.API_PROPERTY_QN, "xml");
+			XMLElement pXMLElement = (XMLElement) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.API_PROPERTY_QN,
+					"xml");
 			if (pXMLElement != null) {
 				edu.uoc.som.openapi.XMLElement mXMLElement = factory.createXMLElement();
 				mXMLElement.setAttribute(pXMLElement.getAttribute());
@@ -531,14 +569,14 @@ public class OpenAPIModelGenerator {
 				mXMLElement.setPrefix(pXMLElement.getPrefix());
 				mXMLElement.setWrapped(pXMLElement.getWrapped());
 				schema.setXml(mXMLElement);
-				
+
 			}
 			schema.setExample((String) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.API_PROPERTY_QN, "example"));
 			schema.setDescription(
 					(String) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.API_PROPERTY_QN, "description"));
 			schema.setTitle((String) UMLUtil.getTaggedValue(element, OpenAPIProfileUtils.API_PROPERTY_QN, "title"));
-			
-			OpenAPIProfileUtils.extractJSONSchemaSubsetproperties(element,  OpenAPIProfileUtils.API_PROPERTY_QN, schema);
+
+			OpenAPIProfileUtils.extractJSONSchemaSubsetproperties(element, OpenAPIProfileUtils.API_PROPERTY_QN, schema);
 		}
 
 		return schema;
@@ -602,17 +640,18 @@ public class OpenAPIModelGenerator {
 
 	}
 
-	private SecurityRequirement extractSecurity(edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement, API api) {
+	private SecurityRequirement extractSecurity(edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement,
+			API api) {
 		SecurityRequirement mSecurityRequirement = factory.createSecurityRequirement();
-		
-		SecurityScheme securityScheme = OpenAPIUtils.getSecurityDeiitionByName(pSecurityRequirement.getName(),api);
+
+		SecurityScheme securityScheme = OpenAPIUtils.getSecurityDeiitionByName(pSecurityRequirement.getName(), api);
 		mSecurityRequirement.setSecurityScheme(securityScheme);
-		for(String s: pSecurityRequirement.getScopes()) {
+		for (String s : pSecurityRequirement.getScopes()) {
 			edu.uoc.som.openapi.SecurityScope scope = OpenAPIUtils.getSecurityScopeByName(s, securityScheme);
-			if(scope!= null)
+			if (scope != null)
 				mSecurityRequirement.getSecurityScopes().add(scope);
 		}
-			
+
 		return mSecurityRequirement;
 
 	}
