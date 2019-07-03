@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <associateSites>
-	<associateSite url="https://download.eclipse.org/releases/2019-03/" label="2019-03"/>
+	<associateSite url="http://download.eclipse.org/modeling/mdt/papyrus/updates/releases/2019-06" label="papyrus"/>
 	<associateSite url="https://opendata-for-all.github.io/openapi-metamodel/update/" label="openapi-metamodel"/>
 	<associateSite url="https://opendata-for-all.github.io/openapi-profile/update/" label="openapi-profile"/>
+	<associateSite url="https://download.eclipse.org/releases/2019-06/" label="2019-06"/>
 </associateSites>

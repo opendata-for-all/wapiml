@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site
       associateSitesURL="associateSites.xml">
-   <feature url="features/edu.uoc.som.wapiml.feature_1.0.0.201906251218.jar" id="edu.uoc.som.wapiml.feature" version="1.0.0.201906251218">
+   <feature url="features/edu.uoc.som.wapiml.feature_1.0.0.201907031514.jar" id="edu.uoc.som.wapiml.feature" version="1.0.0.201907031514">
       <category name="WAPIml"/>
    </feature>
    <category-def name="WAPIml" label="WAPIml">
