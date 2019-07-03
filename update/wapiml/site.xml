@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site
-      associateSitesURL="./associateSites.xml">
-   <feature url="features/edu.uoc.som.wapiml.feature_1.0.0.201907031542.jar" id="edu.uoc.som.wapiml.feature" version="1.0.0.201907031542">
+      associateSitesURL="associateSites.xml">
+   <description name="WAPIml" url="http://opendata-for-all.github.io/wapiml/update/wapiml">
+      Manage OpenAPI definitions using UML
+   </description>
+   <feature url="features/edu.uoc.som.wapiml.feature_1.0.0.201907031706.jar" id="edu.uoc.som.wapiml.feature" version="1.0.0.201907031706">
       <category name="WAPIml"/>
    </feature>
    <category-def name="WAPIml" label="WAPIml">
