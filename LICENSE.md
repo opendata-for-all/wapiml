@@ -38,6 +38,7 @@ form, that is based on (or derived from) the Program and for which the
 editorial revisions, annotations, elaborations, or other modifications
 represent, as a whole, an original work of authorship.
 
+
 "Modified Works" shall mean any work in Source Code or other form that
 results from an addition to, deletion from, or modification of the
 contents of the Program, including, for purposes of clarity any new file
