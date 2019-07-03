@@ -81,4 +81,4 @@ The generated OpenAPI definition will be located under the folder *src-gen* in J
 	- the `required` field in the OpenAPI definition (note that a required parameter or property of type `array` doesn't not mean that the lower bound should be 1. Empty arrays are still valid).
 	- `minItems` and `maxItems` for `array` types.
 
-N.B. This tool relies on the OpenAPI metamodel located [here](https://github.com/opendata-for-all/openapi-metamodel).
+N.B. This tool relies on [the OpenAPI metamodel](https://github.com/opendata-for-all/openapi-metamodel) and [the OpenAPI UML profile](https://github.com/opendata-for-all/openapi-profile).
