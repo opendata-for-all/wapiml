@@ -49,14 +49,27 @@ From a generated model:
 6. Align and arrange the layout as you prefer.
 7. Save.
 
+![Petstore](https://opendata-for-all.github.io/wapiml/images/wapiml/petstore.png)
+
 From scratch:
 
 1. Open the perspective *Papyrus*.
 2. Click on *File* then select *New -> Papyrus Model*.
-4. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initializtion information* step where you should check *Class Diagram* as the Respresentation kind and click on *Browse Registrered Profiles* and select *OpenAPI* as shown below).
+3. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initializtion information* step where you should check *Class Diagram* as the Respresentation kind and click on *Browse Registrered Profiles* and select *OpenAPI* as shown below).
 
-5. Use the the *Properties* view to apply the streotypes and et the tag values (see the example below)
+![profile](https://opendata-for-all.github.io/wapiml/images/wapiml/capture3.PNG)
 
+4. Add UML elements to the canvas.
+5. Use the the *Properties* view to apply the streotypes and et the tag values (see an example below).
+
+![Propertis views](https://opendata-for-all.github.io/wapiml/images/wapiml/capture4.PNG)
+
+###### Generate an OpenAPI definition from an annotated UML model
+
+1. Switch to the perspective *Java*.
+2. Right-click on the annotated UML model and select *WAPIml -> Generate an OpenAPI definition*.
+
+The generated OpenAPI definition will be located under the folder *src-gen* in JSON format.
 
 ## Notes
 - Each schema definition  (#/definitions) of type `object` is represented as a class.
