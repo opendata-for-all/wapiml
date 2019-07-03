@@ -19,6 +19,12 @@ N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI d
 
 ![Add repository](https://opendata-for-all.github.io/wapiml/images/wapiml/capture1.PNG)
 
+4. Select *WAPIlml* then click on *Next*.
+
+![Install](https://opendata-for-all.github.io/wapiml/images/wapiml/capture2.PNG)
+
+5. Follow the the rest of the steps (license, etc...) and reboot Eclipse.
+
 ## Using the plugin
 
 Coming soon...
