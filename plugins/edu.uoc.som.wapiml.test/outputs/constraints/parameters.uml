@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_5PTcIJ53EemCD4nTRXFQdA">
+  <packagedElement xmi:type="uml:Package" xmi:id="_5PTcIZ53EemCD4nTRXFQdA" name="parameters">
+    <packagedElement xmi:type="uml:Class" xmi:id="_5PTcI553EemCD4nTRXFQdA" name="Concept">
+      <ownedAttribute xmi:id="_5PTcJZ53EemCD4nTRXFQdA" name="id" type="_5PTcJJ53EemCD4nTRXFQdA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5PTcJp53EemCD4nTRXFQdA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_5PUDMZ53EemCD4nTRXFQdA" name="attributeWithMaxItem" type="_5PUDMJ53EemCD4nTRXFQdA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5PUDMp53EemCD4nTRXFQdA" value="1"/>
+        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5PUDM553EemCD4nTRXFQdA" value="*"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_5PUDNJ53EemCD4nTRXFQdA" name="findConcepts">
+        <ownedRule xmi:id="_5PUDNZ53EemCD4nTRXFQdA" name="findConcepts-parameterWithMinLength-minLengthConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5PUDNp53EemCD4nTRXFQdA">
+            <language>OCL</language>
+            <body>self.parameterWithMinLength.size() >= 3</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_5PUDOZ53EemCD4nTRXFQdA" name="findConcepts-parameterWithMaxLength-maxLengthConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5PUDOp53EemCD4nTRXFQdA">
+            <language>OCL</language>
+            <body>self.parameterWithMaxLength.size() &lt;= 10</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_5PUqQp53EemCD4nTRXFQdA" name="findConcepts-parameterWithMinimum-minimumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5PUqQ553EemCD4nTRXFQdA">
+            <language>OCL</language>
+            <body>self.parameterWithMinimum >= 10.0</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_5PUqR553EemCD4nTRXFQdA" name="findConcepts-parameterWithMaximum-maximumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5PUqSJ53EemCD4nTRXFQdA">
+            <language>OCL</language>
+            <body>self.parameterWithMaximum &lt;= 10.0</body>
+          </specification>
+        </ownedRule>
+        <ownedParameter xmi:id="_5PUDN553EemCD4nTRXFQdA" name="parameterWithMinLength" type="_5PUDMJ53EemCD4nTRXFQdA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5PUDOJ53EemCD4nTRXFQdA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_5PUqQJ53EemCD4nTRXFQdA" name="parameterWithMaxLength" type="_5PUDMJ53EemCD4nTRXFQdA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5PUqQZ53EemCD4nTRXFQdA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_5PUqRZ53EemCD4nTRXFQdA" name="parameterWithMinimum" type="_5PUqRJ53EemCD4nTRXFQdA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5PUqRp53EemCD4nTRXFQdA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_5PVRUJ53EemCD4nTRXFQdA" name="parameterWithMaximum" type="_5PUqRJ53EemCD4nTRXFQdA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5PVRUZ53EemCD4nTRXFQdA"/>
+        </ownedParameter>
+        <ownedParameter xmi:id="_5PVRUp53EemCD4nTRXFQdA" type="_5PTcI553EemCD4nTRXFQdA" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5PVRU553EemCD4nTRXFQdA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5PVRVJ53EemCD4nTRXFQdA" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_5PTcIp53EemCD4nTRXFQdA" name="types">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_5PTcJJ53EemCD4nTRXFQdA" name="Long"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_5PUDMJ53EemCD4nTRXFQdA" name="String"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_5PUqRJ53EemCD4nTRXFQdA" name="Integer"/>
+  </packagedElement>
+</uml:Model>

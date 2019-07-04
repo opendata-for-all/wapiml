@@ -1,0 +1,88 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "A simple definition to test constraints on parameters",
+    "version": "1.0.0",
+    "title": "params-with-constraints"
+  },
+  "host": "example.com",
+  "basePath": "/v1",
+  "tags": [
+    {
+      "name": "concept"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/concepts": {
+      "get": {
+        "tags": [
+          "concept"
+        ],
+        "operationId": "findConcepts",
+        "parameters": [
+          {
+            "name": "parameterWithMinLength",
+            "type": "string",
+            "in": "query",
+            "minLength": 3
+          },
+          {
+            "name": "parameterWithMaxLength",
+            "type": "string",
+            "in": "query",
+            "maxLength": 10
+          },
+          {
+            "name": "parameterWithMinimum",
+            "type": "integer",
+            "in": "query",
+            "minimum": 10
+          },
+          {
+            "name": "parameterWithMaximum",
+            "type": "integer",
+            "in": "query",
+            "maximum": 10
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Concept"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Concept": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "attributeWithMaxItem": {
+          "type": "array",
+          "maxItems": 20,
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
