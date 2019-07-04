@@ -1,248 +1,585 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_kVFY0CS4EeiPUvkzZ2gAiA" name="petstore">
-  <packageImport xmi:type="uml:PackageImport" xmi:id="_Bg-rQCS5EeiPUvkzZ2gAiA">
-    <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
-  </packageImport>
-  <packagedElement xmi:type="uml:Class" xmi:id="_kVFY0SS4EeiPUvkzZ2gAiA" name="Order">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY0iS4EeiPUvkzZ2gAiA" name="id" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY0yS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY1CS4EeiPUvkzZ2gAiA" name="petId" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY1SS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY1iS4EeiPUvkzZ2gAiA" name="quantity" type="_kVFY6iS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY1yS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY2CS4EeiPUvkzZ2gAiA" name="shipDate" type="_kVFY6yS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY2SS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY2iS4EeiPUvkzZ2gAiA" name="status" type="_kVFY7CS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY2yS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY3CS4EeiPUvkzZ2gAiA" name="complete" type="_kVFY8CS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY3SS4EeiPUvkzZ2gAiA"/>
-      <defaultValue xmi:type="uml:LiteralString" xmi:id="_kVFY3iS4EeiPUvkzZ2gAiA" value="false"/>
-    </ownedAttribute>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFY3yS4EeiPUvkzZ2gAiA" name="placeOrder">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFY4CS4EeiPUvkzZ2gAiA" name="body" type="_kVFY0SS4EeiPUvkzZ2gAiA"/>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFY4SS4EeiPUvkzZ2gAiA" type="_kVFY0SS4EeiPUvkzZ2gAiA" direction="return"/>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFY4iS4EeiPUvkzZ2gAiA" name="getOrderById">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFY4yS4EeiPUvkzZ2gAiA" name="orderId" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY5CS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFY5SS4EeiPUvkzZ2gAiA" type="_kVFY0SS4EeiPUvkzZ2gAiA" direction="return"/>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFY5iS4EeiPUvkzZ2gAiA" name="deleteOrder">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFY5yS4EeiPUvkzZ2gAiA" name="orderId" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY6CS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-    </ownedOperation>
-  </packagedElement>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_kVFY6SS4EeiPUvkzZ2gAiA" name="Long"/>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_kVFY6iS4EeiPUvkzZ2gAiA" name="Integer"/>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_kVFY6yS4EeiPUvkzZ2gAiA" name="DateTime"/>
-  <packagedElement xmi:type="uml:Enumeration" xmi:id="_kVFY7CS4EeiPUvkzZ2gAiA" name="OrderStatus">
-    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_kVFY7SS4EeiPUvkzZ2gAiA" name="placed"/>
-    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_kVFY7iS4EeiPUvkzZ2gAiA" name="approved"/>
-    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_kVFY7yS4EeiPUvkzZ2gAiA" name="delivered"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_kVFY8CS4EeiPUvkzZ2gAiA" name="Boolean"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_kVFY8SS4EeiPUvkzZ2gAiA" name="User">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY8iS4EeiPUvkzZ2gAiA" name="id" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY8yS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY9CS4EeiPUvkzZ2gAiA" name="username" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY9SS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY9iS4EeiPUvkzZ2gAiA" name="firstName" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY9yS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY-CS4EeiPUvkzZ2gAiA" name="lastName" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY-SS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY-iS4EeiPUvkzZ2gAiA" name="email" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY-yS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY_CS4EeiPUvkzZ2gAiA" name="password" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY_SS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFY_iS4EeiPUvkzZ2gAiA" name="phone" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFY_yS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZACS4EeiPUvkzZ2gAiA" name="userStatus" type="_kVFY6iS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZASS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZAiS4EeiPUvkzZ2gAiA" name="createUser">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZAyS4EeiPUvkzZ2gAiA" name="body" type="_kVFY8SS4EeiPUvkzZ2gAiA"/>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZBCS4EeiPUvkzZ2gAiA" name="createUsersWithArrayInput">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZBSS4EeiPUvkzZ2gAiA" name="body" type="_kVFY8SS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZBiS4EeiPUvkzZ2gAiA"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kVFZByS4EeiPUvkzZ2gAiA" value="*"/>
-      </ownedParameter>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZCCS4EeiPUvkzZ2gAiA" name="createUsersWithListInput">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZCSS4EeiPUvkzZ2gAiA" name="body" type="_kVFY8SS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZCiS4EeiPUvkzZ2gAiA"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kVFZCyS4EeiPUvkzZ2gAiA" value="*"/>
-      </ownedParameter>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZDCS4EeiPUvkzZ2gAiA" name="loginUser">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZDSS4EeiPUvkzZ2gAiA" name="username" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZDiS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZDyS4EeiPUvkzZ2gAiA" name="password" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZECS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZESS4EeiPUvkzZ2gAiA" name="logoutUser"/>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZEiS4EeiPUvkzZ2gAiA" name="getUserByName">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZEyS4EeiPUvkzZ2gAiA" name="username" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZFCS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZFSS4EeiPUvkzZ2gAiA" type="_kVFY8SS4EeiPUvkzZ2gAiA" direction="return"/>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZFiS4EeiPUvkzZ2gAiA" name="updateUser">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZFyS4EeiPUvkzZ2gAiA" name="username" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZGCS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZGSS4EeiPUvkzZ2gAiA" name="body" type="_kVFY8SS4EeiPUvkzZ2gAiA"/>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZGiS4EeiPUvkzZ2gAiA" name="deleteUser">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZGyS4EeiPUvkzZ2gAiA" name="username" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZHCS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-    </ownedOperation>
-  </packagedElement>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_kVFZHSS4EeiPUvkzZ2gAiA" name="String"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_kVFZHiS4EeiPUvkzZ2gAiA" name="Category">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZHyS4EeiPUvkzZ2gAiA" name="id" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZICS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZISS4EeiPUvkzZ2gAiA" name="name" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZIiS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_kVFZIyS4EeiPUvkzZ2gAiA" name="Tag">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZJCS4EeiPUvkzZ2gAiA" name="id" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZJSS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZJiS4EeiPUvkzZ2gAiA" name="name" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZJyS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_kVFZKCS4EeiPUvkzZ2gAiA" name="Pet">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZKSS4EeiPUvkzZ2gAiA" name="id" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZKiS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZKyS4EeiPUvkzZ2gAiA" name="name" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZLCS4EeiPUvkzZ2gAiA" value="1"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZLSS4EeiPUvkzZ2gAiA" name="photoUrls" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZLiS4EeiPUvkzZ2gAiA"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kVFZLyS4EeiPUvkzZ2gAiA" value="*"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZMCS4EeiPUvkzZ2gAiA" name="status" type="_kVFZXCS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZMSS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZMiS4EeiPUvkzZ2gAiA" name="updatePet">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZMyS4EeiPUvkzZ2gAiA" name="body" type="_kVFZKCS4EeiPUvkzZ2gAiA"/>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZNCS4EeiPUvkzZ2gAiA" name="addPet">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZNSS4EeiPUvkzZ2gAiA" name="body" type="_kVFZKCS4EeiPUvkzZ2gAiA"/>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZNiS4EeiPUvkzZ2gAiA" name="findPetsByStatus">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZNyS4EeiPUvkzZ2gAiA" name="status" type="_kVFZXCS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZOCS4EeiPUvkzZ2gAiA" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kVFZOSS4EeiPUvkzZ2gAiA" value="*"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZOiS4EeiPUvkzZ2gAiA" type="_kVFZKCS4EeiPUvkzZ2gAiA" direction="return">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZOyS4EeiPUvkzZ2gAiA"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kVFZPCS4EeiPUvkzZ2gAiA" value="*"/>
-      </ownedParameter>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZPSS4EeiPUvkzZ2gAiA" name="findPetsByTags">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZPiS4EeiPUvkzZ2gAiA" name="tags" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZPyS4EeiPUvkzZ2gAiA" value="1"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kVFZQCS4EeiPUvkzZ2gAiA" value="*"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZQSS4EeiPUvkzZ2gAiA" type="_kVFZKCS4EeiPUvkzZ2gAiA" direction="return">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZQiS4EeiPUvkzZ2gAiA"/>
-        <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kVFZQyS4EeiPUvkzZ2gAiA" value="*"/>
-      </ownedParameter>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZRCS4EeiPUvkzZ2gAiA" name="getPetById">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZRSS4EeiPUvkzZ2gAiA" name="petId" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZRiS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZRyS4EeiPUvkzZ2gAiA" type="_kVFZKCS4EeiPUvkzZ2gAiA" direction="return"/>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZSCS4EeiPUvkzZ2gAiA" name="updatePetWithForm">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZSSS4EeiPUvkzZ2gAiA" name="petId" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZSiS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZSyS4EeiPUvkzZ2gAiA" name="name" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZTCS4EeiPUvkzZ2gAiA"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZTSS4EeiPUvkzZ2gAiA" name="status" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZTiS4EeiPUvkzZ2gAiA"/>
-      </ownedParameter>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZTyS4EeiPUvkzZ2gAiA" name="deletePet">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZUCS4EeiPUvkzZ2gAiA" name="api_key" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZUSS4EeiPUvkzZ2gAiA"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZUiS4EeiPUvkzZ2gAiA" name="petId" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZUyS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-    </ownedOperation>
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZVCS4EeiPUvkzZ2gAiA" name="uploadFile">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZVSS4EeiPUvkzZ2gAiA" name="petId" type="_kVFY6SS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZViS4EeiPUvkzZ2gAiA" value="1"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZVyS4EeiPUvkzZ2gAiA" name="additionalMetadata" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZWCS4EeiPUvkzZ2gAiA"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZWSS4EeiPUvkzZ2gAiA" name="file" type="_kVFZcCS4EeiPUvkzZ2gAiA">
-        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZWiS4EeiPUvkzZ2gAiA"/>
-      </ownedParameter>
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZWyS4EeiPUvkzZ2gAiA" type="_kVFZYCS4EeiPUvkzZ2gAiA" direction="return"/>
-    </ownedOperation>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Enumeration" xmi:id="_kVFZXCS4EeiPUvkzZ2gAiA" name="PetStatus">
-    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_kVFZXSS4EeiPUvkzZ2gAiA" name="available"/>
-    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_kVFZXiS4EeiPUvkzZ2gAiA" name="pending"/>
-    <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_kVFZXyS4EeiPUvkzZ2gAiA" name="sold"/>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Class" xmi:id="_kVFZYCS4EeiPUvkzZ2gAiA" name="ApiResponse">
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZYSS4EeiPUvkzZ2gAiA" name="code" type="_kVFY6iS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZYiS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZYyS4EeiPUvkzZ2gAiA" name="type" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZZCS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-    <ownedAttribute xmi:type="uml:Property" xmi:id="_kVFZZSS4EeiPUvkzZ2gAiA" name="message" type="_kVFZHSS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZZiS4EeiPUvkzZ2gAiA"/>
-    </ownedAttribute>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_kVFZZyS4EeiPUvkzZ2gAiA" memberEnd="_kVFZaCS4EeiPUvkzZ2gAiA _kVFZaSS4EeiPUvkzZ2gAiA" navigableOwnedEnd="_kVFZaSS4EeiPUvkzZ2gAiA">
-    <ownedEnd xmi:type="uml:Property" xmi:id="_kVFZaCS4EeiPUvkzZ2gAiA" name="Pet" type="_kVFZKCS4EeiPUvkzZ2gAiA" association="_kVFZZyS4EeiPUvkzZ2gAiA"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_kVFZaSS4EeiPUvkzZ2gAiA" name="category" type="_kVFZHiS4EeiPUvkzZ2gAiA" aggregation="composite" association="_kVFZZyS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZaiS4EeiPUvkzZ2gAiA"/>
-    </ownedEnd>
-  </packagedElement>
-  <packagedElement xmi:type="uml:Association" xmi:id="_kVFZayS4EeiPUvkzZ2gAiA" memberEnd="_kVFZbCS4EeiPUvkzZ2gAiA _kVFZbSS4EeiPUvkzZ2gAiA" navigableOwnedEnd="_kVFZbSS4EeiPUvkzZ2gAiA">
-    <ownedEnd xmi:type="uml:Property" xmi:id="_kVFZbCS4EeiPUvkzZ2gAiA" name="Pet" type="_kVFZKCS4EeiPUvkzZ2gAiA" association="_kVFZayS4EeiPUvkzZ2gAiA"/>
-    <ownedEnd xmi:type="uml:Property" xmi:id="_kVFZbSS4EeiPUvkzZ2gAiA" name="tags" type="_kVFZIyS4EeiPUvkzZ2gAiA" aggregation="composite" association="_kVFZayS4EeiPUvkzZ2gAiA">
-      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_kVFZbiS4EeiPUvkzZ2gAiA"/>
-      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_kVFZbyS4EeiPUvkzZ2gAiA" value="*"/>
-    </ownedEnd>
-  </packagedElement>
-  <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_kVFZcCS4EeiPUvkzZ2gAiA" name="File"/>
-  <packagedElement xmi:type="uml:Class" xmi:id="_kVFZcSS4EeiPUvkzZ2gAiA" name="Inventory">
-    <ownedOperation xmi:type="uml:Operation" xmi:id="_kVFZciS4EeiPUvkzZ2gAiA" name="getInventory">
-      <ownedParameter xmi:type="uml:Parameter" xmi:id="_kVFZcyS4EeiPUvkzZ2gAiA" direction="return"/>
-    </ownedOperation>
-  </packagedElement>
-</uml:Model>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:openapiprofile="http://edu.uoc.som/openapi/profile/1.0" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_fJ_lgJc3EemihpEND2ToKw" name="petstore">
+    <packageImport xmi:type="uml:PackageImport" xmi:id="_xZIV0Jc_EemihpEND2ToKw">
+      <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
+    </packageImport>
+    <packagedElement xmi:type="uml:Package" xmi:id="_fJ_lg5c3EemihpEND2ToKw" name="petstore">
+      <packagedElement xmi:type="uml:Class" xmi:id="_fMECHJc3EemihpEND2ToKw" name="Order">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMNMAZc3EemihpEND2ToKw" name="id" type="_fMECHpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMNMApc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMNMBJc3EemihpEND2ToKw" name="petId" type="_fMECHpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMNMBZc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMNMCZc3EemihpEND2ToKw" name="quantity" type="_fMNMB5c3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMNMCpc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMW9AZc3EemihpEND2ToKw" name="shipDate" type="_fMNMDJc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMW9Apc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMW9CZc3EemihpEND2ToKw" name="status" type="_fMW9BJc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMW9Cpc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMW9Dpc3EemihpEND2ToKw" name="complete" type="_fMW9DJc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMW9D5c3EemihpEND2ToKw"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_fMW9EJc3EemihpEND2ToKw" value="false"/>
+        </ownedAttribute>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fN_7xJc3EemihpEND2ToKw" name="placeOrder">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN_7xpc3EemihpEND2ToKw" name="body" type="_fMECHJc3EemihpEND2ToKw"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN_7yJc3EemihpEND2ToKw" type="_fMECHJc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN_7ypc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fN_7zJc3EemihpEND2ToKw" name="getOrderById">
+          <ownedRule xmi:type="uml:Constraint" xmi:id="_fN_7zpc3EemihpEND2ToKw" name="getOrderById-orderId-maximumConstraint">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_fN_7z5c3EemihpEND2ToKw">
+              <language>OCL</language>
+              <body>self.orderId &lt;= 10.0</body>
+            </specification>
+          </ownedRule>
+          <ownedRule xmi:type="uml:Constraint" xmi:id="_fN_70Jc3EemihpEND2ToKw" name="getOrderById-orderId-minimumConstraint">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_fN_70Zc3EemihpEND2ToKw">
+              <language>OCL</language>
+              <body>self.orderId >= 1.0</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN_70pc3EemihpEND2ToKw" name="orderId" type="_fMECHpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fN_705c3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOJswJc3EemihpEND2ToKw" type="_fMECHJc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOJswpc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOJsxJc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOJsxpc3EemihpEND2ToKw" name="deleteOrder">
+          <ownedRule xmi:type="uml:Constraint" xmi:id="_fOJsyJc3EemihpEND2ToKw" name="deleteOrder-orderId-minimumConstraint">
+            <specification xmi:type="uml:OpaqueExpression" xmi:id="_fOJsyZc3EemihpEND2ToKw">
+              <language>OCL</language>
+              <body>self.orderId >= 1.0</body>
+            </specification>
+          </ownedRule>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOJsypc3EemihpEND2ToKw" name="orderId" type="_fMECHpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fOJsy5c3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOJszZc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOJsz5c3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fMguAZc3EemihpEND2ToKw" name="User">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMguA5c3EemihpEND2ToKw" name="id" type="_fMECHpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMguBJc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMguCJc3EemihpEND2ToKw" name="username" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMguCZc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMguC5c3EemihpEND2ToKw" name="firstName" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMguDJc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMp38Jc3EemihpEND2ToKw" name="lastName" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMp38Zc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMp385c3EemihpEND2ToKw" name="email" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMp39Jc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMp39pc3EemihpEND2ToKw" name="password" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMp395c3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMp3-Zc3EemihpEND2ToKw" name="phone" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMp3-pc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMp3_Jc3EemihpEND2ToKw" name="userStatus" type="_fMNMB5c3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMp3_Zc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOJs0Zc3EemihpEND2ToKw" name="createUser">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOJs05c3EemihpEND2ToKw" name="body" type="_fMguAZc3EemihpEND2ToKw"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOJs1Zc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOS2sJc3EemihpEND2ToKw" name="createUsersWithArrayInput">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOS2spc3EemihpEND2ToKw" name="body" type="_fMguAZc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fOS2s5c3EemihpEND2ToKw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fOS2tJc3EemihpEND2ToKw" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOS2tpc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOS2uJc3EemihpEND2ToKw" name="createUsersWithListInput">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOS2upc3EemihpEND2ToKw" name="body" type="_fMguAZc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fOS2u5c3EemihpEND2ToKw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fOS2vJc3EemihpEND2ToKw" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOS2vpc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOS2wJc3EemihpEND2ToKw" name="loginUser">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOS2wpc3EemihpEND2ToKw" name="username" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fOS2w5c3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOS2xZc3EemihpEND2ToKw" name="password" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fOS2xpc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOcnsJc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOlxopc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOlxpJc3EemihpEND2ToKw" name="logoutUser">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOlxppc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOlxqJc3EemihpEND2ToKw" name="getUserByName">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOlxqpc3EemihpEND2ToKw" name="username" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fOlxq5c3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOlxrZc3EemihpEND2ToKw" type="_fMguAZc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOlxr5c3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOvioJc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOviopc3EemihpEND2ToKw" name="updateUser">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOvipJc3EemihpEND2ToKw" name="username" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fOvipZc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOvip5c3EemihpEND2ToKw" name="body" type="_fMguAZc3EemihpEND2ToKw"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOviqZc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOviq5c3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fOvirZc3EemihpEND2ToKw" name="deleteUser">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOvir5c3EemihpEND2ToKw" name="username" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fOvisJc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOvispc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fOvitJc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fMp3_5c3EemihpEND2ToKw" name="Category">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMzo8Zc3EemihpEND2ToKw" name="id" type="_fMECHpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMzo8pc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMzo9Jc3EemihpEND2ToKw" name="name" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMzo9Zc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fMzo95c3EemihpEND2ToKw" name="Tag">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMzo-Zc3EemihpEND2ToKw" name="id" type="_fMECHpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMzo-pc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMzo_Jc3EemihpEND2ToKw" name="name" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMzo_Zc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fMzo_5c3EemihpEND2ToKw" name="Pet" visibility="public">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMzpAZc3EemihpEND2ToKw" name="id" type="_fMNMB5c3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMzpApc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fMzpBJc3EemihpEND2ToKw" name="name" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fMzpBZc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fM9Z8Zc3EemihpEND2ToKw" name="photoUrls" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fM9Z8pc3EemihpEND2ToKw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fM9Z85c3EemihpEND2ToKw" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fM9Z-5c3EemihpEND2ToKw" name="status" type="_fM9Z9pc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fM9Z_Jc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fNGj8Jc3EemihpEND2ToKw" name="updatePet">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNGj9Jc3EemihpEND2ToKw" name="body" type="_fMzo_5c3EemihpEND2ToKw"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNGj9pc3EemihpEND2ToKw" direction="return" isException="true"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNQU4Zc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNQU45c3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fNQU5Zc3EemihpEND2ToKw" name="addPet">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNQU6Zc3EemihpEND2ToKw" name="body" type="_fMzo_5c3EemihpEND2ToKw"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNQU65c3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fNQU7Zc3EemihpEND2ToKw" name="findPetsByStatus">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNZe0pc3EemihpEND2ToKw" name="status" type="_fM9Z9pc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNZe05c3EemihpEND2ToKw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fNZe1Jc3EemihpEND2ToKw" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNZe1pc3EemihpEND2ToKw" type="_fMzo_5c3EemihpEND2ToKw" direction="return">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNZe15c3EemihpEND2ToKw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fNZe2Jc3EemihpEND2ToKw" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNZe2pc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fNZe3Jc3EemihpEND2ToKw" name="findPetsByTags">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNZe4Jc3EemihpEND2ToKw" name="tags" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNZe4Zc3EemihpEND2ToKw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fNZe4pc3EemihpEND2ToKw" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNZe5Jc3EemihpEND2ToKw" type="_fMzo_5c3EemihpEND2ToKw" direction="return">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNZe5Zc3EemihpEND2ToKw"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fNZe5pc3EemihpEND2ToKw" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNZe6Jc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fNjP0Zc3EemihpEND2ToKw" name="getPetById">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNjP1Zc3EemihpEND2ToKw" name="petId" type="_fMECHpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNjP1pc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNjP2Jc3EemihpEND2ToKw" type="_fMzo_5c3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNjP2pc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNjP3Jc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fNjP3pc3EemihpEND2ToKw" name="updatePetWithForm">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNjP4pc3EemihpEND2ToKw" name="petId" type="_fMECHpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNjP45c3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNjP5Zc3EemihpEND2ToKw" name="name" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNjP5pc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNtA0Zc3EemihpEND2ToKw" name="status" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNtA0pc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNtA1Jc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fNtA1pc3EemihpEND2ToKw" name="deletePet">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNtA2pc3EemihpEND2ToKw" name="api_key" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNtA25c3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNtA3Zc3EemihpEND2ToKw" name="petId" type="_fMECHpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNtA3pc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNtA4Jc3EemihpEND2ToKw" direction="return"/>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fNtA4pc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fNtA5Jc3EemihpEND2ToKw" name="uploadFile">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN2Kw5c3EemihpEND2ToKw" name="petId" type="_fMECHpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fN2KxJc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN2Kxpc3EemihpEND2ToKw" name="additionalMetadata" type="_fMguBpc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fN2Kx5c3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN2Ky5c3EemihpEND2ToKw" name="file" type="_fN2KyZc3EemihpEND2ToKw">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fN2KzJc3EemihpEND2ToKw"/>
+          </ownedParameter>
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN2Kzpc3EemihpEND2ToKw" type="_fM9Z_pc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fM9Z_pc3EemihpEND2ToKw" name="ApiResponse">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fM9aAJc3EemihpEND2ToKw" name="code" type="_fMNMB5c3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fM9aAZc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fNGj4Zc3EemihpEND2ToKw" name="type" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNGj4pc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_fNGj5Jc3EemihpEND2ToKw" name="message" type="_fMguBpc3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNGj5Zc3EemihpEND2ToKw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_fNGj55c3EemihpEND2ToKw" name="Pet_category" memberEnd="_fNGj6Jc3EemihpEND2ToKw _fNGj6Zc3EemihpEND2ToKw" navigableOwnedEnd="_fNGj6Zc3EemihpEND2ToKw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_fNGj6Jc3EemihpEND2ToKw" name="Pet" type="_fMzo_5c3EemihpEND2ToKw" association="_fNGj55c3EemihpEND2ToKw"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="_fNGj6Zc3EemihpEND2ToKw" name="category" type="_fMp3_5c3EemihpEND2ToKw" aggregation="composite" association="_fNGj55c3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNGj6pc3EemihpEND2ToKw"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_fNGj65c3EemihpEND2ToKw" name="Pet_tags" memberEnd="_fNGj7Jc3EemihpEND2ToKw _fNGj7Zc3EemihpEND2ToKw" navigableOwnedEnd="_fNGj7Zc3EemihpEND2ToKw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_fNGj7Jc3EemihpEND2ToKw" name="Pet" type="_fMzo_5c3EemihpEND2ToKw" association="_fNGj65c3EemihpEND2ToKw"/>
+        <ownedEnd xmi:type="uml:Property" xmi:id="_fNGj7Zc3EemihpEND2ToKw" name="tags" type="_fMzo95c3EemihpEND2ToKw" aggregation="composite" association="_fNGj65c3EemihpEND2ToKw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_fNGj7pc3EemihpEND2ToKw"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_fNGj75c3EemihpEND2ToKw" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_fN2K0Jc3EemihpEND2ToKw" name="Inventory">
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_fN2K0Zc3EemihpEND2ToKw" name="getInventory">
+          <ownedParameter xmi:type="uml:Parameter" xmi:id="_fN_7wpc3EemihpEND2ToKw" direction="return"/>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_fJ_lhJc3EemihpEND2ToKw" name="types">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fMECHpc3EemihpEND2ToKw" name="Long"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fMNMB5c3EemihpEND2ToKw" name="Integer"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fMNMDJc3EemihpEND2ToKw" name="DateTime"/>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_fMW9BJc3EemihpEND2ToKw" name="OrderStatus">
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_fMW9BZc3EemihpEND2ToKw" name="placed"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_fMW9Bpc3EemihpEND2ToKw" name="approved"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_fMW9B5c3EemihpEND2ToKw" name="delivered"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fMW9DJc3EemihpEND2ToKw" name="Boolean"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fMguBpc3EemihpEND2ToKw" name="String"/>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_fM9Z9pc3EemihpEND2ToKw" name="PetStatus">
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_fM9Z95c3EemihpEND2ToKw" name="available"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_fM9Z-Jc3EemihpEND2ToKw" name="pending"/>
+        <ownedLiteral xmi:type="uml:EnumerationLiteral" xmi:id="_fM9Z-Zc3EemihpEND2ToKw" name="sold"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_fN2KyZc3EemihpEND2ToKw" name="File"/>
+    </packagedElement>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:id="_fJ_lgZc3EemihpEND2ToKw">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_fJ_lgpc3EemihpEND2ToKw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://edu.uoc.som/openapi/profile/1.0#/"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" href="pathmap://OPENAPI_PROFILES/openapi.profile.uml#_8zK3wHyGEemaV87q0fd26g"/>
+    </profileApplication>
+  </uml:Model>
+  <openapiprofile:API xmi:id="_fL6REJc3EemihpEND2ToKw" host="petstore.swagger.io" basePath="/v2" base_Model="_fJ_lgJc3EemihpEND2ToKw">
+    <schemes>https</schemes>
+    <schemes>http</schemes>
+  </openapiprofile:API>
+  <openapiprofile:APIInfo xmi:id="_fL6REZc3EemihpEND2ToKw" title="Swagger Petstore" description="This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters." termsOfService="http://swagger.io/terms/" version="1.0.0" base_Model="_fJ_lgJc3EemihpEND2ToKw">
+    <license xmi:type="openapiprofile:License" xmi:id="_fMECEZc3EemihpEND2ToKw" name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+    <contact xmi:type="openapiprofile:Contact" xmi:id="_fMECEJc3EemihpEND2ToKw" email="apiteam@swagger.io"/>
+  </openapiprofile:APIInfo>
+  <openapiprofile:ExternalDocs xmi:id="_fMECEpc3EemihpEND2ToKw" description="Find out more about Swagger" url="http://swagger.io" base_Model="_fJ_lgJc3EemihpEND2ToKw"/>
+  <openapiprofile:SecurityDefinitions xmi:id="_fMECE5c3EemihpEND2ToKw" base_Model="_fJ_lgJc3EemihpEND2ToKw">
+    <securitySchemes xmi:type="openapiprofile:SecurityScheme" xmi:id="_fMECFJc3EemihpEND2ToKw" type="oauth2" flow="implicit" authorizationURL="https://petstore.swagger.io/oauth/authorize" referenceName="petstore_auth">
+      <scopes xmi:type="openapiprofile:SecurityScope" xmi:id="_fMECFZc3EemihpEND2ToKw" name="write:pets" description="modify pets in your account"/>
+      <scopes xmi:type="openapiprofile:SecurityScope" xmi:id="_fMECFpc3EemihpEND2ToKw" name="read:pets" description="read your pets"/>
+    </securitySchemes>
+    <securitySchemes xmi:type="openapiprofile:SecurityScheme" xmi:id="_fMECF5c3EemihpEND2ToKw" name="api_key" type="apiKey" location="header" referenceName="api_key"/>
+  </openapiprofile:SecurityDefinitions>
+  <openapiprofile:Tags xmi:id="_fMECGJc3EemihpEND2ToKw" base_Model="_fJ_lgJc3EemihpEND2ToKw">
+    <tags xmi:type="openapiprofile:Tag" xmi:id="_fMECGZc3EemihpEND2ToKw" externalDocsURL="http://swagger.io" externalDocsDescription="Find out more" name="pet" description="Everything about your Pets"/>
+    <tags xmi:type="openapiprofile:Tag" xmi:id="_fMECGpc3EemihpEND2ToKw" name="store" description="Access to Petstore orders"/>
+    <tags xmi:type="openapiprofile:Tag" xmi:id="_fMECG5c3EemihpEND2ToKw" externalDocsURL="http://swagger.io" externalDocsDescription="Find out more about our store" name="user" description="Operations about user"/>
+  </openapiprofile:Tags>
+  <openapiprofile:Schema xmi:id="_fMECHZc3EemihpEND2ToKw" base_Class="_fMECHJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIDataType xmi:id="_fMNMAJc3EemihpEND2ToKw" type="integer" format="int64" base_PrimitiveType="_fMECHpc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMNMA5c3EemihpEND2ToKw" base_Property="_fMNMAZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMNMBpc3EemihpEND2ToKw" base_Property="_fMNMBJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIDataType xmi:id="_fMNMCJc3EemihpEND2ToKw" type="integer" format="int32" base_PrimitiveType="_fMNMB5c3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMNMC5c3EemihpEND2ToKw" base_Property="_fMNMCZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIDataType xmi:id="_fMW9AJc3EemihpEND2ToKw" type="string" format="date-time" base_PrimitiveType="_fMNMDJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMW9A5c3EemihpEND2ToKw" base_Property="_fMW9AZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIDataType xmi:id="_fMW9CJc3EemihpEND2ToKw" type="string" base_Enumeration="_fMW9BJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMW9C5c3EemihpEND2ToKw" base_Property="_fMW9CZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIDataType xmi:id="_fMW9DZc3EemihpEND2ToKw" type="boolean" base_PrimitiveType="_fMW9DJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMguAJc3EemihpEND2ToKw" base_Property="_fMW9Dpc3EemihpEND2ToKw"/>
+  <openapiprofile:Schema xmi:id="_fMguApc3EemihpEND2ToKw" base_Class="_fMguAZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMguBZc3EemihpEND2ToKw" base_Property="_fMguA5c3EemihpEND2ToKw"/>
+  <openapiprofile:APIDataType xmi:id="_fMguB5c3EemihpEND2ToKw" type="string" base_PrimitiveType="_fMguBpc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMguCpc3EemihpEND2ToKw" base_Property="_fMguCJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMguDZc3EemihpEND2ToKw" base_Property="_fMguC5c3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMp38pc3EemihpEND2ToKw" base_Property="_fMp38Jc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMp39Zc3EemihpEND2ToKw" base_Property="_fMp385c3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMp3-Jc3EemihpEND2ToKw" base_Property="_fMp39pc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMp3-5c3EemihpEND2ToKw" base_Property="_fMp3-Zc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMp3_pc3EemihpEND2ToKw" base_Property="_fMp3_Jc3EemihpEND2ToKw"/>
+  <openapiprofile:Schema xmi:id="_fMzo8Jc3EemihpEND2ToKw" base_Class="_fMp3_5c3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMzo85c3EemihpEND2ToKw" base_Property="_fMzo8Zc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMzo9pc3EemihpEND2ToKw" base_Property="_fMzo9Jc3EemihpEND2ToKw"/>
+  <openapiprofile:Schema xmi:id="_fMzo-Jc3EemihpEND2ToKw" base_Class="_fMzo95c3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMzo-5c3EemihpEND2ToKw" base_Property="_fMzo-Zc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMzo_pc3EemihpEND2ToKw" base_Property="_fMzo_Jc3EemihpEND2ToKw"/>
+  <openapiprofile:Schema xmi:id="_fMzpAJc3EemihpEND2ToKw" title="Pet definition" base_Class="_fMzo_5c3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fMzpA5c3EemihpEND2ToKw" base_Property="_fMzpAZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fM9Z8Jc3EemihpEND2ToKw" required="true" base_Property="_fMzpBJc3EemihpEND2ToKw" example="&quot;doggie&quot;"/>
+  <openapiprofile:APIProperty xmi:id="_fM9Z9Jc3EemihpEND2ToKw" required="true" base_Property="_fM9Z8Zc3EemihpEND2ToKw">
+    <xml xmi:type="openapiprofile:XMLElement" xmi:id="_fM9Z9Zc3EemihpEND2ToKw" name="photoUrl" wrapped="true"/>
+  </openapiprofile:APIProperty>
+  <openapiprofile:APIDataType xmi:id="_fM9Z-pc3EemihpEND2ToKw" type="string" base_Enumeration="_fM9Z9pc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fM9Z_Zc3EemihpEND2ToKw" base_Property="_fM9Z-5c3EemihpEND2ToKw"/>
+  <openapiprofile:Schema xmi:id="_fM9Z_5c3EemihpEND2ToKw" base_Class="_fM9Z_pc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fNGj4Jc3EemihpEND2ToKw" base_Property="_fM9aAJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fNGj45c3EemihpEND2ToKw" base_Property="_fNGj4Zc3EemihpEND2ToKw"/>
+  <openapiprofile:APIProperty xmi:id="_fNGj5pc3EemihpEND2ToKw" base_Property="_fNGj5Jc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fNGj8Zc3EemihpEND2ToKw" relativePath="/pet" method="put" summary="Update an existing pet" description="" base_Operation="_fNGj8Jc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <consumes>application/json</consumes>
+    <consumes>application/xml</consumes>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fNGj8pc3EemihpEND2ToKw" base_Operation="_fNGj8Jc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fNGj85c3EemihpEND2ToKw" name="petstore_auth">
+      <scopes>write:pets</scopes>
+      <scopes>read:pets</scopes>
+    </securityRequirements>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_fNGj9Zc3EemihpEND2ToKw" description="Pet object that needs to be added to the store" location="body" base_Parameter="_fNGj9Jc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fNQU4Jc3EemihpEND2ToKw" description="Invalid ID supplied" code="400" base_Parameter="_fNGj9pc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fNQU4pc3EemihpEND2ToKw" description="Pet not found" code="404" base_Parameter="_fNQU4Zc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fNQU5Jc3EemihpEND2ToKw" description="Validation exception" code="405" base_Parameter="_fNQU45c3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fNQU5pc3EemihpEND2ToKw" relativePath="/pet" method="post" summary="Add a new pet to the store" description="" base_Operation="_fNQU5Zc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <consumes>application/json</consumes>
+    <consumes>application/xml</consumes>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fNQU55c3EemihpEND2ToKw" base_Operation="_fNQU5Zc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fNQU6Jc3EemihpEND2ToKw" name="petstore_auth">
+      <scopes>write:pets</scopes>
+      <scopes>read:pets</scopes>
+    </securityRequirements>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_fNQU6pc3EemihpEND2ToKw" description="Pet object that needs to be added to the store" location="body" base_Parameter="_fNQU6Zc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fNQU7Jc3EemihpEND2ToKw" description="Invalid input" code="405" base_Parameter="_fNQU65c3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fNQU7pc3EemihpEND2ToKw" relativePath="/pet/findByStatus" method="get" summary="Finds Pets by status" description="Multiple status values can be provided with comma separated strings" base_Operation="_fNQU7Zc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fNZe0Jc3EemihpEND2ToKw" base_Operation="_fNQU7Zc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fNZe0Zc3EemihpEND2ToKw" name="petstore_auth">
+      <scopes>write:pets</scopes>
+      <scopes>read:pets</scopes>
+    </securityRequirements>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_fNZe1Zc3EemihpEND2ToKw" description="Status values that need to be considered for filter" location="query" collectionFormat="multi" base_Parameter="_fNZe0pc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fNZe2Zc3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fNZe1pc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fNZe25c3EemihpEND2ToKw" description="Invalid status value" code="400" base_Parameter="_fNZe2pc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fNZe3Zc3EemihpEND2ToKw" relativePath="/pet/findByTags" method="get" summary="Finds Pets by tags" description="Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing." base_Operation="_fNZe3Jc3EemihpEND2ToKw" deprecated="true">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fNZe3pc3EemihpEND2ToKw" base_Operation="_fNZe3Jc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fNZe35c3EemihpEND2ToKw" name="petstore_auth">
+      <scopes>write:pets</scopes>
+      <scopes>read:pets</scopes>
+    </securityRequirements>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_fNZe45c3EemihpEND2ToKw" description="Tags to filter by" location="query" collectionFormat="multi" base_Parameter="_fNZe4Jc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fNZe55c3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fNZe5Jc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fNjP0Jc3EemihpEND2ToKw" description="Invalid tag value" code="400" base_Parameter="_fNZe6Jc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fNjP0pc3EemihpEND2ToKw" relativePath="/pet/{petId}" method="get" summary="Find pet by ID" description="Returns a single pet" base_Operation="_fNjP0Zc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fNjP05c3EemihpEND2ToKw" base_Operation="_fNjP0Zc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fNjP1Jc3EemihpEND2ToKw" name="api_key"/>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_fNjP15c3EemihpEND2ToKw" description="ID of pet to return" location="path" base_Parameter="_fNjP1Zc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fNjP2Zc3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fNjP2Jc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fNjP25c3EemihpEND2ToKw" description="Invalid ID supplied" code="400" base_Parameter="_fNjP2pc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fNjP3Zc3EemihpEND2ToKw" description="Pet not found" code="404" base_Parameter="_fNjP3Jc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fNjP35c3EemihpEND2ToKw" relativePath="/pet/{petId}" method="post" summary="Updates a pet in the store with form data" description="" base_Operation="_fNjP3pc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <consumes>application/x-www-form-urlencoded</consumes>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fNjP4Jc3EemihpEND2ToKw" base_Operation="_fNjP3pc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fNjP4Zc3EemihpEND2ToKw" name="petstore_auth">
+      <scopes>write:pets</scopes>
+      <scopes>read:pets</scopes>
+    </securityRequirements>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_fNjP5Jc3EemihpEND2ToKw" description="ID of pet that needs to be updated" location="path" base_Parameter="_fNjP4pc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIParameter xmi:id="_fNtA0Jc3EemihpEND2ToKw" description="Updated name of the pet" location="formData" base_Parameter="_fNjP5Zc3EemihpEND2ToKw" required="false"/>
+  <openapiprofile:APIParameter xmi:id="_fNtA05c3EemihpEND2ToKw" description="Updated status of the pet" location="formData" base_Parameter="_fNtA0Zc3EemihpEND2ToKw" required="false"/>
+  <openapiprofile:APIResponse xmi:id="_fNtA1Zc3EemihpEND2ToKw" description="Invalid input" code="405" base_Parameter="_fNtA1Jc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fNtA15c3EemihpEND2ToKw" relativePath="/pet/{petId}" method="delete" summary="Deletes a pet" description="" base_Operation="_fNtA1pc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fNtA2Jc3EemihpEND2ToKw" base_Operation="_fNtA1pc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fNtA2Zc3EemihpEND2ToKw" name="petstore_auth">
+      <scopes>write:pets</scopes>
+      <scopes>read:pets</scopes>
+    </securityRequirements>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_fNtA3Jc3EemihpEND2ToKw" location="header" base_Parameter="_fNtA2pc3EemihpEND2ToKw" required="false"/>
+  <openapiprofile:APIParameter xmi:id="_fNtA35c3EemihpEND2ToKw" description="Pet id to delete" location="path" base_Parameter="_fNtA3Zc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fNtA4Zc3EemihpEND2ToKw" description="Invalid ID supplied" code="400" base_Parameter="_fNtA4Jc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fNtA45c3EemihpEND2ToKw" description="Pet not found" code="404" base_Parameter="_fNtA4pc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fN2KwJc3EemihpEND2ToKw" relativePath="/pet/{petId}/uploadImage" method="post" summary="uploads an image" description="" base_Operation="_fNtA5Jc3EemihpEND2ToKw">
+    <produces>application/json</produces>
+    <consumes>multipart/form-data</consumes>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fN2KwZc3EemihpEND2ToKw" base_Operation="_fNtA5Jc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fN2Kwpc3EemihpEND2ToKw" name="petstore_auth">
+      <scopes>write:pets</scopes>
+      <scopes>read:pets</scopes>
+    </securityRequirements>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_fN2KxZc3EemihpEND2ToKw" description="ID of pet to update" location="path" base_Parameter="_fN2Kw5c3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIParameter xmi:id="_fN2KyJc3EemihpEND2ToKw" description="Additional data to pass to server" location="formData" base_Parameter="_fN2Kxpc3EemihpEND2ToKw" required="false"/>
+  <openapiprofile:APIDataType xmi:id="_fN2Kypc3EemihpEND2ToKw" type="file" base_PrimitiveType="_fN2KyZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIParameter xmi:id="_fN2KzZc3EemihpEND2ToKw" description="file to upload" location="formData" base_Parameter="_fN2Ky5c3EemihpEND2ToKw" required="false"/>
+  <openapiprofile:APIResponse xmi:id="_fN2Kz5c3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fN2Kzpc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fN2K0pc3EemihpEND2ToKw" relativePath="/store/inventory" method="get" summary="Returns pet inventories by status" description="Returns a map of status codes to quantities" base_Operation="_fN2K0Zc3EemihpEND2ToKw">
+    <produces>application/json</produces>
+    <tags>store</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_fN_7wJc3EemihpEND2ToKw" base_Operation="_fN2K0Zc3EemihpEND2ToKw">
+    <securityRequirements xmi:type="openapiprofile:SecurityRequirement" xmi:id="_fN_7wZc3EemihpEND2ToKw" name="api_key"/>
+  </openapiprofile:Security>
+  <openapiprofile:APIResponse xmi:id="_fN_7w5c3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fN_7wpc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fN_7xZc3EemihpEND2ToKw" relativePath="/store/order" method="post" summary="Place an order for a pet" description="" base_Operation="_fN_7xJc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>store</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fN_7x5c3EemihpEND2ToKw" description="order placed for purchasing the pet" location="body" base_Parameter="_fN_7xpc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fN_7yZc3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fN_7yJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fN_7y5c3EemihpEND2ToKw" description="Invalid Order" code="400" base_Parameter="_fN_7ypc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fN_7zZc3EemihpEND2ToKw" relativePath="/store/order/{orderId}" method="get" summary="Find purchase order by ID" description="For valid response try integer IDs with value >= 1 and &lt;= 10. Other values will generated exceptions" base_Operation="_fN_7zJc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>store</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fN_71Jc3EemihpEND2ToKw" maximum="10.0" minimum="1.0" description="ID of pet that needs to be fetched" location="path" base_Parameter="_fN_70pc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOJswZc3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fOJswJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fOJsw5c3EemihpEND2ToKw" description="Invalid ID supplied" code="400" base_Parameter="_fOJswpc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fOJsxZc3EemihpEND2ToKw" description="Order not found" code="404" base_Parameter="_fOJsxJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fOJsx5c3EemihpEND2ToKw" relativePath="/store/order/{orderId}" method="delete" summary="Delete purchase order by ID" description="For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors" base_Operation="_fOJsxpc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>store</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fOJszJc3EemihpEND2ToKw" minimum="1.0" description="ID of the order that needs to be deleted" location="path" base_Parameter="_fOJsypc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOJszpc3EemihpEND2ToKw" description="Invalid ID supplied" code="400" base_Parameter="_fOJszZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fOJs0Jc3EemihpEND2ToKw" description="Order not found" code="404" base_Parameter="_fOJsz5c3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fOJs0pc3EemihpEND2ToKw" relativePath="/user" method="post" summary="Create user" description="This can only be done by the logged in user." base_Operation="_fOJs0Zc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>user</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fOJs1Jc3EemihpEND2ToKw" description="Created user object" location="body" base_Parameter="_fOJs05c3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOJs1pc3EemihpEND2ToKw" description="successful operation" base_Parameter="_fOJs1Zc3EemihpEND2ToKw" default="true"/>
+  <openapiprofile:APIOperation xmi:id="_fOS2sZc3EemihpEND2ToKw" relativePath="/user/createWithArray" method="post" summary="Creates list of users with given input array" description="" base_Operation="_fOS2sJc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>user</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fOS2tZc3EemihpEND2ToKw" description="List of user object" location="body" base_Parameter="_fOS2spc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOS2t5c3EemihpEND2ToKw" description="successful operation" base_Parameter="_fOS2tpc3EemihpEND2ToKw" default="true"/>
+  <openapiprofile:APIOperation xmi:id="_fOS2uZc3EemihpEND2ToKw" relativePath="/user/createWithList" method="post" summary="Creates list of users with given input array" description="" base_Operation="_fOS2uJc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>user</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fOS2vZc3EemihpEND2ToKw" description="List of user object" location="body" base_Parameter="_fOS2upc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOS2v5c3EemihpEND2ToKw" description="successful operation" base_Parameter="_fOS2vpc3EemihpEND2ToKw" default="true"/>
+  <openapiprofile:APIOperation xmi:id="_fOS2wZc3EemihpEND2ToKw" relativePath="/user/login" method="get" summary="Logs user into the system" description="" base_Operation="_fOS2wJc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>user</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fOS2xJc3EemihpEND2ToKw" description="The user name for login" location="query" base_Parameter="_fOS2wpc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIParameter xmi:id="_fOS2x5c3EemihpEND2ToKw" description="The password for login in clear text" location="query" base_Parameter="_fOS2xZc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOcnsZc3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fOcnsJc3EemihpEND2ToKw">
+    <headers xmi:type="openapiprofile:Header" xmi:id="_fOlxoJc3EemihpEND2ToKw" name="X-Rate-Limit" description="calls per hour allowed by the user" type="integer" format="int32"/>
+    <headers xmi:type="openapiprofile:Header" xmi:id="_fOlxoZc3EemihpEND2ToKw" name="X-Expires-After" description="date in UTC when token expires" type="string" format="date-time"/>
+  </openapiprofile:APIResponse>
+  <openapiprofile:APIResponse xmi:id="_fOlxo5c3EemihpEND2ToKw" description="Invalid username/password supplied" code="400" base_Parameter="_fOlxopc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fOlxpZc3EemihpEND2ToKw" relativePath="/user/logout" method="get" summary="Logs out current logged in user session" description="" base_Operation="_fOlxpJc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>user</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIResponse xmi:id="_fOlxp5c3EemihpEND2ToKw" description="successful operation" base_Parameter="_fOlxppc3EemihpEND2ToKw" default="true"/>
+  <openapiprofile:APIOperation xmi:id="_fOlxqZc3EemihpEND2ToKw" relativePath="/user/{username}" method="get" summary="Get user by user name" description="" base_Operation="_fOlxqJc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>user</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fOlxrJc3EemihpEND2ToKw" description="The name that needs to be fetched. Use user1 for testing. " location="path" base_Parameter="_fOlxqpc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOlxrpc3EemihpEND2ToKw" description="successful operation" code="200" base_Parameter="_fOlxrZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fOlxsJc3EemihpEND2ToKw" description="Invalid username supplied" code="400" base_Parameter="_fOlxr5c3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fOvioZc3EemihpEND2ToKw" description="User not found" code="404" base_Parameter="_fOvioJc3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fOvio5c3EemihpEND2ToKw" relativePath="/user/{username}" method="put" summary="Updated user" description="This can only be done by the logged in user." base_Operation="_fOviopc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>user</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fOvippc3EemihpEND2ToKw" description="name that need to be updated" location="path" base_Parameter="_fOvipJc3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIParameter xmi:id="_fOviqJc3EemihpEND2ToKw" description="Updated user object" location="body" base_Parameter="_fOvip5c3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOviqpc3EemihpEND2ToKw" description="Invalid user supplied" code="400" base_Parameter="_fOviqZc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fOvirJc3EemihpEND2ToKw" description="User not found" code="404" base_Parameter="_fOviq5c3EemihpEND2ToKw"/>
+  <openapiprofile:APIOperation xmi:id="_fOvirpc3EemihpEND2ToKw" relativePath="/user/{username}" method="delete" summary="Delete user" description="This can only be done by the logged in user." base_Operation="_fOvirZc3EemihpEND2ToKw">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>user</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIParameter xmi:id="_fOvisZc3EemihpEND2ToKw" description="The name that needs to be deleted" location="path" base_Parameter="_fOvir5c3EemihpEND2ToKw" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_fOvis5c3EemihpEND2ToKw" description="Invalid username supplied" code="400" base_Parameter="_fOvispc3EemihpEND2ToKw"/>
+  <openapiprofile:APIResponse xmi:id="_fOvitZc3EemihpEND2ToKw" description="User not found" code="404" base_Parameter="_fOvitJc3EemihpEND2ToKw"/>
+</xmi:XMI>
