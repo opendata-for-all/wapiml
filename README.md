@@ -61,7 +61,7 @@ From scratch:
 ![profile](https://opendata-for-all.github.io/wapiml/images/wapiml/capture3.PNG)
 
 4. Add UML elements to the canvas.
-5. Use the the *Properties* view to apply the streotypes and et the tag values (see an example below).
+5. Use the the *Properties* view to apply the streotypes and set the tag values (see an example below).
 
 ![Propertis views](https://opendata-for-all.github.io/wapiml/images/wapiml/capture4.PNG)
 
