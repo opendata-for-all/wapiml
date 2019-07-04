@@ -1,0 +1,128 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"description": "A simple definition to test allOf",
+		"version": "1.0.0",
+		"title": "schema-with-allOf"
+	},
+	"host": "example.com",
+	"basePath": "/v1",
+	"tags": [
+		{
+			"name": "cat"
+		}
+	],
+	"schemes": [
+		"http"
+	],
+	"paths": {
+		"/concepts": {
+			"get": {
+				"tags": [
+					"cat"
+				],
+				"operationId": "getCats",
+				"produces": [
+					"application/json"
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/Cat"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"Pet": {
+			"discriminator": "petType",
+			"properties": {
+				"name": {
+					"type": "string"
+				},
+				"petType": {
+					"type": "string"
+				}
+			},
+			"required": [
+				"name",
+				"petType"
+			]
+		},
+		"Cat": {
+			"description": "A representation of a cat",
+			"allOf": [
+				{
+					"$ref": "#/definitions/Pet"
+				},
+				{
+					"properties": {
+						"huntingSkill": {
+							"type": "string",
+							"description": "The measured skill for hunting",
+							"default": "lazy",
+							"enum": [
+								"clueless",
+								"lazy",
+								"adventurous",
+								"aggressive"
+							]
+						}
+					},
+					"required": [
+						"huntingSkill"
+					]
+				}
+			]
+		},
+		"Dog": {
+			"description": "A representation of a dog",
+			"allOf": [
+				{
+					"$ref": "#/definitions/Pet"
+				},
+				{
+					"properties": {
+						"packSize": {
+							"type": "integer",
+							"format": "int32",
+							"description": "the size of the pack the dog is from",
+							"default": 0,
+							"minimum": 0
+						}
+					},
+					"required": [
+						"packSize"
+					]
+				}
+			]
+		},
+		"Fish": {
+			"description": "A representation of a fish",
+			"allOf": [
+				{
+					"$ref": "#/definitions/Pet"
+				},
+				{
+					"properties": {
+						"fins": {
+							"type": "integer",
+							"format": "int32",
+							"description": "count of fins",
+							"minimum": 0
+						}
+					},
+					"required": [
+						"fins"
+					]
+				}
+			]
+		}
+	}
+}
