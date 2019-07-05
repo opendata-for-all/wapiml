@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.simple;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +24,7 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 
-@DisplayName("Test constraints on Schema elements")
+@DisplayName("Test constraints on Schema elements - simple")
 public class TestConstraintsOnSchema {
 
 	private static ResourceSet RES_SET = new ResourceSetImpl();
@@ -40,7 +40,7 @@ public class TestConstraintsOnSchema {
 	@Test
 	public void testMaximum() {
 		File input = new File("inputs/constraints/max-min.json");
-		File output = new File("outputs/constraints/max-min.uml");
+		File output = new File("outputs/simple/constraints/max-min.uml");
 		
 		try {
 			WAPImlFacade wAPImlFacade = new WAPImlFacade();
@@ -68,7 +68,7 @@ public class TestConstraintsOnSchema {
 	@Test
 	public void testMinimum() {
 		File input = new File("inputs/constraints/max-min.json");
-		File output = new File("outputs/constraints/max-min.uml");
+		File output = new File("outputs/simple/constraints/max-min.uml");
 		try {
 			WAPImlFacade wAPImlFacade = new WAPImlFacade();
 			wAPImlFacade.generateAndSaveClassDiagram(input, "max-min", output ,false, true);
@@ -99,7 +99,7 @@ public class TestConstraintsOnSchema {
 		@Test
 		public void testMultipleOf() {
 			File input = new File("inputs/constraints/multipleOf.json");
-			File output = new File("outputs/constraints/multipleOf.uml");
+			File output = new File("outputs/simple/constraints/multipleOf.uml");
 			try {
 				WAPImlFacade wAPImlFacade = new WAPImlFacade();
 				wAPImlFacade.generateAndSaveClassDiagram(input, "multipleOf", output,false, true);
@@ -124,7 +124,7 @@ public class TestConstraintsOnSchema {
 		@Test
 		public void testMaxLength() {
 			File input = new File("inputs/constraints/length.json");
-			File output = new File("outputs/constraints/length.uml");
+			File output = new File("outputs/simple/constraints/length.uml");
 			
 			try {
 				WAPImlFacade wAPImlFacade = new WAPImlFacade();
@@ -150,7 +150,7 @@ public class TestConstraintsOnSchema {
 		@Test
 		public void testMinLength() {
 			File input = new File("inputs/constraints/length.json");
-			File output = new File("outputs/constraints/length.uml");
+			File output = new File("outputs/simple/constraints/length.uml");
 			
 			try {
 				WAPImlFacade wAPImlFacade = new WAPImlFacade();

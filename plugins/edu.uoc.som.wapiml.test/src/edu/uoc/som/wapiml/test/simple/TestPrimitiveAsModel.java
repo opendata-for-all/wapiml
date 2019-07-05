@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.simple;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +17,7 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 
 
-@DisplayName("Test allOf with Ref")
+@DisplayName("Test allOf with Ref - simple")
 class TestPrimitiveAsModel {
 
 	private static ResourceSet RES_SET = new ResourceSetImpl();
@@ -34,7 +34,7 @@ class TestPrimitiveAsModel {
 	void testGenerateAndSaveClassDiagramURI() throws IOException {
 		
 	        File input = new File("inputs/petstore-pt.json");
-	        File output = new File("outputs/petstore-pt.uml");
+	        File output = new File("outputs/simple/petstore-pt.uml");
 	        
 	        try {
 	        	WAPImlFacade wAPImlFacade = new WAPImlFacade();

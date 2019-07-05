@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.simple;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -12,8 +12,8 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 
 
-@DisplayName("Test allOf")
-class TestSimpleAllOf {
+@DisplayName("Test allOf - simple")
+class TestAllOf {
 
 	
 	@DisplayName("Test allOf")
@@ -21,7 +21,7 @@ class TestSimpleAllOf {
 	void testGenerateAndSaveClassDiagramURI() {
 		
 	        File input = new File("inputs/allOf.json");
-	        File output = new File("outputs/allOf.uml");
+	        File output = new File("outputs/simple/allOf.uml");
 	        
 	        try {
 	        	WAPImlFacade openAPItoUMLFacade = new WAPImlFacade();

@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.simple;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,7 +25,7 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 
-@DisplayName("Test constraints on Schema elements")
+@DisplayName("Test constraints on Schema elements - simple")
 public class TestConstraintsOnParameter {
 
 	private static ResourceSet RES_SET = new ResourceSetImpl();
@@ -41,7 +41,7 @@ public class TestConstraintsOnParameter {
 	@Test
 	public void testMaximum() {
 		File input = new File("inputs/constraints/parameters.json");
-		 File output = new File("outputs/constraints/parameters.uml");
+		 File output = new File("outputs/simple/constraints/parameters.uml");
 		
 		try {
 			WAPImlFacade wAPImlFacade = new WAPImlFacade();
@@ -68,7 +68,7 @@ public class TestConstraintsOnParameter {
 	@Test
 	public void testMinimum() {
 		File input = new File("inputs/constraints/parameters.json");
-		File output = new File("outputs/constraints/parameters.uml");
+		File output = new File("outputs/simple/constraints/parameters.uml");
 	
 		try {
 			WAPImlFacade wAPImlFacade = new WAPImlFacade();

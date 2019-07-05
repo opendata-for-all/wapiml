@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.simple;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,7 +11,7 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 
-@DisplayName("Test OpenAPItoUML Facade")
+@DisplayName("Test OpenAPItoUML Facade - simple")
 class TestOpenAPIToUMLFacade {
 
 	@DisplayName("Test generate model")
@@ -19,7 +19,7 @@ class TestOpenAPIToUMLFacade {
 	void testGenerateClassDiagram() {
 		
 	        File input = new File("inputs/petstore.json");
-	        File output = new File("outputs/output.uml");
+	        File output = new File("outputs/simple/petstore.uml");
 	       
 	        try {
 	        	 WAPImlFacade wAPImlFacade = new WAPImlFacade();
@@ -34,7 +34,7 @@ class TestOpenAPIToUMLFacade {
 	void testGenerateAndSaveClassDiagramFile() {
 		
 	        File input = new File("inputs/petstore.json");
-	        File output = new File("outputs/petstore.uml");
+	        File output = new File("outputs/simple/petstore.uml");
 	        try {
 	        	 WAPImlFacade wAPImlFacade = new WAPImlFacade();
 	        	 wAPImlFacade.generateAndSaveClassDiagram(input, "petstore", output, false, true);
