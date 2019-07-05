@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:openapiprofile="http://edu.uoc.som/openapi/profile/1.0" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_50Zrep8HEemla5uTQDJJKA">
+    <packagedElement xmi:type="uml:Package" xmi:id="_50ZrfZ8HEemla5uTQDJJKA" name="petstore-pt">
+      <packagedElement xmi:type="uml:Class" xmi:id="_52Lzjp8HEemla5uTQDJJKA" name="Category">
+        <ownedAttribute xmi:id="_52VkgZ8HEemla5uTQDJJKA" name="id" type="_52LzkJ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52Vkgp8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_52Vkhp8HEemla5uTQDJJKA" name="name" type="_52VkhJ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52Vkh58HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_52VkiZ8HEemla5uTQDJJKA" name="Tag">
+        <ownedAttribute xmi:id="_52Vki58HEemla5uTQDJJKA" name="id" type="_52LzkJ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52VkjJ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_52Vkjp8HEemla5uTQDJJKA" name="name" type="_52VkhJ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52Vkj58HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_52VkkZ8HEemla5uTQDJJKA" name="Pet">
+        <ownedAttribute xmi:id="_52Vkk58HEemla5uTQDJJKA" name="id" type="_52LzkJ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52VklJ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_52ofcZ8HEemla5uTQDJJKA" name="name" type="_52VkhJ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52ofcp8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_52ofdJ8HEemla5uTQDJJKA" name="photoUrls" type="_52VkhJ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52ofdZ8HEemla5uTQDJJKA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_52ofdp8HEemla5uTQDJJKA" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_52yQcJ8HEemla5uTQDJJKA" name="status" type="_52ofeZ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52yQcZ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_52yQfJ8HEemla5uTQDJJKA" name="findPetsByStatus">
+          <ownedParameter xmi:id="_52yQgJ8HEemla5uTQDJJKA" name="status" type="_52ofeZ8HEemla5uTQDJJKA">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52yQgZ8HEemla5uTQDJJKA"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_52yQgp8HEemla5uTQDJJKA" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_52yQhJ8HEemla5uTQDJJKA" type="_52VkkZ8HEemla5uTQDJJKA" direction="return">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52yQhZ8HEemla5uTQDJJKA"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_52yQhp8HEemla5uTQDJJKA" value="*"/>
+          </ownedParameter>
+          <ownedParameter xmi:id="_52yQiJ8HEemla5uTQDJJKA" direction="return"/>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_52yQc58HEemla5uTQDJJKA" name="Pet_category" memberEnd="_52yQdJ8HEemla5uTQDJJKA _52yQdZ8HEemla5uTQDJJKA" navigableOwnedEnd="_52yQdZ8HEemla5uTQDJJKA">
+        <ownedEnd xmi:id="_52yQdJ8HEemla5uTQDJJKA" name="Pet" type="_52VkkZ8HEemla5uTQDJJKA" association="_52yQc58HEemla5uTQDJJKA"/>
+        <ownedEnd xmi:id="_52yQdZ8HEemla5uTQDJJKA" name="category" type="_52Lzjp8HEemla5uTQDJJKA" aggregation="composite" association="_52yQc58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52yQdp8HEemla5uTQDJJKA"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_52yQd58HEemla5uTQDJJKA" name="Pet_tags" memberEnd="_52yQeJ8HEemla5uTQDJJKA _52yQeZ8HEemla5uTQDJJKA" navigableOwnedEnd="_52yQeZ8HEemla5uTQDJJKA">
+        <ownedEnd xmi:id="_52yQeJ8HEemla5uTQDJJKA" name="Pet" type="_52VkkZ8HEemla5uTQDJJKA" association="_52yQd58HEemla5uTQDJJKA"/>
+        <ownedEnd xmi:id="_52yQeZ8HEemla5uTQDJJKA" name="tags" type="_52VkiZ8HEemla5uTQDJJKA" aggregation="composite" association="_52yQd58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_52yQep8HEemla5uTQDJJKA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_52yQe58HEemla5uTQDJJKA" value="*"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_50Zrfp8HEemla5uTQDJJKA" name="types">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_52LzkJ8HEemla5uTQDJJKA" name="Long"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_52VkhJ8HEemla5uTQDJJKA" name="String"/>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_52ofeZ8HEemla5uTQDJJKA" name="PetStatus">
+        <ownedLiteral xmi:id="_52ofep8HEemla5uTQDJJKA" name="available"/>
+        <ownedLiteral xmi:id="_52ofe58HEemla5uTQDJJKA" name="pending"/>
+        <ownedLiteral xmi:id="_52offJ8HEemla5uTQDJJKA" name="sold"/>
+      </packagedElement>
+    </packagedElement>
+    <profileApplication xmi:id="_50Zre58HEemla5uTQDJJKA">
+      <eAnnotations xmi:id="_50ZrfJ8HEemla5uTQDJJKA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://edu.uoc.som/openapi/profile/1.0#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://OPENAPI_PROFILES/openapi.profile.uml#_8zK3wHyGEemaV87q0fd26g"/>
+    </profileApplication>
+  </uml:Model>
+  <openapiprofile:API xmi:id="_52LzgJ8HEemla5uTQDJJKA" host="petstore.swagger.io" basePath="/v2" base_Model="_50Zrep8HEemla5uTQDJJKA">
+    <schemes>http</schemes>
+  </openapiprofile:API>
+  <openapiprofile:APIInfo xmi:id="_52LzgZ8HEemla5uTQDJJKA" title="Swagger Petstore" description="This is a sample server Petstore server.  You can find out more about Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).  For this sample, you can use the api key `special-key` to test the authorization filters." termsOfService="http://swagger.io/terms/" version="1.0.0" base_Model="_50Zrep8HEemla5uTQDJJKA">
+    <license xmi:id="_52Lzg58HEemla5uTQDJJKA" name="Apache 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+    <contact xmi:id="_52Lzgp8HEemla5uTQDJJKA" email="apiteam@swagger.io"/>
+  </openapiprofile:APIInfo>
+  <openapiprofile:ExternalDocs xmi:id="_52LzhJ8HEemla5uTQDJJKA" description="Find out more about Swagger" url="http://swagger.io" base_Model="_50Zrep8HEemla5uTQDJJKA"/>
+  <openapiprofile:SecurityDefinitions xmi:id="_52LzhZ8HEemla5uTQDJJKA" base_Model="_50Zrep8HEemla5uTQDJJKA">
+    <securitySchemes xmi:id="_52Lzhp8HEemla5uTQDJJKA" type="oauth2" flow="implicit" authorizationURL="http://petstore.swagger.io/oauth/dialog" referenceName="petstore_auth">
+      <scopes xmi:id="_52Lzh58HEemla5uTQDJJKA" name="write:pets" description="modify pets in your account"/>
+      <scopes xmi:id="_52LziJ8HEemla5uTQDJJKA" name="read:pets" description="read your pets"/>
+    </securitySchemes>
+    <securitySchemes xmi:id="_52LziZ8HEemla5uTQDJJKA" name="api_key" type="apiKey" location="header" referenceName="api_key"/>
+  </openapiprofile:SecurityDefinitions>
+  <openapiprofile:Tags xmi:id="_52Lzip8HEemla5uTQDJJKA" base_Model="_50Zrep8HEemla5uTQDJJKA">
+    <tags xmi:id="_52Lzi58HEemla5uTQDJJKA" externalDocsURL="http://swagger.io" externalDocsDescription="Find out more" name="pet" description="Everything about your Pets"/>
+    <tags xmi:id="_52LzjJ8HEemla5uTQDJJKA" name="store" description="Access to Petstore orders"/>
+    <tags xmi:id="_52LzjZ8HEemla5uTQDJJKA" externalDocsURL="http://swagger.io" externalDocsDescription="Find out more about our store" name="user" description="Operations about user"/>
+  </openapiprofile:Tags>
+  <openapiprofile:Schema xmi:id="_52Lzj58HEemla5uTQDJJKA" base_Class="_52Lzjp8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIDataType xmi:id="_52VkgJ8HEemla5uTQDJJKA" type="integer" format="int64" base_PrimitiveType="_52LzkJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_52Vkg58HEemla5uTQDJJKA" base_Property="_52VkgZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIDataType xmi:id="_52VkhZ8HEemla5uTQDJJKA" type="string" base_PrimitiveType="_52VkhJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_52VkiJ8HEemla5uTQDJJKA" base_Property="_52Vkhp8HEemla5uTQDJJKA"/>
+  <openapiprofile:Schema xmi:id="_52Vkip8HEemla5uTQDJJKA" base_Class="_52VkiZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_52VkjZ8HEemla5uTQDJJKA" base_Property="_52Vki58HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_52VkkJ8HEemla5uTQDJJKA" base_Property="_52Vkjp8HEemla5uTQDJJKA"/>
+  <openapiprofile:Schema xmi:id="_52Vkkp8HEemla5uTQDJJKA" base_Class="_52VkkZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_52ofcJ8HEemla5uTQDJJKA" base_Property="_52Vkk58HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_52ofc58HEemla5uTQDJJKA" required="true" base_Property="_52ofcZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_52ofd58HEemla5uTQDJJKA" required="true" base_Property="_52ofdJ8HEemla5uTQDJJKA">
+    <xml xmi:id="_52ofeJ8HEemla5uTQDJJKA" name="photoUrl" wrapped="true"/>
+  </openapiprofile:APIProperty>
+  <openapiprofile:APIDataType xmi:id="_52offZ8HEemla5uTQDJJKA" type="string" base_Enumeration="_52ofeZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_52yQcp8HEemla5uTQDJJKA" base_Property="_52yQcJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIOperation xmi:id="_52yQfZ8HEemla5uTQDJJKA" relativePath="/pet/findByStatus" method="get" summary="Finds Pets by status" description="Multiple status values can be provided with comma separated strings" base_Operation="_52yQfJ8HEemla5uTQDJJKA">
+    <produces>application/xml</produces>
+    <produces>application/json</produces>
+    <tags>pet</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:Security xmi:id="_52yQfp8HEemla5uTQDJJKA" base_Operation="_52yQfJ8HEemla5uTQDJJKA">
+    <securityRequirements xmi:id="_52yQf58HEemla5uTQDJJKA" name="petstore_auth">
+      <scopes>write:pets</scopes>
+      <scopes>read:pets</scopes>
+    </securityRequirements>
+  </openapiprofile:Security>
+  <openapiprofile:APIParameter xmi:id="_52yQg58HEemla5uTQDJJKA" description="Status values that need to be considered for filter" location="query" collectionFormat="multi" base_Parameter="_52yQgJ8HEemla5uTQDJJKA" required="true"/>
+  <openapiprofile:APIResponse xmi:id="_52yQh58HEemla5uTQDJJKA" description="successful operation" code="200" base_Parameter="_52yQhJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIResponse xmi:id="_52yQiZ8HEemla5uTQDJJKA" description="Invalid status value" code="400" base_Parameter="_52yQiJ8HEemla5uTQDJJKA"/>
+</xmi:XMI>

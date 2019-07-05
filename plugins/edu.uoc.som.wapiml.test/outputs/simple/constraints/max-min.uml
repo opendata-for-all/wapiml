@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_6_SwoJ8HEemla5uTQDJJKA">
+  <packagedElement xmi:type="uml:Package" xmi:id="_6_SwoZ8HEemla5uTQDJJKA" name="max-min">
+    <packagedElement xmi:type="uml:Class" xmi:id="_6_Swo58HEemla5uTQDJJKA" name="Concept">
+      <ownedRule xmi:id="_6_choJ8HEemla5uTQDJJKA" name="Concept-attributeWithMaximum-maximumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6_choZ8HEemla5uTQDJJKA">
+          <language>OCL</language>
+          <body>self.attributeWithMaximum &lt;= 2000.0</body>
+        </specification>
+      </ownedRule>
+      <ownedRule xmi:id="_6_chpZ8HEemla5uTQDJJKA" name="Concept-attributeWithMinimum-minimumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6_chpp8HEemla5uTQDJJKA">
+          <language>OCL</language>
+          <body>self.attributeWithMinimum >= 1.0</body>
+        </specification>
+      </ownedRule>
+      <ownedRule xmi:id="_6_chqZ8HEemla5uTQDJJKA" name="Concept-attributeWithExclusiveMaximum-maximumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6_chqp8HEemla5uTQDJJKA">
+          <language>OCL</language>
+          <body>self.attributeWithExclusiveMaximum &lt; 2000.0</body>
+        </specification>
+      </ownedRule>
+      <ownedRule xmi:id="_6_chrZ8HEemla5uTQDJJKA" name="Concept-attributeWithExclusiveMinimum-minimumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6_chrp8HEemla5uTQDJJKA">
+          <language>OCL</language>
+          <body>self.attributeWithExclusiveMinimum > 1.0</body>
+        </specification>
+      </ownedRule>
+      <ownedAttribute xmi:id="_6_SwpZ8HEemla5uTQDJJKA" name="id" type="_6_SwpJ8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6_Swpp8HEemla5uTQDJJKA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_6_cho58HEemla5uTQDJJKA" name="attributeWithMaximum" type="_6_chop8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6_chpJ8HEemla5uTQDJJKA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_6_chp58HEemla5uTQDJJKA" name="attributeWithMinimum" type="_6_chop8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6_chqJ8HEemla5uTQDJJKA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_6_chq58HEemla5uTQDJJKA" name="attributeWithExclusiveMaximum" type="_6_chop8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6_chrJ8HEemla5uTQDJJKA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_6_chr58HEemla5uTQDJJKA" name="attributeWithExclusiveMinimum" type="_6_chop8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6_chsJ8HEemla5uTQDJJKA"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_6_chsZ8HEemla5uTQDJJKA" name="getConcepts">
+        <ownedParameter xmi:id="_6_chsp8HEemla5uTQDJJKA" type="_6_Swo58HEemla5uTQDJJKA" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6_chs58HEemla5uTQDJJKA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6_chtJ8HEemla5uTQDJJKA" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_6_Swop8HEemla5uTQDJJKA" name="types">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6_SwpJ8HEemla5uTQDJJKA" name="Long"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6_chop8HEemla5uTQDJJKA" name="Integer"/>
+  </packagedElement>
+</uml:Model>

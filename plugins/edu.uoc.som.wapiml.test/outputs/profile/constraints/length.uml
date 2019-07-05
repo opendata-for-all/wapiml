@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:openapiprofile="http://edu.uoc.som/openapi/profile/1.0" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_5VCOQJ8HEemla5uTQDJJKA">
+    <packagedElement xmi:type="uml:Package" xmi:id="_5VCOQ58HEemla5uTQDJJKA" name="length">
+      <packagedElement xmi:type="uml:Class" xmi:id="_5WlGZJ8HEemla5uTQDJJKA" name="Concept">
+        <ownedRule xmi:id="_5WlGa58HEemla5uTQDJJKA" name="Concept-attributeWithMaxLength-maxLengthConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5WlGbJ8HEemla5uTQDJJKA">
+            <language>OCL</language>
+            <body>self.attributeWithMaxLength.size() &lt;= 20</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_5Wu3Y58HEemla5uTQDJJKA" name="Concept-attributeWithMinLength-minLengthConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5Wu3ZJ8HEemla5uTQDJJKA">
+            <language>OCL</language>
+            <body>self.attributeWithMinLength.size() >= 1</body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_5WlGaJ8HEemla5uTQDJJKA" name="id" type="_5WlGZp8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5WlGaZ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5Wu3YJ8HEemla5uTQDJJKA" name="attributeWithMaxLength" type="_5WlGbZ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5Wu3YZ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5Wu3ZZ8HEemla5uTQDJJKA" name="attributeWithMinLength" type="_5WlGbZ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5Wu3Zp8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_5Wu3aJ8HEemla5uTQDJJKA" name="getConcepts">
+          <ownedParameter xmi:id="_5Wu3ap8HEemla5uTQDJJKA" type="_5WlGZJ8HEemla5uTQDJJKA" direction="return">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5Wu3a58HEemla5uTQDJJKA"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5Wu3bJ8HEemla5uTQDJJKA" value="*"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_5VCORJ8HEemla5uTQDJJKA" name="types">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_5WlGZp8HEemla5uTQDJJKA" name="Long"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_5WlGbZ8HEemla5uTQDJJKA" name="String"/>
+    </packagedElement>
+    <profileApplication xmi:id="_5VCOQZ8HEemla5uTQDJJKA">
+      <eAnnotations xmi:id="_5VCOQp8HEemla5uTQDJJKA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://edu.uoc.som/openapi/profile/1.0#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://OPENAPI_PROFILES/openapi.profile.uml#_8zK3wHyGEemaV87q0fd26g"/>
+    </profileApplication>
+  </uml:Model>
+  <openapiprofile:API xmi:id="_5WlGYJ8HEemla5uTQDJJKA" host="example.com" basePath="/v1" base_Model="_5VCOQJ8HEemla5uTQDJJKA">
+    <schemes>http</schemes>
+  </openapiprofile:API>
+  <openapiprofile:APIInfo xmi:id="_5WlGYZ8HEemla5uTQDJJKA" title="maximum" description="A simple definition to test maxLength and minLength" version="1.0.0" base_Model="_5VCOQJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:Tags xmi:id="_5WlGYp8HEemla5uTQDJJKA" base_Model="_5VCOQJ8HEemla5uTQDJJKA">
+    <tags xmi:id="_5WlGY58HEemla5uTQDJJKA" name="concept"/>
+  </openapiprofile:Tags>
+  <openapiprofile:Schema xmi:id="_5WlGZZ8HEemla5uTQDJJKA" base_Class="_5WlGZJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIDataType xmi:id="_5WlGZ58HEemla5uTQDJJKA" type="integer" format="int64" base_PrimitiveType="_5WlGZp8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_5WlGap8HEemla5uTQDJJKA" base_Property="_5WlGaJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIDataType xmi:id="_5WlGbp8HEemla5uTQDJJKA" type="string" base_PrimitiveType="_5WlGbZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_5Wu3Yp8HEemla5uTQDJJKA" maxLength="20" base_Property="_5Wu3YJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_5Wu3Z58HEemla5uTQDJJKA" minLength="1" base_Property="_5Wu3ZZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIOperation xmi:id="_5Wu3aZ8HEemla5uTQDJJKA" relativePath="/concepts" method="get" base_Operation="_5Wu3aJ8HEemla5uTQDJJKA">
+    <produces>application/json</produces>
+    <tags>concept</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIResponse xmi:id="_5Wu3bZ8HEemla5uTQDJJKA" description="successful operation" code="200" base_Parameter="_5Wu3ap8HEemla5uTQDJJKA"/>
+</xmi:XMI>

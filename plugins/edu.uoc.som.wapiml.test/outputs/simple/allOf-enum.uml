@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_6TuEEJ8HEemla5uTQDJJKA">
+  <packagedElement xmi:type="uml:Package" xmi:id="_6TuEEZ8HEemla5uTQDJJKA" name="allOf-enum">
+    <packagedElement xmi:type="uml:Class" xmi:id="_6TuEE58HEemla5uTQDJJKA" name="Pet">
+      <ownedAttribute xmi:id="_6TuEFZ8HEemla5uTQDJJKA" name="name" type="_6TuEFJ8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6TuEFp8HEemla5uTQDJJKA"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_6TuEF58HEemla5uTQDJJKA" name="petType" type="_6TuEFJ8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6TuEGJ8HEemla5uTQDJJKA"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_6TuEGZ8HEemla5uTQDJJKA" name="Cat">
+      <generalization xmi:id="_6TuELp8HEemla5uTQDJJKA" general="_6TuEE58HEemla5uTQDJJKA"/>
+      <ownedAttribute xmi:id="_6TuEH58HEemla5uTQDJJKA" name="huntingSkill" type="_6TuEGp8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6TuEIJ8HEemla5uTQDJJKA"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_6TuEIZ8HEemla5uTQDJJKA" value="&quot;lazy&quot;"/>
+      </ownedAttribute>
+      <ownedOperation xmi:id="_6TuEMZ8HEemla5uTQDJJKA" name="getCats">
+        <ownedParameter xmi:id="_6TuEMp8HEemla5uTQDJJKA" type="_6TuEGZ8HEemla5uTQDJJKA" direction="return">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6TuEM58HEemla5uTQDJJKA"/>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_6TuENJ8HEemla5uTQDJJKA" value="*"/>
+        </ownedParameter>
+      </ownedOperation>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_6TuEIp8HEemla5uTQDJJKA" name="Dog">
+      <ownedRule xmi:id="_6TuEI58HEemla5uTQDJJKA" name="Dog-packSize-minimumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6TuEJJ8HEemla5uTQDJJKA">
+          <language>OCL</language>
+          <body>self.packSize >= 0.0</body>
+        </specification>
+      </ownedRule>
+      <generalization xmi:id="_6TuEL58HEemla5uTQDJJKA" general="_6TuEE58HEemla5uTQDJJKA"/>
+      <ownedAttribute xmi:id="_6TuEJp8HEemla5uTQDJJKA" name="packSize" type="_6TuEJZ8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6TuEJ58HEemla5uTQDJJKA"/>
+        <defaultValue xmi:type="uml:LiteralString" xmi:id="_6TuEKJ8HEemla5uTQDJJKA" value="0"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_6TuEKZ8HEemla5uTQDJJKA" name="Fish">
+      <ownedRule xmi:id="_6TuEKp8HEemla5uTQDJJKA" name="Fish-fins-minimumConstraint">
+        <specification xmi:type="uml:OpaqueExpression" xmi:id="_6TuEK58HEemla5uTQDJJKA">
+          <language>OCL</language>
+          <body>self.fins >= 0.0</body>
+        </specification>
+      </ownedRule>
+      <generalization xmi:id="_6TuEMJ8HEemla5uTQDJJKA" general="_6TuEE58HEemla5uTQDJJKA"/>
+      <ownedAttribute xmi:id="_6TuELJ8HEemla5uTQDJJKA" name="fins" type="_6TuEJZ8HEemla5uTQDJJKA">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_6TuELZ8HEemla5uTQDJJKA"/>
+      </ownedAttribute>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_6TuEEp8HEemla5uTQDJJKA" name="types">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6TuEFJ8HEemla5uTQDJJKA" name="String"/>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_6TuEGp8HEemla5uTQDJJKA" name="CatHuntingSkill">
+      <ownedLiteral xmi:id="_6TuEG58HEemla5uTQDJJKA" name="clueless"/>
+      <ownedLiteral xmi:id="_6TuEHJ8HEemla5uTQDJJKA" name="lazy"/>
+      <ownedLiteral xmi:id="_6TuEHZ8HEemla5uTQDJJKA" name="adventurous"/>
+      <ownedLiteral xmi:id="_6TuEHp8HEemla5uTQDJJKA" name="aggressive"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_6TuEJZ8HEemla5uTQDJJKA" name="Integer"/>
+  </packagedElement>
+</uml:Model>
