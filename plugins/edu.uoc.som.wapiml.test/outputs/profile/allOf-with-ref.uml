@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:openapiprofile="http://edu.uoc.som/openapi/profile/1.0" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_4ncvgJ8HEemla5uTQDJJKA">
+    <packagedElement xmi:type="uml:Package" xmi:id="_4ncvg58HEemla5uTQDJJKA" name="allOf-with-ref">
+      <packagedElement xmi:type="uml:Class" xmi:id="_4prkJJ8HEemla5uTQDJJKA" name="Pet">
+        <ownedAttribute xmi:id="_4prkKJ8HEemla5uTQDJJKA" name="name" type="_4prkJp8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4prkKZ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_4prkK58HEemla5uTQDJJKA" name="petType" type="_4prkJp8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4prkLJ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_4prkLp8HEemla5uTQDJJKA" name="Cat">
+        <generalization xmi:id="_4qIQEJ8HEemla5uTQDJJKA" general="_4prkJJ8HEemla5uTQDJJKA"/>
+        <ownedAttribute xmi:id="_4p0uF58HEemla5uTQDJJKA" name="huntingSkill" type="_4p0uEZ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4p0uGJ8HEemla5uTQDJJKA"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_4p0uGZ8HEemla5uTQDJJKA" value="&quot;lazy&quot;"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_4qIQF58HEemla5uTQDJJKA" name="getCats">
+          <ownedParameter xmi:id="_4qIQGZ8HEemla5uTQDJJKA" type="_4prkLp8HEemla5uTQDJJKA" direction="return">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4qIQGp8HEemla5uTQDJJKA"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_4qIQG58HEemla5uTQDJJKA" value="*"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_4p0uG58HEemla5uTQDJJKA" name="Dog">
+        <ownedRule xmi:id="_4p0uHZ8HEemla5uTQDJJKA" name="Dog-packSize-minimumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_4p0uHp8HEemla5uTQDJJKA">
+            <language>OCL</language>
+            <body>self.packSize >= 0.0</body>
+          </specification>
+        </ownedRule>
+        <generalization xmi:id="_4qIQEZ8HEemla5uTQDJJKA" general="_4prkJJ8HEemla5uTQDJJKA"/>
+        <ownedAttribute xmi:id="_4p-fEJ8HEemla5uTQDJJKA" name="packSize" type="_4p0uH58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4p-fEZ8HEemla5uTQDJJKA"/>
+          <defaultValue xmi:type="uml:LiteralString" xmi:id="_4p-fEp8HEemla5uTQDJJKA" value="0"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_4p-fFJ8HEemla5uTQDJJKA" name="Fish">
+        <ownedRule xmi:id="_4p-fFp8HEemla5uTQDJJKA" name="Fish-fins-minimumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_4p-fF58HEemla5uTQDJJKA">
+            <language>OCL</language>
+            <body>self.fins >= 0.0</body>
+          </specification>
+        </ownedRule>
+        <generalization xmi:id="_4qIQEp8HEemla5uTQDJJKA" general="_4prkJJ8HEemla5uTQDJJKA"/>
+        <ownedAttribute xmi:id="_4p-fGJ8HEemla5uTQDJJKA" name="fins" type="_4p0uH58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4p-fGZ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_4p-fG58HEemla5uTQDJJKA" name="Category">
+        <ownedAttribute xmi:id="_4p-fHZ8HEemla5uTQDJJKA" name="name" type="_4prkJp8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4p-fHp8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_4qIQE58HEemla5uTQDJJKA" name="Fish_category" memberEnd="_4qIQFJ8HEemla5uTQDJJKA _4qIQFZ8HEemla5uTQDJJKA" navigableOwnedEnd="_4qIQFZ8HEemla5uTQDJJKA">
+        <ownedEnd xmi:id="_4qIQFJ8HEemla5uTQDJJKA" name="Fish" type="_4p-fFJ8HEemla5uTQDJJKA" association="_4qIQE58HEemla5uTQDJJKA"/>
+        <ownedEnd xmi:id="_4qIQFZ8HEemla5uTQDJJKA" name="category" type="_4p-fG58HEemla5uTQDJJKA" aggregation="composite" association="_4qIQE58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_4qIQFp8HEemla5uTQDJJKA"/>
+        </ownedEnd>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_4ncvhJ8HEemla5uTQDJJKA" name="types">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_4prkJp8HEemla5uTQDJJKA" name="String"/>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_4p0uEZ8HEemla5uTQDJJKA" name="CatHuntingSkill">
+        <ownedLiteral xmi:id="_4p0uEp8HEemla5uTQDJJKA" name="clueless"/>
+        <ownedLiteral xmi:id="_4p0uE58HEemla5uTQDJJKA" name="lazy"/>
+        <ownedLiteral xmi:id="_4p0uFJ8HEemla5uTQDJJKA" name="adventurous"/>
+        <ownedLiteral xmi:id="_4p0uFZ8HEemla5uTQDJJKA" name="aggressive"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_4p0uH58HEemla5uTQDJJKA" name="Integer"/>
+    </packagedElement>
+    <profileApplication xmi:id="_4ncvgZ8HEemla5uTQDJJKA">
+      <eAnnotations xmi:id="_4ncvgp8HEemla5uTQDJJKA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://edu.uoc.som/openapi/profile/1.0#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://OPENAPI_PROFILES/openapi.profile.uml#_8zK3wHyGEemaV87q0fd26g"/>
+    </profileApplication>
+  </uml:Model>
+  <openapiprofile:API xmi:id="_4prkIJ8HEemla5uTQDJJKA" host="example.com" basePath="/v1" base_Model="_4ncvgJ8HEemla5uTQDJJKA">
+    <schemes>http</schemes>
+  </openapiprofile:API>
+  <openapiprofile:APIInfo xmi:id="_4prkIZ8HEemla5uTQDJJKA" title="schema-with-allOf" description="A simple definition to test allOf" version="1.0.0" base_Model="_4ncvgJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:Tags xmi:id="_4prkIp8HEemla5uTQDJJKA" base_Model="_4ncvgJ8HEemla5uTQDJJKA">
+    <tags xmi:id="_4prkI58HEemla5uTQDJJKA" name="cat"/>
+  </openapiprofile:Tags>
+  <openapiprofile:Schema xmi:id="_4prkJZ8HEemla5uTQDJJKA" discriminator="petType" base_Class="_4prkJJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIDataType xmi:id="_4prkJ58HEemla5uTQDJJKA" type="string" base_PrimitiveType="_4prkJp8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_4prkKp8HEemla5uTQDJJKA" required="true" base_Property="_4prkKJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_4prkLZ8HEemla5uTQDJJKA" required="true" base_Property="_4prkK58HEemla5uTQDJJKA"/>
+  <openapiprofile:Schema xmi:id="_4p0uEJ8HEemla5uTQDJJKA" base_Class="_4prkLp8HEemla5uTQDJJKA" description="A representation of a cat"/>
+  <openapiprofile:APIDataType xmi:id="_4p0uFp8HEemla5uTQDJJKA" type="string" base_Enumeration="_4p0uEZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_4p0uGp8HEemla5uTQDJJKA" required="true" base_Property="_4p0uF58HEemla5uTQDJJKA"/>
+  <openapiprofile:Schema xmi:id="_4p0uHJ8HEemla5uTQDJJKA" base_Class="_4p0uG58HEemla5uTQDJJKA" description="A representation of a dog"/>
+  <openapiprofile:APIDataType xmi:id="_4p0uIJ8HEemla5uTQDJJKA" type="integer" format="int32" base_PrimitiveType="_4p0uH58HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_4p-fE58HEemla5uTQDJJKA" minimum="0.0" required="true" base_Property="_4p-fEJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:Schema xmi:id="_4p-fFZ8HEemla5uTQDJJKA" base_Class="_4p-fFJ8HEemla5uTQDJJKA" description="A representation of a fish"/>
+  <openapiprofile:APIProperty xmi:id="_4p-fGp8HEemla5uTQDJJKA" minimum="0.0" required="true" base_Property="_4p-fGJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:Schema xmi:id="_4p-fHJ8HEemla5uTQDJJKA" base_Class="_4p-fG58HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_4p-fH58HEemla5uTQDJJKA" base_Property="_4p-fHZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIOperation xmi:id="_4qIQGJ8HEemla5uTQDJJKA" relativePath="/concepts" method="get" base_Operation="_4qIQF58HEemla5uTQDJJKA">
+    <produces>application/json</produces>
+    <tags>cat</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIResponse xmi:id="_4qIQHJ8HEemla5uTQDJJKA" description="successful operation" code="200" base_Parameter="_4qIQGZ8HEemla5uTQDJJKA"/>
+</xmi:XMI>

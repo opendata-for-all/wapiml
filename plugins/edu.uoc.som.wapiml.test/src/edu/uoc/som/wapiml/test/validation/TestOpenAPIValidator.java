@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.validation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,7 +38,7 @@ class TestOpenAPIValidator {
 	@Test
 	void testGenerateClassDiagramInvalidDef() {
 		  File input = new File("inputs/bad-petstore.json");
-		  File output = new File("outputs/bad-petstore.uml");
+		  File output = new File("outputs/simple/bad-petstore.uml");
 		 
 
 		Throwable exception = assertThrows(OpenAPIValidationException.class, () -> 

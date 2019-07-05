@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:openapiprofile="http://edu.uoc.som/openapi/profile/1.0" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_5cF4gJ8HEemla5uTQDJJKA">
+    <packagedElement xmi:type="uml:Package" xmi:id="_5cF4g58HEemla5uTQDJJKA" name="max-min">
+      <packagedElement xmi:type="uml:Class" xmi:id="_5d4BMp8HEemla5uTQDJJKA" name="Concept">
+        <ownedRule xmi:id="_5d4BOZ8HEemla5uTQDJJKA" name="Concept-attributeWithMaximum-maximumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5d4BOp8HEemla5uTQDJJKA">
+            <language>OCL</language>
+            <body>self.attributeWithMaximum &lt;= 2000.0</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_5eByMJ8HEemla5uTQDJJKA" name="Concept-attributeWithMinimum-minimumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5eByMZ8HEemla5uTQDJJKA">
+            <language>OCL</language>
+            <body>self.attributeWithMinimum >= 1.0</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_5eByNZ8HEemla5uTQDJJKA" name="Concept-attributeWithExclusiveMaximum-maximumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5eByNp8HEemla5uTQDJJKA">
+            <language>OCL</language>
+            <body>self.attributeWithExclusiveMaximum &lt; 2000.0</body>
+          </specification>
+        </ownedRule>
+        <ownedRule xmi:id="_5eByOp8HEemla5uTQDJJKA" name="Concept-attributeWithExclusiveMinimum-minimumConstraint">
+          <specification xmi:type="uml:OpaqueExpression" xmi:id="_5eByO58HEemla5uTQDJJKA">
+            <language>OCL</language>
+            <body>self.attributeWithExclusiveMinimum > 1.0</body>
+          </specification>
+        </ownedRule>
+        <ownedAttribute xmi:id="_5d4BNp8HEemla5uTQDJJKA" name="id" type="_5d4BNJ8HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5d4BN58HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5d4BPZ8HEemla5uTQDJJKA" name="attributeWithMaximum" type="_5d4BO58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5d4BPp8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5eByMp8HEemla5uTQDJJKA" name="attributeWithMinimum" type="_5d4BO58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5eByM58HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5eByN58HEemla5uTQDJJKA" name="attributeWithExclusiveMaximum" type="_5d4BO58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5eByOJ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:id="_5eByPJ8HEemla5uTQDJJKA" name="attributeWithExclusiveMinimum" type="_5d4BO58HEemla5uTQDJJKA">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5eByPZ8HEemla5uTQDJJKA"/>
+        </ownedAttribute>
+        <ownedOperation xmi:id="_5eByP58HEemla5uTQDJJKA" name="getConcepts">
+          <ownedParameter xmi:id="_5eByQZ8HEemla5uTQDJJKA" type="_5d4BMp8HEemla5uTQDJJKA" direction="return">
+            <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_5eByQp8HEemla5uTQDJJKA"/>
+            <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_5eByQ58HEemla5uTQDJJKA" value="*"/>
+          </ownedParameter>
+        </ownedOperation>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_5cF4hJ8HEemla5uTQDJJKA" name="types">
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_5d4BNJ8HEemla5uTQDJJKA" name="Long"/>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_5d4BO58HEemla5uTQDJJKA" name="Integer"/>
+    </packagedElement>
+    <profileApplication xmi:id="_5cF4gZ8HEemla5uTQDJJKA">
+      <eAnnotations xmi:id="_5cF4gp8HEemla5uTQDJJKA" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://edu.uoc.som/openapi/profile/1.0#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://OPENAPI_PROFILES/openapi.profile.uml#_8zK3wHyGEemaV87q0fd26g"/>
+    </profileApplication>
+  </uml:Model>
+  <openapiprofile:API xmi:id="_5du3QJ8HEemla5uTQDJJKA" host="example.com" basePath="/v1" base_Model="_5cF4gJ8HEemla5uTQDJJKA">
+    <schemes>http</schemes>
+  </openapiprofile:API>
+  <openapiprofile:APIInfo xmi:id="_5du3QZ8HEemla5uTQDJJKA" title="maximum" description="A simple definition to test maximum and minimum" version="1.0.0" base_Model="_5cF4gJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:Tags xmi:id="_5d4BMJ8HEemla5uTQDJJKA" base_Model="_5cF4gJ8HEemla5uTQDJJKA">
+    <tags xmi:id="_5d4BMZ8HEemla5uTQDJJKA" name="concept"/>
+  </openapiprofile:Tags>
+  <openapiprofile:Schema xmi:id="_5d4BM58HEemla5uTQDJJKA" base_Class="_5d4BMp8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIDataType xmi:id="_5d4BNZ8HEemla5uTQDJJKA" type="integer" format="int64" base_PrimitiveType="_5d4BNJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_5d4BOJ8HEemla5uTQDJJKA" base_Property="_5d4BNp8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIDataType xmi:id="_5d4BPJ8HEemla5uTQDJJKA" type="integer" base_PrimitiveType="_5d4BO58HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_5d4BP58HEemla5uTQDJJKA" maximum="2000.0" base_Property="_5d4BPZ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_5eByNJ8HEemla5uTQDJJKA" minimum="1.0" base_Property="_5eByMp8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_5eByOZ8HEemla5uTQDJJKA" maximum="2000.0" exclusiveMaximum="true" base_Property="_5eByN58HEemla5uTQDJJKA"/>
+  <openapiprofile:APIProperty xmi:id="_5eByPp8HEemla5uTQDJJKA" minimum="1.0" exclusiveMinimum="true" base_Property="_5eByPJ8HEemla5uTQDJJKA"/>
+  <openapiprofile:APIOperation xmi:id="_5eByQJ8HEemla5uTQDJJKA" relativePath="/concepts" method="get" base_Operation="_5eByP58HEemla5uTQDJJKA">
+    <produces>application/json</produces>
+    <tags>concept</tags>
+  </openapiprofile:APIOperation>
+  <openapiprofile:APIResponse xmi:id="_5eByRJ8HEemla5uTQDJJKA" description="successful operation" code="200" base_Parameter="_5eByQZ8HEemla5uTQDJJKA"/>
+</xmi:XMI>

@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.validation;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;

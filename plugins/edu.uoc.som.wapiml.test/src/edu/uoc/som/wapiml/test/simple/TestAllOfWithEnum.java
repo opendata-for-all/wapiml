@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.simple;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,7 +21,7 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 
-@DisplayName("Test allOf with Enum")
+@DisplayName("Test allOf with Enum - simple")
 class TestAllOfWithEnum {
 
 	private static ResourceSet RES_SET = new ResourceSetImpl();
@@ -38,7 +38,7 @@ class TestAllOfWithEnum {
 	void testGenerateAndSaveClassDiagramURI() {
 		
 	        File input = new File("inputs/allOf.json");
-	        File output = new File("outputs/allOf-enum.uml");
+	        File output = new File("outputs/simple/allOf-enum.uml");
 	        
 	        try {
 	        	WAPImlFacade wAPImlFacade = new WAPImlFacade();

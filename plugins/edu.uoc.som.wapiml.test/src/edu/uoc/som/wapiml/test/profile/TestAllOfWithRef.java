@@ -1,11 +1,16 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.profile;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 import java.io.IOException;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.uml2.uml.Class;
+import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.Package;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.junit.jupiter.api.BeforeAll;
@@ -16,9 +21,8 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 
-
-@DisplayName("Test allOf with Ref")
-class TestPrimitiveAsModel {
+@DisplayName("Test allOf with Ref - profile")
+class TestAllOfWithRef {
 
 	private static ResourceSet RES_SET = new ResourceSetImpl();
 
@@ -29,16 +33,20 @@ class TestPrimitiveAsModel {
 				UMLResource.Factory.INSTANCE);
 	}
 	
-	@DisplayName("Test primitive as model")
+	@DisplayName("Test allOf with Ref")
 	@Test
-	void testGenerateAndSaveClassDiagramURI() throws IOException {
+	void testGenerateAndSaveClassDiagramURI() {
 		
-	        File input = new File("inputs/petstore-pt.json");
-	        File output = new File("outputs/petstore-pt.uml");
+	        File input = new File("inputs/allOf-with-ref.json");
+	        File output = new File("outputs/profile/allOf-with-ref.uml");
 	        
 	        try {
-	        	WAPImlFacade wAPImlFacade = new WAPImlFacade();
-	        	wAPImlFacade.generateAndSaveClassDiagram(input, "petstore-pt", output, false, false);
+	        	WAPImlFacade openAPItoUMLFacade = new WAPImlFacade();
+	        	openAPItoUMLFacade.generateAndSaveClassDiagram(input, "allOf-with-ref", output, true, true);
+	        	Resource res = RES_SET.getResource(URI.createFileURI(output.toString()), true);
+				Model model = (Model) res.getContents().get(0);
+				Class fish = (Class)((Package) model.getPackagedElements().get(0)).getOwnedMember("Fish");
+				assertTrue(!fish.getAssociations().isEmpty()); 
 			} catch (IOException | ProcessingException e) {
 				fail(e.getLocalizedMessage());
 			}

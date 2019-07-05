@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test;
+package edu.uoc.som.wapiml.test.profile;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +24,7 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 
-@DisplayName("Test constraints on Schema elements")
+@DisplayName("Test constraints on Schema elements - profile")
 public class TestConstraintsOnSchema {
 
 	private static ResourceSet RES_SET = new ResourceSetImpl();
@@ -40,11 +40,11 @@ public class TestConstraintsOnSchema {
 	@Test
 	public void testMaximum() {
 		File input = new File("inputs/constraints/max-min.json");
-		File output = new File("outputs/constraints/max-min.uml");
+		File output = new File("outputs/profile/constraints/max-min.uml");
 		
 		try {
 			WAPImlFacade wAPImlFacade = new WAPImlFacade();
-			wAPImlFacade.generateAndSaveClassDiagram(input, "max-min", output,false, true);
+			wAPImlFacade.generateAndSaveClassDiagram(input, "max-min", output,true, true);
 			Resource res = RES_SET.getResource(URI.createFileURI(output.toString()), true);
 			Model model = (Model) res.getContents().get(0);
 			Class concept = (Class) ((Package) model.getPackagedElement("max-min")).getPackagedElement("Concept");
@@ -68,10 +68,10 @@ public class TestConstraintsOnSchema {
 	@Test
 	public void testMinimum() {
 		File input = new File("inputs/constraints/max-min.json");
-		File output = new File("outputs/constraints/max-min.uml");
+		File output = new File("outputs/profile/constraints/max-min.uml");
 		try {
 			WAPImlFacade wAPImlFacade = new WAPImlFacade();
-			wAPImlFacade.generateAndSaveClassDiagram(input, "max-min", output ,false, true);
+			wAPImlFacade.generateAndSaveClassDiagram(input, "max-min", output ,true, true);
 			Resource res = RES_SET.getResource(URI.createFileURI(output.toString()), true);
 			Model model = (Model) res.getContents().get(0);
 			Class concept = (Class) ((Package) model.getPackagedElement("max-min")).getPackagedElement("Concept");
@@ -99,10 +99,10 @@ public class TestConstraintsOnSchema {
 		@Test
 		public void testMultipleOf() {
 			File input = new File("inputs/constraints/multipleOf.json");
-			File output = new File("outputs/constraints/multipleOf.uml");
+			File output = new File("outputs/profile/constraints/multipleOf.uml");
 			try {
 				WAPImlFacade wAPImlFacade = new WAPImlFacade();
-				wAPImlFacade.generateAndSaveClassDiagram(input, "multipleOf", output,false, true);
+				wAPImlFacade.generateAndSaveClassDiagram(input, "multipleOf", output,true, true);
 				Resource res = RES_SET.getResource(URI.createFileURI(output.toString()), true);
 				Model model = (Model) res.getContents().get(0);
 				Class concept = (Class) ((Package) model.getPackagedElement("multipleOf")).getPackagedElement("Concept");
@@ -124,11 +124,11 @@ public class TestConstraintsOnSchema {
 		@Test
 		public void testMaxLength() {
 			File input = new File("inputs/constraints/length.json");
-			File output = new File("outputs/constraints/length.uml");
+			File output = new File("outputs/profile/constraints/length.uml");
 			
 			try {
 				WAPImlFacade wAPImlFacade = new WAPImlFacade();
-				wAPImlFacade.generateAndSaveClassDiagram(input, "length", output, false, true);
+				wAPImlFacade.generateAndSaveClassDiagram(input, "length", output, true, true);
 				Resource res = RES_SET.getResource(URI.createFileURI(output.toString()), true);
 				Model model = (Model) res.getContents().get(0);
 				Class concept = (Class) ((Package) model.getPackagedElement("length")).getPackagedElement("Concept");
@@ -150,11 +150,11 @@ public class TestConstraintsOnSchema {
 		@Test
 		public void testMinLength() {
 			File input = new File("inputs/constraints/length.json");
-			File output = new File("outputs/constraints/length.uml");
+			File output = new File("outputs/profile/constraints/length.uml");
 			
 			try {
 				WAPImlFacade wAPImlFacade = new WAPImlFacade();
-				wAPImlFacade.generateAndSaveClassDiagram(input, "length", output, false, true);
+				wAPImlFacade.generateAndSaveClassDiagram(input, "length", output, true, true);
 				Resource res = RES_SET.getResource(URI.createFileURI(output.toString()), true);
 				Model model = (Model) res.getContents().get(0);
 				Class concept = (Class) ((Package) model.getPackagedElement("length")).getPackagedElement("Concept");
