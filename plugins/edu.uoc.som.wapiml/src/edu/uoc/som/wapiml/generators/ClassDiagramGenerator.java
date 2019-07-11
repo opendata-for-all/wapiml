@@ -38,14 +38,14 @@ import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
-import edu.uoc.som.openapi.JSONDataType;
-import edu.uoc.som.openapi.Operation;
-import edu.uoc.som.openapi.Parameter;
-import edu.uoc.som.openapi.ParameterLocation;
-import edu.uoc.som.openapi.Path;
-import edu.uoc.som.openapi.Response;
-import edu.uoc.som.openapi.Root;
-import edu.uoc.som.openapi.Schema;
+import edu.uoc.som.openapi2.JSONDataType;
+import edu.uoc.som.openapi2.Operation;
+import edu.uoc.som.openapi2.Parameter;
+import edu.uoc.som.openapi2.ParameterLocation;
+import edu.uoc.som.openapi2.Path;
+import edu.uoc.som.openapi2.Response;
+import edu.uoc.som.openapi2.Root;
+import edu.uoc.som.openapi2.Schema;
 import edu.uoc.som.wapiml.utils.OpenAPIProfileUtils;
 import edu.uoc.som.wapiml.utils.OpenAPIStereotypesUtils;
 import edu.uoc.som.wapiml.utils.OpenAPIUtils;
@@ -185,7 +185,7 @@ public class ClassDiagramGenerator implements Serializable {
 		// resolve associations
 		for (Schema definition : root.getApi().getDefinitions()) {
 			if (isObject(definition)) {
-				for (edu.uoc.som.openapi.Property property : definition.getProperties()) {
+				for (edu.uoc.som.openapi2.Property property : definition.getProperties()) {
 					if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
 						Association association = createAssociation(map, definition, property, root);
 						package_.getPackagedElements().add(association);
@@ -198,7 +198,7 @@ public class ClassDiagramGenerator implements Serializable {
 		for (Schema definition : root.getApi().getDefinitions()) {
 			if (isObject(definition)) {
 				if (!definition.getAllOf().isEmpty()) {
-					for (edu.uoc.som.openapi.Property property : definition.getAllOf().get(1).getProperties()) {
+					for (edu.uoc.som.openapi2.Property property : definition.getAllOf().get(1).getProperties()) {
 						if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
 							Association association = createAssociation(map, definition, property, root);
 							package_.getPackagedElements().add(association);
@@ -359,7 +359,7 @@ public class ClassDiagramGenerator implements Serializable {
 	}
 
 	private Association createAssociation(Map<Schema, Class> map, Schema definition,
-			edu.uoc.som.openapi.Property property, Root root) {
+			edu.uoc.som.openapi2.Property property, Root root) {
 		Association association = umlFactory.createAssociation();
 		association.setName(definition.getReferenceName() + "_" + property.getReferenceName());
 		Property firstOwnedEnd = umlFactory.createProperty();
@@ -388,7 +388,7 @@ public class ClassDiagramGenerator implements Serializable {
 	}
 
 	private void addProperties(Package types, Schema schema, String definitionName, Class clazz, boolean applyProfile) {
-		for (edu.uoc.som.openapi.Property openAPIproperty : schema.getProperties()) {
+		for (edu.uoc.som.openapi2.Property openAPIproperty : schema.getProperties()) {
 			if (isPrimitive(openAPIproperty.getSchema())) {
 				Property umlProperty = umlFactory.createProperty();
 				Schema propertySchema = openAPIproperty.getSchema();

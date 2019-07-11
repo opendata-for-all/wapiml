@@ -15,11 +15,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import edu.uoc.som.openapi.Root;
-import edu.uoc.som.openapi.io.ExporterBuilder;
-import edu.uoc.som.openapi.io.OpenAPIExporter;
-import edu.uoc.som.openapi.io.OpenAPIImporter;
-import edu.uoc.som.openapi.io.utils.IOUtils;
+import edu.uoc.som.openapi2.Root;
+import edu.uoc.som.openapi2.io.ExporterBuilder;
+import edu.uoc.som.openapi2.io.OpenAPIExporter;
+import edu.uoc.som.openapi2.io.OpenAPIImporter;
+import edu.uoc.som.openapi2.io.utils.IOUtils;
 import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.generators.OpenAPIModelGenerator;

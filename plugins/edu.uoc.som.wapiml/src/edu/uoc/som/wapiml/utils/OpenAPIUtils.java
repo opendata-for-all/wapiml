@@ -3,12 +3,12 @@ package edu.uoc.som.wapiml.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.uoc.som.openapi.API;
-import edu.uoc.som.openapi.Operation;
-import edu.uoc.som.openapi.Root;
-import edu.uoc.som.openapi.Schema;
-import edu.uoc.som.openapi.SecurityScheme;
-import edu.uoc.som.openapi.SecurityScope;
+import edu.uoc.som.openapi2.API;
+import edu.uoc.som.openapi2.Operation;
+import edu.uoc.som.openapi2.Root;
+import edu.uoc.som.openapi2.Schema;
+import edu.uoc.som.openapi2.SecurityScheme;
+import edu.uoc.som.openapi2.SecurityScope;
 
 
 

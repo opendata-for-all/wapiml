@@ -1,17 +1,17 @@
 package edu.uoc.som.wapiml.utils;
 
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_INFO;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.EXTERNAL_DOCS;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.TAGS;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.SCHEMA;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_DATA_TYPE;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_PARAMETER;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_RESPONSE;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_OPERATION;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.SECURITY_DEFINITIONS;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.SECURITY;
-import static edu.som.uoc.openapiprofile.OpenapiprofilePackage.Literals.API_PROPERTY;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_INFO;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.EXTERNAL_DOCS;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.TAGS;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.SCHEMA;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_DATA_TYPE;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_PARAMETER;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_RESPONSE;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_OPERATION;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.SECURITY_DEFINITIONS;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.SECURITY;
+import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_PROPERTY;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,30 +28,30 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
-import edu.som.uoc.openapiprofile.APIKeyLocation;
-import edu.som.uoc.openapiprofile.CollectionFormat;
-import edu.som.uoc.openapiprofile.Contact;
-import edu.som.uoc.openapiprofile.Example;
-import edu.som.uoc.openapiprofile.HTTPMethod;
-import edu.som.uoc.openapiprofile.JSONDataType;
-import edu.som.uoc.openapiprofile.License;
-import edu.som.uoc.openapiprofile.OAuth2FlowType;
-import edu.som.uoc.openapiprofile.OpenapiprofileFactory;
-import edu.som.uoc.openapiprofile.ParameterLocation;
-import edu.som.uoc.openapiprofile.SchemeType;
-import edu.som.uoc.openapiprofile.SecuritySchemeType;
-import edu.som.uoc.openapiprofile.SecurityScope;
-import edu.som.uoc.openapiprofile.XMLElement;
-import edu.uoc.som.openapi.API;
-import edu.uoc.som.openapi.ExternalDocs;
-import edu.uoc.som.openapi.Header;
-import edu.uoc.som.openapi.Info;
-import edu.uoc.som.openapi.JSONSchemaSubset;
-import edu.uoc.som.openapi.Path;
-import edu.uoc.som.openapi.Schema;
-import edu.uoc.som.openapi.SecurityRequirement;
-import edu.uoc.som.openapi.SecurityScheme;
-import edu.uoc.som.openapi.Tag;
+import edu.som.uoc.openapi2.profile.APIKeyLocation;
+import edu.som.uoc.openapi2.profile.CollectionFormat;
+import edu.som.uoc.openapi2.profile.Contact;
+import edu.som.uoc.openapi2.profile.Example;
+import edu.som.uoc.openapi2.profile.HTTPMethod;
+import edu.som.uoc.openapi2.profile.JSONDataType;
+import edu.som.uoc.openapi2.profile.License;
+import edu.som.uoc.openapi2.profile.OAuth2FlowType;
+import edu.som.uoc.openapi2.profile.OpenAPIProfileFactory;
+import edu.som.uoc.openapi2.profile.ParameterLocation;
+import edu.som.uoc.openapi2.profile.SchemeType;
+import edu.som.uoc.openapi2.profile.SecuritySchemeType;
+import edu.som.uoc.openapi2.profile.SecurityScope;
+import edu.som.uoc.openapi2.profile.XMLElement;
+import edu.uoc.som.openapi2.API;
+import edu.uoc.som.openapi2.ExternalDocs;
+import edu.uoc.som.openapi2.Header;
+import edu.uoc.som.openapi2.Info;
+import edu.uoc.som.openapi2.JSONSchemaSubset;
+import edu.uoc.som.openapi2.Path;
+import edu.uoc.som.openapi2.Schema;
+import edu.uoc.som.openapi2.SecurityRequirement;
+import edu.uoc.som.openapi2.SecurityScheme;
+import edu.uoc.som.openapi2.Tag;
 
 public class OpenAPIProfileUtils {
 
@@ -78,7 +78,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(model, apiStereotype, "basePath", api.getBasePath());
 		if (!api.getSchemes().isEmpty()) {
 			List<SchemeType> schemeTypes = new ArrayList<SchemeType>();
-			for (edu.uoc.som.openapi.SchemeType from : api.getSchemes())
+			for (edu.uoc.som.openapi2.SchemeType from : api.getSchemes())
 				schemeTypes.add(transformSchemeType(from));
 			UMLUtil.setTaggedValue(model, apiStereotype, "schemes", schemeTypes);
 		}
@@ -102,14 +102,14 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(model, infoStereotype, "termsOfService", info.getTermsOfService());
 		UMLUtil.setTaggedValue(model, infoStereotype, "version", info.getVersion());
 		if (info.getContact() != null) {
-			Contact pContact = OpenapiprofileFactory.eINSTANCE.createContact();
+			Contact pContact = OpenAPIProfileFactory.eINSTANCE.createContact();
 			pContact.setEmail(info.getContact().getEmail());
 			pContact.setName(info.getContact().getName());
 			pContact.setUrl(info.getContact().getUrl());
 			UMLUtil.setTaggedValue(model, infoStereotype, "contact", pContact);
 		}
 		if (info.getLicense() != null) {
-			License pLicense = OpenapiprofileFactory.eINSTANCE.createLicense();
+			License pLicense = OpenAPIProfileFactory.eINSTANCE.createLicense();
 			pLicense.setName(info.getLicense().getName());
 			pLicense.setUrl(info.getLicense().getUrl());
 			UMLUtil.setTaggedValue(model, infoStereotype, "license", pLicense);
@@ -131,9 +131,9 @@ public class OpenAPIProfileUtils {
 		Stereotype tagsStereotype = model.getApplicableStereotype(TAGS_QN);
 		if (!model.isStereotypeApplied(tagsStereotype))
 			model.applyStereotype(tagsStereotype);
-		List<edu.som.uoc.openapiprofile.Tag> pTags = new ArrayList<edu.som.uoc.openapiprofile.Tag>();
+		List<edu.som.uoc.openapi2.profile.Tag> pTags = new ArrayList<edu.som.uoc.openapi2.profile.Tag>();
 		for (Tag mTag : tagList) {
-			edu.som.uoc.openapiprofile.Tag pTag = OpenapiprofileFactory.eINSTANCE.createTag();
+			edu.som.uoc.openapi2.profile.Tag pTag = OpenAPIProfileFactory.eINSTANCE.createTag();
 			if (mTag.getExternalDocs() != null) {
 				pTag.setExternalDocsDescription(mTag.getExternalDocs().getDescription());
 				pTag.setExternalDocsURL(mTag.getExternalDocs().getUrl());
@@ -161,7 +161,7 @@ public class OpenAPIProfileUtils {
 
 	}
 	
-	public static void applyAPIPropertyStereotype(Property property, edu.uoc.som.openapi.Property apiProperty) {
+	public static void applyAPIPropertyStereotype(Property property, edu.uoc.som.openapi2.Property apiProperty) {
 		Stereotype apiPropertyStereotype = property.getApplicableStereotype(API_PROPERTY_QN);
 		if (!property.isStereotypeApplied(apiPropertyStereotype))
 			property.applyStereotype(apiPropertyStereotype);
@@ -173,7 +173,7 @@ public class OpenAPIProfileUtils {
 			
 
 		if (apiProperty.getSchema()!=null && apiProperty.getSchema().getXml() != null) {
-			XMLElement pXMLElement = OpenapiprofileFactory.eINSTANCE.createXMLElement();
+			XMLElement pXMLElement = OpenAPIProfileFactory.eINSTANCE.createXMLElement();
 			pXMLElement.setAttribute(apiProperty.getSchema().getXml().getAttribute());
 			pXMLElement.setName(apiProperty.getSchema().getXml().getName());
 			pXMLElement.setNamespace(apiProperty.getSchema().getXml().getNamespace());
@@ -187,7 +187,7 @@ public class OpenAPIProfileUtils {
 	}
 
 
-	public static void applyAPIDataTypeStereotype(Type type, edu.uoc.som.openapi.JSONDataType jsonDataType, String format) {
+	public static void applyAPIDataTypeStereotype(Type type, edu.uoc.som.openapi2.JSONDataType jsonDataType, String format) {
 		Stereotype apiDataTypeStereotype = type.getApplicableStereotype(API_DATA_TYPE_QN);
 		if (!type.isStereotypeApplied(apiDataTypeStereotype))
 			type.applyStereotype(apiDataTypeStereotype);
@@ -195,7 +195,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "format", format);
 	}
 
-	public static void applyAPIParameterStereotype(Parameter parameter, edu.uoc.som.openapi.Parameter mParameter) {
+	public static void applyAPIParameterStereotype(Parameter parameter, edu.uoc.som.openapi2.Parameter mParameter) {
 		Stereotype apiParameterStereotype = parameter.getApplicableStereotype(API_PARAMETER_QN);
 		if (!parameter.isStereotypeApplied(apiParameterStereotype))
 			parameter.applyStereotype(apiParameterStereotype);
@@ -211,7 +211,7 @@ public class OpenAPIProfileUtils {
 		addJSONSchemaSubsetAttribute(parameter, apiParameterStereotype, mParameter);
 	}
 
-	public static void applyAPIResponseStereotype(Parameter parameter, edu.uoc.som.openapi.Response mResponse) {
+	public static void applyAPIResponseStereotype(Parameter parameter, edu.uoc.som.openapi2.Response mResponse) {
 		Stereotype apiResponseStereotype = parameter.getApplicableStereotype(API_RESPONSE_QN);
 		if (!parameter.isStereotypeApplied(apiResponseStereotype))
 			parameter.applyStereotype(apiResponseStereotype);
@@ -219,9 +219,9 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "default", mResponse.getDefault());
 		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "code", mResponse.getCode());
 		if (!mResponse.getResponseDefinition().getHeaders().isEmpty()) {
-			List<edu.som.uoc.openapiprofile.Header> pHeaders = new ArrayList<edu.som.uoc.openapiprofile.Header>();
+			List<edu.som.uoc.openapi2.profile.Header> pHeaders = new ArrayList<edu.som.uoc.openapi2.profile.Header>();
 			for (Header mHeader : mResponse.getResponseDefinition().getHeaders()) {
-				edu.som.uoc.openapiprofile.Header pHeader = OpenapiprofileFactory.eINSTANCE.createHeader();
+				edu.som.uoc.openapi2.profile.Header pHeader = OpenAPIProfileFactory.eINSTANCE.createHeader();
 				pHeader.setName(mHeader.getName());
 				pHeader.setDescription(mHeader.getDescription());
 				if (mHeader.getType() != null)
@@ -249,8 +249,8 @@ public class OpenAPIProfileUtils {
 		}
 		if (!mResponse.getResponseDefinition().getExamples().isEmpty()) {
 			List<Example> pExamples = new ArrayList<Example>();
-			for (edu.uoc.som.openapi.Example mExample : mResponse.getResponseDefinition().getExamples()) {
-				Example pExample = OpenapiprofileFactory.eINSTANCE.createExample();
+			for (edu.uoc.som.openapi2.Example mExample : mResponse.getResponseDefinition().getExamples()) {
+				Example pExample = OpenAPIProfileFactory.eINSTANCE.createExample();
 				pExample.setMimeType(mExample.getMimeType());
 				pExample.setValue(mExample.getValue());
 				pExamples.add(pExample);
@@ -259,7 +259,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static void applyAPIOperationeStereotype(Operation operation, edu.uoc.som.openapi.Operation mOperation) {
+	public static void applyAPIOperationeStereotype(Operation operation, edu.uoc.som.openapi2.Operation mOperation) {
 		Stereotype apiOperationStereotype = operation.getApplicableStereotype(API_OPERATION_QN);
 		if (!operation.isStereotypeApplied(apiOperationStereotype))
 			operation.applyStereotype(apiOperationStereotype);
@@ -268,7 +268,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(operation, apiOperationStereotype, "method", extractHTTPMethod(mOperation.getMethod()));
 		if (!mOperation.getSchemes().isEmpty()) {
 			List<SchemeType> schemeTypes = new ArrayList<SchemeType>();
-			for (edu.uoc.som.openapi.SchemeType from : mOperation.getSchemes())
+			for (edu.uoc.som.openapi2.SchemeType from : mOperation.getSchemes())
 				schemeTypes.add(transformSchemeType(from));
 			UMLUtil.setTaggedValue(operation, apiOperationStereotype, "schemes", schemeTypes);
 		}
@@ -307,9 +307,9 @@ public class OpenAPIProfileUtils {
 		if (!model.isStereotypeApplied(securityDefinitionsStereotype)) {
 			model.applyStereotype(securityDefinitionsStereotype);
 		}
-		List<edu.som.uoc.openapiprofile.SecurityScheme> pSecuritySchemes = new ArrayList<edu.som.uoc.openapiprofile.SecurityScheme>();
+		List<edu.som.uoc.openapi2.profile.SecurityScheme> pSecuritySchemes = new ArrayList<edu.som.uoc.openapi2.profile.SecurityScheme>();
 		for (SecurityScheme mSecurityScheme : mSecuritySchemes) {
-			edu.som.uoc.openapiprofile.SecurityScheme pSecurityScheme = OpenapiprofileFactory.eINSTANCE
+			edu.som.uoc.openapi2.profile.SecurityScheme pSecurityScheme = OpenAPIProfileFactory.eINSTANCE
 					.createSecurityScheme();
 			pSecurityScheme.setReferenceName(mSecurityScheme.getReferenceName());
 			pSecurityScheme.setName(mSecurityScheme.getName());
@@ -324,8 +324,8 @@ public class OpenAPIProfileUtils {
 			pSecurityScheme.setAuthorizationURL(mSecurityScheme.getAuthorizationUrl());
 			pSecurityScheme.setTokenURL(mSecurityScheme.getTokenUrl());
 			if (!mSecurityScheme.getScopes().isEmpty()) {
-				for (edu.uoc.som.openapi.SecurityScope mSecurityScope : mSecurityScheme.getScopes()) {
-					SecurityScope pSecurityScope = OpenapiprofileFactory.eINSTANCE.createSecurityScope();
+				for (edu.uoc.som.openapi2.SecurityScope mSecurityScope : mSecurityScheme.getScopes()) {
+					SecurityScope pSecurityScope = OpenAPIProfileFactory.eINSTANCE.createSecurityScope();
 					pSecurityScope.setDescription(mSecurityScope.getDescription());
 					pSecurityScope.setName(mSecurityScope.getName());
 					pSecurityScheme.getScopes().add(pSecurityScope);
@@ -343,12 +343,12 @@ public class OpenAPIProfileUtils {
 		if (!element.isStereotypeApplied(securityRequirementsStereotype)) {
 			element.applyStereotype(securityRequirementsStereotype);
 		}
-		List<edu.som.uoc.openapiprofile.SecurityRequirement> pSecurityRequirements = new ArrayList<edu.som.uoc.openapiprofile.SecurityRequirement>();
+		List<edu.som.uoc.openapi2.profile.SecurityRequirement> pSecurityRequirements = new ArrayList<edu.som.uoc.openapi2.profile.SecurityRequirement>();
 		for (SecurityRequirement mSecurityRequirement : securityRequirements) {
-			edu.som.uoc.openapiprofile.SecurityRequirement pSecurityRequirement = OpenapiprofileFactory.eINSTANCE
+			edu.som.uoc.openapi2.profile.SecurityRequirement pSecurityRequirement = OpenAPIProfileFactory.eINSTANCE
 					.createSecurityRequirement();
 			pSecurityRequirement.setName(mSecurityRequirement.getSecurityScheme().getReferenceName());
-			for (edu.uoc.som.openapi.SecurityScope mScope : mSecurityRequirement.getSecurityScheme().getScopes()) {
+			for (edu.uoc.som.openapi2.SecurityScope mScope : mSecurityRequirement.getSecurityScheme().getScopes()) {
 				pSecurityRequirement.getScopes().add(mScope.getName());
 			}
 			pSecurityRequirements.add(pSecurityRequirement);
@@ -358,7 +358,7 @@ public class OpenAPIProfileUtils {
 
 
 
-	public static SchemeType transformSchemeType(edu.uoc.som.openapi.SchemeType from) {
+	public static SchemeType transformSchemeType(edu.uoc.som.openapi2.SchemeType from) {
 		switch (from) {
 		case HTTP:
 			return SchemeType.HTTP;
@@ -373,7 +373,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static SecuritySchemeType transformSecuritySchemeType(edu.uoc.som.openapi.SecuritySchemeType from) {
+	public static SecuritySchemeType transformSecuritySchemeType(edu.uoc.som.openapi2.SecuritySchemeType from) {
 		switch (from) {
 		case BASIC:
 			return SecuritySchemeType.BASIC;
@@ -386,7 +386,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static APIKeyLocation transformAPIKeyLocation(edu.uoc.som.openapi.APIKeyLocation from) {
+	public static APIKeyLocation transformAPIKeyLocation(edu.uoc.som.openapi2.APIKeyLocation from) {
 		switch (from) {
 		case QUERY:
 			return APIKeyLocation.QUERY;
@@ -397,7 +397,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static OAuth2FlowType transformOAuth2FlowType(edu.uoc.som.openapi.OAuth2FlowType from) {
+	public static OAuth2FlowType transformOAuth2FlowType(edu.uoc.som.openapi2.OAuth2FlowType from) {
 		switch (from) {
 		case IMPLICIT:
 			return OAuth2FlowType.IMPLICIT;
@@ -412,7 +412,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static JSONDataType transformJSONDataType(edu.uoc.som.openapi.JSONDataType from) {
+	public static JSONDataType transformJSONDataType(edu.uoc.som.openapi2.JSONDataType from) {
 		switch (from) {
 		case BOOLEAN:
 			return JSONDataType.BOOLEAN;
@@ -452,7 +452,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static ParameterLocation transformParameterLocation(edu.uoc.som.openapi.ParameterLocation from) {
+	public static ParameterLocation transformParameterLocation(edu.uoc.som.openapi2.ParameterLocation from) {
 		switch (from) {
 		case BODY:
 			return ParameterLocation.BODY;
@@ -470,7 +470,7 @@ public class OpenAPIProfileUtils {
 		return null;
 	}
 
-	public static CollectionFormat transformCollectionFormat(edu.uoc.som.openapi.CollectionFormat from) {
+	public static CollectionFormat transformCollectionFormat(edu.uoc.som.openapi2.CollectionFormat from) {
 		switch (from) {
 		case CSV:
 			return CollectionFormat.CSV;
@@ -489,111 +489,111 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static edu.uoc.som.openapi.SchemeType transformSchemeType(SchemeType from) {
+	public static edu.uoc.som.openapi2.SchemeType transformSchemeType(SchemeType from) {
 		switch (from) {
 		case HTTP:
-			return edu.uoc.som.openapi.SchemeType.HTTP;
+			return edu.uoc.som.openapi2.SchemeType.HTTP;
 		case HTTPS:
-			return edu.uoc.som.openapi.SchemeType.HTTPS;
+			return edu.uoc.som.openapi2.SchemeType.HTTPS;
 		case WS:
-			return edu.uoc.som.openapi.SchemeType.WS;
+			return edu.uoc.som.openapi2.SchemeType.WS;
 		case WSS:
-			return edu.uoc.som.openapi.SchemeType.WSS;
+			return edu.uoc.som.openapi2.SchemeType.WSS;
 		default:
 			return null;
 		}
 	}
 
-	public static edu.uoc.som.openapi.SecuritySchemeType transformSecuritySchemeType(SecuritySchemeType from) {
+	public static edu.uoc.som.openapi2.SecuritySchemeType transformSecuritySchemeType(SecuritySchemeType from) {
 		switch (from) {
 		case BASIC:
-			return edu.uoc.som.openapi.SecuritySchemeType.BASIC;
+			return edu.uoc.som.openapi2.SecuritySchemeType.BASIC;
 		case API_KEY:
-			return edu.uoc.som.openapi.SecuritySchemeType.API_KEY;
+			return edu.uoc.som.openapi2.SecuritySchemeType.API_KEY;
 		case OAUTH2:
-			return edu.uoc.som.openapi.SecuritySchemeType.OAUTH2;
+			return edu.uoc.som.openapi2.SecuritySchemeType.OAUTH2;
 		default:
-			return edu.uoc.som.openapi.SecuritySchemeType.UNSPECIFIED;
+			return edu.uoc.som.openapi2.SecuritySchemeType.UNSPECIFIED;
 		}
 	}
 
-	public static edu.uoc.som.openapi.APIKeyLocation transformAPIKeyLocation(APIKeyLocation from) {
+	public static edu.uoc.som.openapi2.APIKeyLocation transformAPIKeyLocation(APIKeyLocation from) {
 		switch (from) {
 		case QUERY:
-			return edu.uoc.som.openapi.APIKeyLocation.QUERY;
+			return edu.uoc.som.openapi2.APIKeyLocation.QUERY;
 		case HEADER:
-			return edu.uoc.som.openapi.APIKeyLocation.HEADER;
+			return edu.uoc.som.openapi2.APIKeyLocation.HEADER;
 		default:
-			return edu.uoc.som.openapi.APIKeyLocation.UNSPECIFIED;
+			return edu.uoc.som.openapi2.APIKeyLocation.UNSPECIFIED;
 		}
 	}
 
-	public static edu.uoc.som.openapi.OAuth2FlowType transformOAuth2FlowType(OAuth2FlowType from) {
+	public static edu.uoc.som.openapi2.OAuth2FlowType transformOAuth2FlowType(OAuth2FlowType from) {
 		switch (from) {
 		case IMPLICIT:
-			return edu.uoc.som.openapi.OAuth2FlowType.IMPLICIT;
+			return edu.uoc.som.openapi2.OAuth2FlowType.IMPLICIT;
 		case PASSWORD:
-			return edu.uoc.som.openapi.OAuth2FlowType.PASSWORD;
+			return edu.uoc.som.openapi2.OAuth2FlowType.PASSWORD;
 		case APPLICATION:
-			return edu.uoc.som.openapi.OAuth2FlowType.APPLICATION;
+			return edu.uoc.som.openapi2.OAuth2FlowType.APPLICATION;
 		case ACCESS_CODE:
-			return edu.uoc.som.openapi.OAuth2FlowType.ACCESS_CODE;
+			return edu.uoc.som.openapi2.OAuth2FlowType.ACCESS_CODE;
 		default:
-			return edu.uoc.som.openapi.OAuth2FlowType.UNSPECIFIED;
+			return edu.uoc.som.openapi2.OAuth2FlowType.UNSPECIFIED;
 		}
 	}
 
-	public static edu.uoc.som.openapi.JSONDataType transformJSONDataType(JSONDataType from) {
+	public static edu.uoc.som.openapi2.JSONDataType transformJSONDataType(JSONDataType from) {
 		switch (from) {
 		case BOOLEAN:
-			return edu.uoc.som.openapi.JSONDataType.BOOLEAN;
+			return edu.uoc.som.openapi2.JSONDataType.BOOLEAN;
 		case INTEGER:
-			return edu.uoc.som.openapi.JSONDataType.INTEGER;
+			return edu.uoc.som.openapi2.JSONDataType.INTEGER;
 		case NUMBER:
-			return edu.uoc.som.openapi.JSONDataType.NUMBER;
+			return edu.uoc.som.openapi2.JSONDataType.NUMBER;
 		case STRING:
-			return edu.uoc.som.openapi.JSONDataType.STRING;
+			return edu.uoc.som.openapi2.JSONDataType.STRING;
 		case FILE:
-			return edu.uoc.som.openapi.JSONDataType.FILE;
+			return edu.uoc.som.openapi2.JSONDataType.FILE;
 		case UNDEFINED:
-			return edu.uoc.som.openapi.JSONDataType.UNSPECIFIED;
+			return edu.uoc.som.openapi2.JSONDataType.UNSPECIFIED;
 		default:
 			return null;
 		}
 	}
 
-	public static edu.uoc.som.openapi.ParameterLocation transformParameterLocation(ParameterLocation from) {
+	public static edu.uoc.som.openapi2.ParameterLocation transformParameterLocation(ParameterLocation from) {
 		switch (from) {
 		case BODY:
-			return edu.uoc.som.openapi.ParameterLocation.BODY;
+			return edu.uoc.som.openapi2.ParameterLocation.BODY;
 		case HEADER:
-			return edu.uoc.som.openapi.ParameterLocation.HEADER;
+			return edu.uoc.som.openapi2.ParameterLocation.HEADER;
 		case QUERY:
-			return edu.uoc.som.openapi.ParameterLocation.QUERY;
+			return edu.uoc.som.openapi2.ParameterLocation.QUERY;
 		case FORM_DATA:
-			return edu.uoc.som.openapi.ParameterLocation.FORM_DATA;
+			return edu.uoc.som.openapi2.ParameterLocation.FORM_DATA;
 		case PATH:
-			return edu.uoc.som.openapi.ParameterLocation.PATH;
+			return edu.uoc.som.openapi2.ParameterLocation.PATH;
 		case UNDEFINED:
-			return edu.uoc.som.openapi.ParameterLocation.UNSPECIFIED;
+			return edu.uoc.som.openapi2.ParameterLocation.UNSPECIFIED;
 		}
 		return null;
 	}
 
-	public static edu.uoc.som.openapi.CollectionFormat transformCollectionFormat(CollectionFormat from) {
+	public static edu.uoc.som.openapi2.CollectionFormat transformCollectionFormat(CollectionFormat from) {
 		switch (from) {
 		case CSV:
-			return edu.uoc.som.openapi.CollectionFormat.CSV;
+			return edu.uoc.som.openapi2.CollectionFormat.CSV;
 		case MULTI:
-			return edu.uoc.som.openapi.CollectionFormat.MULTI;
+			return edu.uoc.som.openapi2.CollectionFormat.MULTI;
 		case PIPES:
-			return edu.uoc.som.openapi.CollectionFormat.PIPES;
+			return edu.uoc.som.openapi2.CollectionFormat.PIPES;
 		case SSV:
-			return edu.uoc.som.openapi.CollectionFormat.SSV;
+			return edu.uoc.som.openapi2.CollectionFormat.SSV;
 		case TSV:
-			return edu.uoc.som.openapi.CollectionFormat.TSV;
+			return edu.uoc.som.openapi2.CollectionFormat.TSV;
 		case UNDEFINED:
-			return edu.uoc.som.openapi.CollectionFormat.UNSPECIFIED;
+			return edu.uoc.som.openapi2.CollectionFormat.UNSPECIFIED;
 		default:
 			return null;
 		}
