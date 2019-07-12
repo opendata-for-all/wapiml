@@ -41,7 +41,7 @@
 				<configuration>
 				<target>
 						<artifact>
-							<groupId>edu.uoc.som.openapi2</groupId>
+							<groupId>edu.uoc.som.wapiml</groupId>
 							<artifactId>edu.uoc.som.wapiml.target</artifactId>
 							<version>1.0.0-SNAPSHOT</version>
 						</artifact>
