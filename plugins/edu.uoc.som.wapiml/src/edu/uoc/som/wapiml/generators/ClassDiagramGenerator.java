@@ -69,7 +69,7 @@ public class ClassDiagramGenerator implements Serializable {
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"),
-				URI.createPlatformPluginURI("edu.uoc.som.openapi.profile/resources/openapi.profile.uml", true));
+				URI.createPlatformPluginURI("edu.uoc.som.openapi2.profile/resources/openapi.profile.uml", true));
 		resourceSet.getURIConverter().getURIMap().put(
 				URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"), URI.createPlatformPluginURI(
 						"org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml", true));
