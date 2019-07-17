@@ -1,13 +1,16 @@
 package edu.uoc.som.wapiml.generators;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
@@ -23,7 +26,6 @@ import org.eclipse.uml2.uml.Operation;
 import org.eclipse.uml2.uml.Parameter;
 import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
-import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -57,13 +59,22 @@ import edu.uoc.som.wapiml.utils.OpenAPIUtils;
 public class OpenAPIModelGenerator {
 
 	private OpenAPIFactory factory = OpenAPIFactory.eINSTANCE;
-	private ResourceSetImpl resourceSet;
-	private Resource openAPIProfileResource;
-	private Profile openAPIProfile;
+	private ResourceSet resourceSet;
+	private Resource resource;
 	private Map<Class, Schema> classMap = new HashMap<Class, Schema>();
+	private Model umlModel;
+	private Root OpenAPIModelRoot;
 
-	public OpenAPIModelGenerator() {
-		resourceSet = new ResourceSetImpl();
+	public OpenAPIModelGenerator(File modelFile) {
+		resourceSet = initUMLResourceSet();
+		resource = resourceSet.getResource(URI.createFileURI(modelFile.getPath()), true);
+		umlModel = (Model) resource.getContents().get(0);
+
+
+	}
+
+	private ResourceSet initUMLResourceSet() {
+		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
@@ -81,25 +92,17 @@ public class OpenAPIModelGenerator {
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.PROFILES_PATHMAP),
 				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("profiles")
 						.appendSegment(""));
-
-		openAPIProfileResource = resourceSet
-				.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
-		openAPIProfile = (Profile) openAPIProfileResource.getContents().get(0);
-
+		return resourceSet;
 	}
 
-	public Root umlToModel(URI uri) {
-		Resource resource = resourceSet.getResource(uri, true);
-		Model model = (Model) resource.getContents().get(0);
-		return umlToModel(model);
-	}
+	public Root generate() {
+	
 
-	public Root umlToModel(Model model) {
-		Root root = factory.createRoot();
-		API api = extractAPI(model);
-		root.setApi(api);
+		OpenAPIModelRoot = factory.createRoot();
+		API api = extractAPI(umlModel);
+		OpenAPIModelRoot.setApi(api);
 
-		return root;
+		return OpenAPIModelRoot;
 	}
 
 	private API extractAPI(Model model) {
