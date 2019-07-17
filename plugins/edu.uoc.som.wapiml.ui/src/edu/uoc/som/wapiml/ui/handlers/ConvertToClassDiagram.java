@@ -18,6 +18,9 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
@@ -25,6 +28,7 @@ import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
 import edu.uoc.som.wapiml.facade.WAPImlFacade;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
+import edu.uoc.som.wapiml.ui.wizards.GenerateClassDiagramWizard;
 
 public class ConvertToClassDiagram extends AbstractHandler {
 
@@ -58,14 +62,21 @@ public class ConvertToClassDiagram extends AbstractHandler {
 								}
 								File inputFile = new File(iFile.getLocation().toString());
 								WAPImlFacade openAPItoUMLFacade = new WAPImlFacade();
-								openAPItoUMLFacade.generateAndSaveClassDiagram(inputFile,
-										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),target.getLocation()
-										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
-										.addFileExtension("uml").toFile(), false, true);
+								Display.getDefault().syncExec(new Runnable() {
+								    public void run() {
+								    	WizardDialog dialog = new WizardDialog(new Shell (Display.getCurrent()), new GenerateClassDiagramWizard(iFile));
+										dialog.open();
+								    }
+								});
+							
+//								openAPItoUMLFacade.generateAndSaveClassDiagram(inputFile,
+//										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),target.getLocation()
+//										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
+//										.addFileExtension("uml").toFile(), false, true);
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
-					} catch (IOException | CoreException | ProcessingException e) {
+					} catch (IOException | CoreException e) {
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 
