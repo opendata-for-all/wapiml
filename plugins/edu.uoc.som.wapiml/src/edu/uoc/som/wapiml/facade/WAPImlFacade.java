@@ -49,7 +49,7 @@ public class WAPImlFacade {
 			OpenAPIValidator openAPIValidator = new OpenAPIValidator();
 			OpenAPIValidationReport report = openAPIValidator.validate(definitionFile);
 			if(!report.isSuccess()){
-				throw new OpenAPIValidationException("Invalid OpenAPI definition\n"+report.toString());
+				throw new OpenAPIValidationException("Invalid OpenAPI definition\n"+report.getError());
 			}
 			
 		}
