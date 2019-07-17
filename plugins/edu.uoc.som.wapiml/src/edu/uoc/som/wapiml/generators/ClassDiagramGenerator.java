@@ -1,7 +1,6 @@
 package edu.uoc.som.wapiml.generators;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
@@ -18,7 +17,6 @@ import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Constraint;
-import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
@@ -31,7 +29,6 @@ import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
@@ -47,7 +44,6 @@ import edu.uoc.som.openapi2.Response;
 import edu.uoc.som.openapi2.Root;
 import edu.uoc.som.openapi2.Schema;
 import edu.uoc.som.wapiml.utils.OpenAPIProfileUtils;
-import edu.uoc.som.wapiml.utils.OpenAPIStereotypesUtils;
 import edu.uoc.som.wapiml.utils.OpenAPIUtils;
 
 public class ClassDiagramGenerator implements Serializable {
