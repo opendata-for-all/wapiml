@@ -53,14 +53,23 @@ public class ClassDiagramGenerator implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private UMLFactory umlFactory;
 	private ResourceSet resourceSet;
-	Resource openAPIProfileResource;
-	Resource umlModelResource;
+	private Resource openAPIProfileResource;
+	private Resource umlModelResource;
 	URI resourceURI;
+	private Root OpenAPIModel;
 
-	public ClassDiagramGenerator() throws IOException {
-
+	public ClassDiagramGenerator(Root OpenAPIModel) throws IOException {
+		this.OpenAPIModel = OpenAPIModel;
 		umlFactory = UMLFactory.eINSTANCE;
-		resourceSet = new ResourceSetImpl();
+		resourceSet = initUMLResourceSet();
+
+		openAPIProfileResource = resourceSet
+				.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
+
+	}
+
+	private ResourceSet initUMLResourceSet() {
+		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
@@ -78,10 +87,7 @@ public class ClassDiagramGenerator implements Serializable {
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.PROFILES_PATHMAP),
 				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("profiles")
 						.appendSegment(""));
-
-		openAPIProfileResource = resourceSet
-				.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
-
+		return resourceSet;
 	}
 
 	public Model generateClassDiagramFromOpenAPI(Root root, String modelName, File target, boolean applyProfile)
@@ -613,6 +619,14 @@ public class ClassDiagramGenerator implements Serializable {
 		expression.getBodies().add(constraintExp);
 		constraint.setSpecification(expression);
 		namespace.getOwnedRules().add(constraint);
+	}
+
+	public Root getOpenAPIModel() {
+		return OpenAPIModel;
+	}
+
+	public void setOpenAPIModel(Root openAPIModel) {
+		OpenAPIModel = openAPIModel;
 	}
 
 
