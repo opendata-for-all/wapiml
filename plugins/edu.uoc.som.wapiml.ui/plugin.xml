@@ -70,11 +70,6 @@
             name="Generate a class diagram">
       </command>
       <command
-            defaultHandler="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramWithProfile"
-            id="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramWithProfile"
-            name="Generate a class diagram and apply the OpenAPI profile">
-      </command>
-      <command
             defaultHandler="edu.uoc.som.wapiml.ui.handlers.ConvertToJson"
             id="edu.uoc.som.wapiml.ui.handlers.ConvertToJson"
             name="Generate an OpenAPI definition">
