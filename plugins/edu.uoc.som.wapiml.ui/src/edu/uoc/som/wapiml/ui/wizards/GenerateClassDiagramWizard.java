@@ -1,18 +1,29 @@
 package edu.uoc.som.wapiml.ui.wizards;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 
+import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
+
 public class GenerateClassDiagramWizard extends Wizard{
 
-	private IFile inputDefinition;
-	private PageOne pageOne = new PageOne(inputDefinition);
-	private PageTwo pageTwo = new PageTwo(inputDefinition);
+
+	private ClassDiagramGenerator classDiagramGenerator;
+	private File targetFile;
+	private PageOne pageOne;
+	private PageTwo pageTwo;
 	
-	public GenerateClassDiagramWizard(IFile inputDefinition) {
+	public GenerateClassDiagramWizard(ClassDiagramGenerator classDiagramGenerator, File targetFile) {
 		super();
-		this.inputDefinition = inputDefinition;
+		setNeedsProgressMonitor(true);
+		this.classDiagramGenerator = classDiagramGenerator;
+		this.targetFile = targetFile;
+		pageOne = new PageOne(classDiagramGenerator);
+		pageTwo = new PageTwo(classDiagramGenerator);
 		
 		
 	}
@@ -29,11 +40,26 @@ public class GenerateClassDiagramWizard extends Wizard{
 		return super.getNextPage(page);
 	}
 	
-	
+	@Override
+	public boolean canFinish() {
+		if(!pageOne.discoverAssociations)
+			return true;
+		if(pageTwo.isCurrentPage())
+			return true;
+		return false;
+		
+		
+	}
 	@Override
 	public boolean performFinish() {
-		System.out.println(pageOne.isApplyProfile());
-		System.out.println(pageOne.isDiscoverAssociations());
+
+		try {
+			classDiagramGenerator.generateClassDiagramFromOpenAPI(pageOne.applyProfile,pageOne.discoverAssociations);
+			classDiagramGenerator.saveClassDiagram(targetFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return true;
 	}
 
