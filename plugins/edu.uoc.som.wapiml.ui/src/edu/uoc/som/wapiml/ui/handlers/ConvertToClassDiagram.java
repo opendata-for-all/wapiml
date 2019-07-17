@@ -24,11 +24,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-
+import edu.uoc.som.openapi2.Root;
 import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
-import edu.uoc.som.wapiml.facade.WAPImlFacade;
+import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
 import edu.uoc.som.wapiml.ui.wizards.GenerateClassDiagramWizard;
+import edu.uoc.som.wapiml.utils.IOUtils;
 
 public class ConvertToClassDiagram extends AbstractHandler {
 
@@ -61,18 +62,18 @@ public class ConvertToClassDiagram extends AbstractHandler {
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
 								File inputFile = new File(iFile.getLocation().toString());
-								WAPImlFacade openAPItoUMLFacade = new WAPImlFacade();
+								Root openAPIModelRoot = IOUtils.loadOpenAPIModel(inputFile);
+								ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(openAPIModelRoot.getApi(), iFile.getName().substring(0, iFile.getName().lastIndexOf('.')));
 								Display.getDefault().syncExec(new Runnable() {
 								    public void run() {
-								    	WizardDialog dialog = new WizardDialog(new Shell (Display.getCurrent()), new GenerateClassDiagramWizard(iFile));
+								    	WizardDialog dialog = new WizardDialog(new Shell (Display.getCurrent()), new GenerateClassDiagramWizard(classDiagramGenerator,target.getLocation()
+												.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
+												.addFileExtension("uml").toFile()));
 										dialog.open();
 								    }
 								});
 							
-//								openAPItoUMLFacade.generateAndSaveClassDiagram(inputFile,
-//										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),target.getLocation()
-//										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
-//										.addFileExtension("uml").toFile(), false, true);
+
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
@@ -80,9 +81,10 @@ public class ConvertToClassDiagram extends AbstractHandler {
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 
-					} catch (OpenAPIValidationException e) {
+					} catch (OpenAPIValidationException | ProcessingException e) {
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage());
-					} finally {
+					} 
+					finally {
 						monitor.done();
 					}
 
