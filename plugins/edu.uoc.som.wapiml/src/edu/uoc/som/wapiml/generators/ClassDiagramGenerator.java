@@ -3,6 +3,7 @@ package edu.uoc.som.wapiml.generators;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -55,16 +56,19 @@ public class ClassDiagramGenerator implements Serializable {
 	private ResourceSet resourceSet;
 	private Resource openAPIProfileResource;
 	private Resource umlModelResource;
-	URI resourceURI;
-	private Root OpenAPIModel;
-
+	private Root openAPIModel;
 	public ClassDiagramGenerator(Root OpenAPIModel) throws IOException {
-		this.OpenAPIModel = OpenAPIModel;
+		this.openAPIModel = OpenAPIModel;
 		umlFactory = UMLFactory.eINSTANCE;
 		resourceSet = initUMLResourceSet();
-
 		openAPIProfileResource = resourceSet
 				.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
+		
+		//create a temp file to hold the UML resource. the resource should exists to be able to apply the profile
+		File tempUMLFile = File.createTempFile("uml-model-"+Calendar.getInstance(), ".uml");
+		tempUMLFile.deleteOnExit();
+		URI resourceURI = URI.createFileURI(tempUMLFile.getPath());
+		umlModelResource = resourceSet.createResource(resourceURI);
 
 	}
 
@@ -92,8 +96,8 @@ public class ClassDiagramGenerator implements Serializable {
 
 	public Model generateClassDiagramFromOpenAPI(Root root, String modelName, File target, boolean applyProfile)
 			throws IOException {
-		resourceURI = URI.createFileURI(target.getPath());
-		umlModelResource = resourceSet.createResource(resourceURI);
+		
+		
 		Model model = UMLFactory.eINSTANCE.createModel();
 		umlModelResource.getContents().add(model);
 
@@ -556,10 +560,12 @@ public class ClassDiagramGenerator implements Serializable {
 		this.umlFactory = umlFactory;
 	}
 
-	public void saveClassDiagram() throws IOException {
+	public void saveClassDiagram(File target) throws IOException {
 
+		
+		umlModelResource.setURI(URI.createFileURI(target.getPath()));
 		umlModelResource.save(Collections.EMPTY_MAP);
-
+		
 	}
 
 	private PrimitiveType getOrCreatePrimitiveType(String commonName,  JSONDataType jsonDataType, String format, Package types,  boolean applyProfile) {
@@ -622,12 +628,13 @@ public class ClassDiagramGenerator implements Serializable {
 	}
 
 	public Root getOpenAPIModel() {
-		return OpenAPIModel;
+		return openAPIModel;
 	}
 
 	public void setOpenAPIModel(Root openAPIModel) {
-		OpenAPIModel = openAPIModel;
+		this.openAPIModel = openAPIModel;
 	}
 
+	
 
 }
