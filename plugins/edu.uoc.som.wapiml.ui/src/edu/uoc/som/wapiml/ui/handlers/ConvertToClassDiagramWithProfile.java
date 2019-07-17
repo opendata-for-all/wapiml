@@ -22,9 +22,11 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 
+import edu.uoc.som.openapi2.Root;
 import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
-import edu.uoc.som.wapiml.facade.WAPImlFacade;
+import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
+import edu.uoc.som.wapiml.utils.IOUtils;
 
 public class ConvertToClassDiagramWithProfile extends AbstractHandler {
 
@@ -58,11 +60,12 @@ public class ConvertToClassDiagramWithProfile extends AbstractHandler {
 								}
 
 								File inputFile = new File(iFile.getLocation().toString());
-								WAPImlFacade openAPItoUMLFacade = new WAPImlFacade();
-								openAPItoUMLFacade.generateAndSaveClassDiagram(inputFile,
-										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')), target.getLocation()
+								Root openAPIModelRoot = IOUtils.loadOpenAPIModel(inputFile);
+								ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(openAPIModelRoot.getApi(), iFile.getName().substring(0, iFile.getName().lastIndexOf('.')));
+								classDiagramGenerator.generateClassDiagramFromOpenAPI(true);
+								classDiagramGenerator.saveClassDiagram(target.getLocation()
 										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
-										.addFileExtension("uml").toFile(),true, true);
+										.addFileExtension("uml").toFile());
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
