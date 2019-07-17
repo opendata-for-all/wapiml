@@ -18,8 +18,9 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .,
  lib/json-schema-validator-2.2.6-lib.jar,
  lib/json-schema-validator-2.2.6.jar
-Export-Package: com.github.fge.jsonschema.core.exceptions,
- edu.uoc.som.wapiml.exception,
- edu.uoc.som.wapiml.facade,
- edu.uoc.som.wapiml.model
+Export-Package: edu.uoc.som.wapiml.exception,
+ edu.uoc.som.wapiml.generators,
+ edu.uoc.som.wapiml.model,
+ edu.uoc.som.wapiml.utils,
+ edu.uoc.som.wapiml.validator
 Bundle-Vendor: SOM Research Lab
