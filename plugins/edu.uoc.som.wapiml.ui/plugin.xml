@@ -26,23 +26,6 @@
                </visibleWhen>
             </command>
             <command
-                  commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramWithProfile"
-                  label="Generate a class diagram and apply the OpenAPI profile"
-                  style="push"
-                  tooltip="Generate a class diagram and and apply the OpenAPI profile">
-               <visibleWhen
-                     checkEnabled="false">
-                  <iterate>
-                     <and>
-                        <test
-                              property="org.eclipse.core.resources.extension"
-                              value="json">
-                        </test>
-                     </and>
-                  </iterate>
-               </visibleWhen>
-            </command>
-            <command
                   commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToJson"
                   label="Generate an OpenAPI definition"
                   style="push"
