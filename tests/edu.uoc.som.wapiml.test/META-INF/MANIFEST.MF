@@ -21,7 +21,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.uml2.uml.resources,
  edu.uoc.som.wapiml;bundle-version="1.0.0"
 Automatic-Module-Name: edu.uoc.som.wapiml.test
-Bundle-RequiredExecutionEnvironment: JavaSE-12
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: libs/json-schema-validator-2.2.6-lib.jar,
  libs/json-schema-validator-2.2.6.jar,
  libs/log4j-api-2.7.jar,

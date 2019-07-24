@@ -24,12 +24,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-import edu.uoc.som.openapi2.Root;
+import edu.uoc.som.openapi2.API;
 import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
 import edu.uoc.som.wapiml.ui.wizards.GenerateClassDiagramWizard;
-import edu.uoc.som.wapiml.utils.IOUtils;
+import edu.uoc.som.wapiml.utils.Utils;
 
 public class ConvertToClassDiagram extends AbstractHandler {
 
@@ -62,8 +62,8 @@ public class ConvertToClassDiagram extends AbstractHandler {
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
 								File inputFile = new File(iFile.getLocation().toString());
-								Root openAPIModelRoot = IOUtils.loadOpenAPIModel(inputFile);
-								ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(openAPIModelRoot.getApi(), iFile.getName().substring(0, iFile.getName().lastIndexOf('.')));
+								API api = Utils.loadOpenAPIModel(inputFile);
+								ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(api, iFile.getName().substring(0, iFile.getName().lastIndexOf('.')));
 								Display.getDefault().syncExec(new Runnable() {
 								    public void run() {
 								    	WizardDialog dialog = new WizardDialog(new Shell (Display.getCurrent()), new GenerateClassDiagramWizard(classDiagramGenerator,target.getLocation()
@@ -78,6 +78,7 @@ public class ConvertToClassDiagram extends AbstractHandler {
 							}
 						}
 					} catch (IOException | CoreException e) {
+						e.printStackTrace();
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 

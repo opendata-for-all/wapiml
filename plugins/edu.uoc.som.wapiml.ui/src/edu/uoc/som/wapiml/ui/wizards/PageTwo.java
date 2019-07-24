@@ -6,10 +6,12 @@ import java.util.List;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
@@ -35,13 +37,29 @@ public class PageTwo extends WizardPage{
 	public void createControl(Composite parent) {
 		container = new Composite(parent, SWT.NONE);
 		setControl(container);
-		Table table = new Table (container, SWT.BORDER | SWT.MULTI);
+//		Table table = new Table (container, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		Table table = new Table (container, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
 		Rectangle clientArea = container.getClientArea ();
 		table.setBounds (clientArea.x, clientArea.y,400, 300);
+		table.setLinesVisible (true);
+		table.setHeaderVisible (true);
+		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data.heightHint = 200;
+		table.setLayoutData(data);
+		String[] titles = {"Schema", "Property", "Target"};
+		for (int i=0; i<titles.length; i++) {
+			TableColumn column = new TableColumn (table, SWT.NONE);
+			column.setText (titles [i]);
+		}
 		for (AssociationCandidate candidate : classDiagramGenerator.getAssocationCandidates()) {
 			TableItem item = new TableItem (table, SWT.NONE);
-			item.setText (candidate.toString());
+			item.setText (0,candidate.getSchema().getName());
+			item.setText(1, candidate.getProperty().getName());
+			item.setText(2,candidate.getTargetSchema().getName());
 			item.setData(candidate);
+		}
+		for (int i=0; i<titles.length; i++) {
+			table.getColumn(i).pack();
 		}
 		Menu menu = new Menu (container.getShell(), SWT.POP_UP);
 		table.setMenu (menu);
@@ -54,7 +72,6 @@ public class PageTwo extends WizardPage{
 			classDiagramGenerator.getAssocationCandidates().remove(selectedItems[i].getData());
 		table.remove (table.getSelectionIndices ());
 		});
-
         setPageComplete(true);
         getWizard().getContainer().updateButtons();
 

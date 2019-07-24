@@ -1,23 +1,24 @@
 package edu.uoc.som.wapiml.utils;
 
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_INFO;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.EXTERNAL_DOCS;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.TAGS;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.SCHEMA;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_DATA_TYPE;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_PARAMETER;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_RESPONSE;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_OPERATION;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.SECURITY_DEFINITIONS;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.SECURITY;
-import static edu.som.uoc.openapi2.profile.OpenAPIProfilePackage.Literals.API_PROPERTY;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API_INFO;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.EXTERNAL_DOCS;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.TAGS;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.SCHEMA;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API_DATA_TYPE;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API_PARAMETER;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API_RESPONSE;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API_OPERATION;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.SECURITY_DEFINITIONS;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.SECURITY;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API_PROPERTY;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
+import org.apache.commons.lang3.math.NumberUtils;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Model;
@@ -28,26 +29,28 @@ import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
-import edu.som.uoc.openapi2.profile.APIKeyLocation;
-import edu.som.uoc.openapi2.profile.CollectionFormat;
-import edu.som.uoc.openapi2.profile.Contact;
-import edu.som.uoc.openapi2.profile.Example;
-import edu.som.uoc.openapi2.profile.HTTPMethod;
-import edu.som.uoc.openapi2.profile.JSONDataType;
-import edu.som.uoc.openapi2.profile.License;
-import edu.som.uoc.openapi2.profile.OAuth2FlowType;
-import edu.som.uoc.openapi2.profile.OpenAPIProfileFactory;
-import edu.som.uoc.openapi2.profile.ParameterLocation;
-import edu.som.uoc.openapi2.profile.SchemeType;
-import edu.som.uoc.openapi2.profile.SecuritySchemeType;
-import edu.som.uoc.openapi2.profile.SecurityScope;
-import edu.som.uoc.openapi2.profile.XMLElement;
+import edu.uoc.som.openapi2.profile.APIKeyLocation;
+import edu.uoc.som.openapi2.profile.CollectionFormat;
+import edu.uoc.som.openapi2.profile.Contact;
+import edu.uoc.som.openapi2.profile.Example;
+import edu.uoc.som.openapi2.profile.HTTPMethod;
+import edu.uoc.som.openapi2.profile.JSONDataType;
+import edu.uoc.som.openapi2.profile.License;
+import edu.uoc.som.openapi2.profile.OAuth2FlowType;
+import edu.uoc.som.openapi2.profile.OpenAPIProfileFactory;
+import edu.uoc.som.openapi2.profile.ParameterLocation;
+import edu.uoc.som.openapi2.profile.RequiredSecurityScheme;
+import edu.uoc.som.openapi2.profile.SchemeType;
+import edu.uoc.som.openapi2.profile.SecuritySchemeType;
+import edu.uoc.som.openapi2.profile.SecurityScope;
+import edu.uoc.som.openapi2.profile.XMLElement;
 import edu.uoc.som.openapi2.API;
 import edu.uoc.som.openapi2.ExternalDocs;
 import edu.uoc.som.openapi2.Header;
 import edu.uoc.som.openapi2.Info;
 import edu.uoc.som.openapi2.JSONSchemaSubset;
 import edu.uoc.som.openapi2.Path;
+import edu.uoc.som.openapi2.Response;
 import edu.uoc.som.openapi2.Schema;
 import edu.uoc.som.openapi2.SecurityRequirement;
 import edu.uoc.som.openapi2.SecurityScheme;
@@ -131,9 +134,9 @@ public class OpenAPIProfileUtils {
 		Stereotype tagsStereotype = model.getApplicableStereotype(TAGS_QN);
 		if (!model.isStereotypeApplied(tagsStereotype))
 			model.applyStereotype(tagsStereotype);
-		List<edu.som.uoc.openapi2.profile.Tag> pTags = new ArrayList<edu.som.uoc.openapi2.profile.Tag>();
+		List<edu.uoc.som.openapi2.profile.Tag> pTags = new ArrayList<edu.uoc.som.openapi2.profile.Tag>();
 		for (Tag mTag : tagList) {
-			edu.som.uoc.openapi2.profile.Tag pTag = OpenAPIProfileFactory.eINSTANCE.createTag();
+			edu.uoc.som.openapi2.profile.Tag pTag = OpenAPIProfileFactory.eINSTANCE.createTag();
 			if (mTag.getExternalDocs() != null) {
 				pTag.setExternalDocsDescription(mTag.getExternalDocs().getDescription());
 				pTag.setExternalDocsURL(mTag.getExternalDocs().getUrl());
@@ -211,17 +214,22 @@ public class OpenAPIProfileUtils {
 		addJSONSchemaSubsetAttribute(parameter, apiParameterStereotype, mParameter);
 	}
 
-	public static void applyAPIResponseStereotype(Parameter parameter, edu.uoc.som.openapi2.Response mResponse) {
+	public static void applyAPIResponseStereotype(Parameter parameter, Entry<String, Response> response) {
 		Stereotype apiResponseStereotype = parameter.getApplicableStereotype(API_RESPONSE_QN);
 		if (!parameter.isStereotypeApplied(apiResponseStereotype))
 			parameter.applyStereotype(apiResponseStereotype);
-		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "description", mResponse.getResponseDefinition().getDescription());
-		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "default", mResponse.getDefault());
-		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "code", mResponse.getCode());
-		if (!mResponse.getResponseDefinition().getHeaders().isEmpty()) {
-			List<edu.som.uoc.openapi2.profile.Header> pHeaders = new ArrayList<edu.som.uoc.openapi2.profile.Header>();
-			for (Header mHeader : mResponse.getResponseDefinition().getHeaders()) {
-				edu.som.uoc.openapi2.profile.Header pHeader = OpenAPIProfileFactory.eINSTANCE.createHeader();
+		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "description", response.getValue().getDescription());
+		if( response.getKey().equals("default")) {
+		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "default", response.getKey());
+		}
+		else {
+			if(NumberUtils.isNumber(response.getKey()))
+			UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "code", response.getKey());
+		}
+		if (!response.getValue().getHeaders().isEmpty()) {
+			List<edu.uoc.som.openapi2.profile.Header> pHeaders = new ArrayList<edu.uoc.som.openapi2.profile.Header>();
+			for (Header mHeader : response.getValue().getHeaders()) {
+				edu.uoc.som.openapi2.profile.Header pHeader = OpenAPIProfileFactory.eINSTANCE.createHeader();
 				pHeader.setName(mHeader.getName());
 				pHeader.setDescription(mHeader.getDescription());
 				if (mHeader.getType() != null)
@@ -247,9 +255,9 @@ public class OpenAPIProfileUtils {
 			}
 			UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "headers", pHeaders);
 		}
-		if (!mResponse.getResponseDefinition().getExamples().isEmpty()) {
+		if (!response.getValue().getExamples().isEmpty()) {
 			List<Example> pExamples = new ArrayList<Example>();
-			for (edu.uoc.som.openapi2.Example mExample : mResponse.getResponseDefinition().getExamples()) {
+			for (edu.uoc.som.openapi2.Example mExample : response.getValue().getExamples()) {
 				Example pExample = OpenAPIProfileFactory.eINSTANCE.createExample();
 				pExample.setMimeType(mExample.getMimeType());
 				pExample.setValue(mExample.getValue());
@@ -265,7 +273,7 @@ public class OpenAPIProfileUtils {
 			operation.applyStereotype(apiOperationStereotype);
 		UMLUtil.setTaggedValue(operation, apiOperationStereotype, "relativePath",
 				((Path) mOperation.eContainer()).getRelativePath());
-		UMLUtil.setTaggedValue(operation, apiOperationStereotype, "method", extractHTTPMethod(mOperation.getMethod()));
+		UMLUtil.setTaggedValue(operation, apiOperationStereotype, "method", extractHTTPMethod(mOperation.getHTTPMethod()));
 		if (!mOperation.getSchemes().isEmpty()) {
 			List<SchemeType> schemeTypes = new ArrayList<SchemeType>();
 			for (edu.uoc.som.openapi2.SchemeType from : mOperation.getSchemes())
@@ -302,29 +310,29 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(operation, externalDocsStereotype, "url", externalDocs.getUrl());
 	}
 
-	public static void applySecurityDefinitionsStereotype(Model model, List<SecurityScheme> mSecuritySchemes) {
+	public static void applySecurityDefinitionsStereotype(Model model, EMap<String, SecurityScheme> eMap) {
 		Stereotype securityDefinitionsStereotype = model.getApplicableStereotype(SECURITY_DEFINITIONS_QN);
 		if (!model.isStereotypeApplied(securityDefinitionsStereotype)) {
 			model.applyStereotype(securityDefinitionsStereotype);
 		}
-		List<edu.som.uoc.openapi2.profile.SecurityScheme> pSecuritySchemes = new ArrayList<edu.som.uoc.openapi2.profile.SecurityScheme>();
-		for (SecurityScheme mSecurityScheme : mSecuritySchemes) {
-			edu.som.uoc.openapi2.profile.SecurityScheme pSecurityScheme = OpenAPIProfileFactory.eINSTANCE
+		List<edu.uoc.som.openapi2.profile.SecurityScheme> pSecuritySchemes = new ArrayList<edu.uoc.som.openapi2.profile.SecurityScheme>();
+		for (Entry<String, SecurityScheme> mSecurityScheme : eMap) {
+			edu.uoc.som.openapi2.profile.SecurityScheme pSecurityScheme = OpenAPIProfileFactory.eINSTANCE
 					.createSecurityScheme();
-			pSecurityScheme.setReferenceName(mSecurityScheme.getReferenceName());
-			pSecurityScheme.setName(mSecurityScheme.getName());
-			if (mSecurityScheme.getType() != null) {
-				pSecurityScheme.setType(transformSecuritySchemeType(mSecurityScheme.getType()));
+			pSecurityScheme.setReferenceName(mSecurityScheme.getKey());
+			pSecurityScheme.setName(mSecurityScheme.getValue().getName());
+			if (mSecurityScheme.getValue().getType() != null) {
+				pSecurityScheme.setType(transformSecuritySchemeType(mSecurityScheme.getValue().getType()));
 			}
-			pSecurityScheme.setDescription(mSecurityScheme.getDescription());
-			if (mSecurityScheme.getLocation() != null)
-				pSecurityScheme.setLocation(transformAPIKeyLocation(mSecurityScheme.getLocation()));
-			if (mSecurityScheme.getFlow() != null)
-				pSecurityScheme.setFlow(transformOAuth2FlowType(mSecurityScheme.getFlow()));
-			pSecurityScheme.setAuthorizationURL(mSecurityScheme.getAuthorizationUrl());
-			pSecurityScheme.setTokenURL(mSecurityScheme.getTokenUrl());
-			if (!mSecurityScheme.getScopes().isEmpty()) {
-				for (edu.uoc.som.openapi2.SecurityScope mSecurityScope : mSecurityScheme.getScopes()) {
+			pSecurityScheme.setDescription(mSecurityScheme.getValue().getDescription());
+			if (mSecurityScheme.getValue().getLocation() != null)
+				pSecurityScheme.setLocation(transformAPIKeyLocation(mSecurityScheme.getValue().getLocation()));
+			if (mSecurityScheme.getValue().getFlow() != null)
+				pSecurityScheme.setFlow(transformOAuth2FlowType(mSecurityScheme.getValue().getFlow()));
+			pSecurityScheme.setAuthorizationURL(mSecurityScheme.getValue().getAuthorizationUrl());
+			pSecurityScheme.setTokenURL(mSecurityScheme.getValue().getTokenUrl());
+			if (!mSecurityScheme.getValue().getScopes().isEmpty()) {
+				for (edu.uoc.som.openapi2.SecurityScope mSecurityScope : mSecurityScheme.getValue().getScopes()) {
 					SecurityScope pSecurityScope = OpenAPIProfileFactory.eINSTANCE.createSecurityScope();
 					pSecurityScope.setDescription(mSecurityScope.getDescription());
 					pSecurityScope.setName(mSecurityScope.getName());
@@ -343,16 +351,21 @@ public class OpenAPIProfileUtils {
 		if (!element.isStereotypeApplied(securityRequirementsStereotype)) {
 			element.applyStereotype(securityRequirementsStereotype);
 		}
-		List<edu.som.uoc.openapi2.profile.SecurityRequirement> pSecurityRequirements = new ArrayList<edu.som.uoc.openapi2.profile.SecurityRequirement>();
+		List<edu.uoc.som.openapi2.profile.SecurityRequirement> pSecurityRequirements = new ArrayList<edu.uoc.som.openapi2.profile.SecurityRequirement>();
 		for (SecurityRequirement mSecurityRequirement : securityRequirements) {
-			edu.som.uoc.openapi2.profile.SecurityRequirement pSecurityRequirement = OpenAPIProfileFactory.eINSTANCE
+			edu.uoc.som.openapi2.profile.SecurityRequirement pSecurityRequirement = OpenAPIProfileFactory.eINSTANCE
 					.createSecurityRequirement();
-			pSecurityRequirement.setName(mSecurityRequirement.getSecurityScheme().getReferenceName());
-			for (edu.uoc.som.openapi2.SecurityScope mScope : mSecurityRequirement.getSecurityScheme().getScopes()) {
-				pSecurityRequirement.getScopes().add(mScope.getName());
+			for(edu.uoc.som.openapi2.RequiredSecurityScheme mRequiredSecurityScheme : mSecurityRequirement.getSecuritySchemes()) {
+				RequiredSecurityScheme pRequiredSecurityScheme = OpenAPIProfileFactory.eINSTANCE.createRequiredSecurityScheme();
+				pRequiredSecurityScheme.setName(mRequiredSecurityScheme.getSecurityScheme().getName());
+			for (edu.uoc.som.openapi2.SecurityScope mScope : mRequiredSecurityScheme.getSecurityScheme().getScopes()) {
+				pRequiredSecurityScheme.getScopes().add(mScope.getName());
+			}
+			pSecurityRequirement.getSecuritySchemes().add(pRequiredSecurityScheme);
 			}
 			pSecurityRequirements.add(pSecurityRequirement);
 		}
+		
 		UMLUtil.setTaggedValue(element, securityRequirementsStereotype, "securityRequirements", pSecurityRequirements);
 	}
 

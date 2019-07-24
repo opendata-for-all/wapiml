@@ -1,5 +1,7 @@
 package edu.uoc.som.wapiml.model;
 
+import org.eclipse.uml2.uml.AggregationKind;
+
 import edu.uoc.som.openapi2.Property;
 import edu.uoc.som.openapi2.Schema;
 
@@ -8,6 +10,8 @@ public class AssociationCandidate {
 	private Schema schema;
 	private Property property;
 	private Schema targetSchema;
+	private AggregationKind aggregationKind;
+	
 	
 	
 	public AssociationCandidate(Schema schema, Property property, Schema targetSchema) {
@@ -35,9 +39,6 @@ public class AssociationCandidate {
 		this.targetSchema = targetSchema;
 	}
 	
-	@Override
-	public String toString() {
-		return schema.getReferenceName()+": "+property.getReferenceName()+" -> "+targetSchema.getReferenceName();
-	}
+	
 
 }

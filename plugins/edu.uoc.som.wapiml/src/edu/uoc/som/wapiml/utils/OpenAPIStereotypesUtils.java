@@ -14,7 +14,7 @@ import org.eclipse.uml2.uml.util.UMLUtil;
  * Inspired from {@link https://github.com/dice-project/DICE-Simulation/blob/master/bundles/es.unizar.disco.simulation.models/src/es/unizar/disco/simulation/models/util/MarteStereotypesUtils.java}}
  *
  */
-import edu.som.uoc.openapi2.profile.OpenAPIProfilePackage;
+import edu.uoc.som.openapi2.profile.OpenAPIProfilePackage;
 
 public class OpenAPIStereotypesUtils {
 
