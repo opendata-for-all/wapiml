@@ -14,11 +14,11 @@ public class AssociationCandidate {
 	
 	
 	
-	public AssociationCandidate(Schema schema, Property property, Schema targetSchema) {
-		super();
+	public AssociationCandidate(Schema schema, Property property, Schema targetSchema, AggregationKind aggregationKind) {
 		this.schema = schema;
 		this.property = property;
 		this.targetSchema = targetSchema;
+		this.aggregationKind = aggregationKind;
 	}
 	public Schema getSchema() {
 		return schema;
@@ -38,7 +38,23 @@ public class AssociationCandidate {
 	public void setTargetSchema(Schema targetSchema) {
 		this.targetSchema = targetSchema;
 	}
+	public AggregationKind getAggregationKind() {
+		return aggregationKind;
+	}
+	public void setAggregationKind(AggregationKind aggregationKind) {
+		this.aggregationKind = aggregationKind;
+	}
 	
-	
-
+	public AggregationKind getAggregationKindByValue(int value) {
+		switch (value) {
+		case AggregationKind.NONE:
+			return AggregationKind.NONE_LITERAL;
+		case AggregationKind.SHARED:
+			return AggregationKind.SHARED_LITERAL;
+		case AggregationKind.COMPOSITE:
+			return AggregationKind.COMPOSITE_LITERAL;
+		default: 
+			return null;
+		}
+	}
 }

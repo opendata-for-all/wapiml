@@ -123,7 +123,7 @@ public class ClassDiagramGenerator implements Serializable {
 					String targetSchemaName = target.getName();
 					//this should be transformed to a regular expression in the future
 					if(propertyName != null &&  targetSchemaName != null && isPrimitive(property.getSchema()) && (propertyName.equalsIgnoreCase(targetSchemaName) || propertyName.equalsIgnoreCase(targetSchemaName+"id") || propertyName.equalsIgnoreCase(targetSchemaName+"_id") || propertyName.equalsIgnoreCase(targetSchemaName+"-id"))) {
-						assocationCandidates.add(new AssociationCandidate(source, property, target));
+						assocationCandidates.add(new AssociationCandidate(source, property, target,AggregationKind.SHARED_LITERAL));
 					}
 				}
 				
@@ -131,6 +131,21 @@ public class ClassDiagramGenerator implements Serializable {
 		}
 		return assocationCandidates;
 		
+	}
+	private List<AssociationCandidate> inferFixedAssociations(){
+		List<AssociationCandidate> assocationCandidates = new ArrayList<AssociationCandidate>();
+		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
+			if (isObject(definition.getValue())) {
+				for (edu.uoc.som.openapi2.Property property : definition.getValue().getProperties()) {
+					if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
+						assocationCandidates.add(new AssociationCandidate(definition.getValue(), property, property.getSchema(), AggregationKind.COMPOSITE_LITERAL));
+						
+					}
+
+				}
+			}
+		}
+		return assocationCandidates;
 	}
 	public Model generateClassDiagramFromOpenAPI(boolean applyProfile, boolean discoverAssociations)
 			throws IOException {
@@ -141,7 +156,6 @@ public class ClassDiagramGenerator implements Serializable {
 		if (applyProfile) {
 			
 			umlModel.applyProfile((Profile) openAPIProfileResource.getContents().get(0));
-			umlModel.applyStereotype(umlModel.getApplicableStereotype(OpenAPIProfileUtils.API_QN));
 			
 		}
 		Package package_ = umlFactory.createPackage();
@@ -412,7 +426,7 @@ public class ClassDiagramGenerator implements Serializable {
 		
 		for(AssociationCandidate associationCandidate: assocationCandidates) {
 			Property properyToRemove = propertiesMaps.get(associationCandidate.getProperty());
-			associations.add(extractAssociation(schemaMaps.get(associationCandidate.getSchema()), schemaMaps.get(associationCandidate.getTargetSchema()),properyToRemove));
+			associations.add(extractAssociation(schemaMaps.get(associationCandidate.getSchema()), schemaMaps.get(associationCandidate.getTargetSchema()),properyToRemove,associationCandidate.getAggregationKind()));
 			propertiesToRemore.add(properyToRemove);
 		}
 
@@ -425,7 +439,7 @@ public class ClassDiagramGenerator implements Serializable {
 		}
 	
 	}
-	private Association extractAssociation(Class class1, Class class2, Property property) {
+	private Association extractAssociation(Class class1, Class class2, Property property, AggregationKind aggregationKind) {
 		Association association = umlFactory.createAssociation();
 
 		association.setName(class1.getName()+"_"+class2.getName());
@@ -437,7 +451,8 @@ public class ClassDiagramGenerator implements Serializable {
 		Property secondEnd = umlFactory.createProperty();
 		secondEnd.setName(class1.getName());
 		secondEnd.setType(class1);
-		secondEnd.setAggregation(AggregationKind.SHARED_LITERAL);
+		secondEnd.setAggregation(aggregationKind);
+		secondEnd.setIsNavigable(true);
 		association.getOwnedEnds().add(secondEnd);
 		
 		return association;
