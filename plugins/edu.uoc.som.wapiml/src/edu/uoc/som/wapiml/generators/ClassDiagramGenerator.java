@@ -64,6 +64,7 @@ public class ClassDiagramGenerator implements Serializable {
 	private String modelName;
 	private API openAPIModel;
 	private List<AssociationCandidate> assocationCandidates;
+	private List<AssociationCandidate> discoveredAssociations;
 	private Map<edu.uoc.som.openapi2.Property, Property> propertiesMaps = new HashMap<>();
 	private Map<Schema,Class> schemaMaps = new HashMap<>();
 
@@ -84,6 +85,7 @@ public class ClassDiagramGenerator implements Serializable {
 		umlModel = UMLFactory.eINSTANCE.createModel();
 		umlModelResource.getContents().add(umlModel);
 		assocationCandidates =inferAssociationCandidates();
+		discoveredAssociations = getFixedAssociations();
 
 	}
 
@@ -132,7 +134,7 @@ public class ClassDiagramGenerator implements Serializable {
 		return assocationCandidates;
 		
 	}
-	private List<AssociationCandidate> inferFixedAssociations(){
+	private List<AssociationCandidate> getFixedAssociations(){
 		List<AssociationCandidate> assocationCandidates = new ArrayList<AssociationCandidate>();
 		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
 			if (isObject(definition.getValue())) {
@@ -242,16 +244,20 @@ public class ClassDiagramGenerator implements Serializable {
 			}
 		}
 		// resolve associations
-		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
-			if (isObject(definition.getValue())) {
-				for (edu.uoc.som.openapi2.Property property : definition.getValue().getProperties()) {
-					if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
-						Association association = createAssociation(definition.getValue(), property);
-						package_.getPackagedElements().add(association);
-					}
-
-				}
-			}
+//		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
+//			if (isObject(definition.getValue())) {
+//				for (edu.uoc.som.openapi2.Property property : definition.getValue().getProperties()) {
+//					if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
+//						Association association = createAssociation(definition.getValue(), property);
+//						package_.getPackagedElements().add(association);
+//					}
+//
+//				}
+//			}
+//		}
+		for(AssociationCandidate associationCandidate: discoveredAssociations) {
+			Association association =createAssociation(associationCandidate.getSchema(), associationCandidate.getProperty(),associationCandidate.getAggregationKind());
+			package_.getPackagedElements().add(association);
 		}
 		// resolve associations for allOf
 		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
@@ -259,7 +265,7 @@ public class ClassDiagramGenerator implements Serializable {
 				if (!definition.getValue().getAllOf().isEmpty()) {
 					for (edu.uoc.som.openapi2.Property property : definition.getValue().getAllOf().get(1).getProperties()) {
 						if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
-							Association association = createAssociation( definition.getValue(), property);
+							Association association = createAssociation( definition.getValue(), property, AggregationKind.COMPOSITE_LITERAL);
 							package_.getPackagedElements().add(association);
 						}
 
@@ -452,13 +458,12 @@ public class ClassDiagramGenerator implements Serializable {
 		secondEnd.setName(class1.getName());
 		secondEnd.setType(class1);
 		secondEnd.setAggregation(aggregationKind);
-		secondEnd.setIsNavigable(true);
 		association.getOwnedEnds().add(secondEnd);
 		
 		return association;
 	}
 	private Association createAssociation(Schema definition,
-			edu.uoc.som.openapi2.Property property) {
+			edu.uoc.som.openapi2.Property property,AggregationKind agrreAggregationKind) {
 		Association association = umlFactory.createAssociation();
 		association.setName(definition.getName() + "_" + property.getName());
 		Property firstOwnedEnd = umlFactory.createProperty();
@@ -468,7 +473,7 @@ public class ClassDiagramGenerator implements Serializable {
 		firstOwnedEnd.setName(definition.getName());
 		firstOwnedEnd.setType(schemaMaps.get(definition));
 		secondOwnedEnd.setName(property.getName());
-		secondOwnedEnd.setAggregation(AggregationKind.COMPOSITE_LITERAL);
+		secondOwnedEnd.setAggregation(agrreAggregationKind);
 //		if (property.getRequired()!=null && property.getRequired())
 //			secondOwnedEnd.setLower(1);
 //		else
@@ -727,6 +732,14 @@ public class ClassDiagramGenerator implements Serializable {
 
 	public void setAssocationCandidates(List<AssociationCandidate> assocationCandidates) {
 		this.assocationCandidates = assocationCandidates;
+	}
+
+	public List<AssociationCandidate> getDiscoveredAssociations() {
+		return discoveredAssociations;
+	}
+
+	public void setDiscoveredAssociations(List<AssociationCandidate> discoveredAssociations) {
+		this.discoveredAssociations = discoveredAssociations;
 	}
 
 

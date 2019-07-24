@@ -7,6 +7,7 @@
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any">
          <menu
+               icon="images/logo-small.png"
                label="WAPIml">
             <command
                   commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagram"

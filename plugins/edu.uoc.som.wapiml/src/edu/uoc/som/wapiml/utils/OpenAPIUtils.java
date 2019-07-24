@@ -140,5 +140,18 @@ public class OpenAPIUtils {
 	}
 
 
+	public static String getDecoratedName(Schema schema) {
+		if( schema.getType().equals(JSONDataType.OBJECT)) {
+			if(schema.getName()!= null)
+				return schema.getName();
+			else 
+				return "undefined";
+		}
+		if(schema.getType().equals(JSONDataType.ARRAY))
+			return getDecoratedName(schema.getItems())+" [*]";
+		return "undefined";
+	
+	}
+	
 	
 }
