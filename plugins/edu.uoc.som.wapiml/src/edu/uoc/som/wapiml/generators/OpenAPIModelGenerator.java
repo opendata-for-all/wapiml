@@ -12,7 +12,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.DataType;
@@ -56,7 +55,6 @@ import edu.uoc.som.openapi2.SecurityScheme;
 import edu.uoc.som.openapi2.impl.ResponseEntryImpl;
 import edu.uoc.som.openapi2.impl.SchemaEntryImpl;
 import edu.uoc.som.wapiml.utils.OpenAPIProfileUtils;
-import edu.uoc.som.wapiml.utils.OpenAPIUtils;
 
 public class OpenAPIModelGenerator {
 
@@ -239,7 +237,11 @@ public class OpenAPIModelGenerator {
 					if (endMembers.size() == 2) {
 						org.eclipse.uml2.uml.Property firstEnd = endMembers.get(0);
 						org.eclipse.uml2.uml.Property secondEnd = endMembers.get(1);
-						if (secondEnd.getAggregation().equals(AggregationKind.COMPOSITE_LITERAL)) {
+						if(((Association) child).isStereotypeApplied(
+								((Association) child).getApplicableStereotype(OpenAPIProfileUtils.SERIALIZATION_QN))) {
+						Boolean includesTarget =	(Boolean) UMLUtil.getTaggedValue((Association) child, OpenAPIProfileUtils.SERIALIZATION_QN, "includesTarget");
+						
+						if (includesTarget) {
 							Property mProperty = extractProperty(secondEnd);
 							if (firstEnd.getType() instanceof Class) {
 								Schema schema = classMap.get(firstEnd.getType());
@@ -251,7 +253,21 @@ public class OpenAPIModelGenerator {
 							}
 
 						}
-					}
+						else {
+							Property mProperty = factory.createProperty();
+							mProperty.setName(firstEnd.getName());
+							Schema mSchema = factory.createSchema();
+							mSchema.setType(edu.uoc.som.openapi2.JSONDataType.INTEGER);
+							mProperty.setSchema(mSchema);
+							Schema schema = classMap.get(firstEnd.getType());
+							if (schema.getAllOf().isEmpty())
+								schema.getProperties().add(mProperty);
+							else
+								schema.getAllOf().get(schema.getAllOf().size() - 1).getProperties().add(mProperty);
+
+							
+						}
+					}}
 				}
 			}
 		}
@@ -332,6 +348,10 @@ public class OpenAPIModelGenerator {
 			for (SchemeType from : pSchemes)
 				mOperation.getSchemes().add(OpenAPIProfileUtils.transformSchemeType(from));
 		}
+		List<String> pTags = (List<String>) UMLUtil.getTaggedValue(operation,
+				OpenAPIProfileUtils.API_OPERATION_QN, "tags");
+		if(pTags != null)
+			mOperation.getTagReferences().addAll(pTags);
 		List<String> consumes = (List<String>) UMLUtil.getTaggedValue(operation, OpenAPIProfileUtils.API_OPERATION_QN,
 				"consumes");
 		if (consumes != null && !consumes.isEmpty())
@@ -654,7 +674,7 @@ public class OpenAPIModelGenerator {
 			mRequiredSecurityScheme.setSecurityScheme(securityScheme);
 
 			for (String s : pRequiredSecurityScheme.getScopes()) {
-				edu.uoc.som.openapi2.SecurityScope scope = OpenAPIUtils.getSecurityScopeByName(s, securityScheme);
+				edu.uoc.som.openapi2.SecurityScope scope = securityScheme.getSecurityScopeByName(s);
 				if (scope != null)
 					mRequiredSecurityScheme.getSecurityScopes().add(scope);
 			}
