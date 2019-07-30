@@ -50,7 +50,7 @@ public class PageTwo extends WizardPage{
 	       
 	       
 		   Label label2 = new Label(container, SWT.NONE);
-		   label2.setText("Inferred associations");
+		   label2.setText("Explicit associations");
 		
 		
 		Table discoveredAssociationsTable = new Table (container, SWT.BORDER | SWT.FULL_SELECTION);
@@ -61,7 +61,7 @@ public class PageTwo extends WizardPage{
 		GridData data2 = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data2.heightHint = 100;
 		discoveredAssociationsTable.setLayoutData(data2);
-		String[] titles2 = {"Schema", "Property", "Target", "Aggregation kind"};
+		String[] titles2 = {"Source", "Property", "Target", "Aggregation kind"};
 		for (int i=0; i<titles2.length; i++) {
 			TableColumn column = new TableColumn (discoveredAssociationsTable, SWT.NONE);
 			column.setText (titles2 [i]);
@@ -88,7 +88,6 @@ public class PageTwo extends WizardPage{
 				if (oldEditor != null)
 					oldEditor.dispose();
 
-				// Identify the selected row
 				TableItem item2 = (TableItem) e.item;
 				if (item2 == null)
 					return;
@@ -102,7 +101,7 @@ public class PageTwo extends WizardPage{
 					TableItem[] selectedItems = discoveredAssociationsTable.getSelection();
 					AssociationCandidate associationCandidate = (AssociationCandidate) selectedItems[0].getData();
 					associationCandidate.setAggregationKind(associationCandidate.getAggregationKindByValue(combo.getSelectionIndex()));
-					
+					selectedItems[0].setText(3,associationCandidate.getAggregationKind().getLiteral());
 					
 				});
 				
@@ -115,7 +114,7 @@ public class PageTwo extends WizardPage{
 		Label shadow_sep_h = new Label(container, SWT.SEPARATOR | SWT.SHADOW_OUT | SWT.HORIZONTAL);
 	       
 	       Label label = new Label(container, SWT.NONE);
-	   	label.setText("Found associations");
+	   	label.setText("Implicit associations");
 		Table inferredAssociationsTable = new Table (container, SWT.BORDER | SWT.FULL_SELECTION);
 		Rectangle clientArea = container.getClientArea();
 		inferredAssociationsTable.setBounds (clientArea.x, clientArea.y,480, 150);
@@ -124,7 +123,7 @@ public class PageTwo extends WizardPage{
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 100;
 		inferredAssociationsTable.setLayoutData(data);
-		String[] titles = {"Schema", "Property", "Target", "Aggregation kind"};
+		String[] titles = {"Source", "Property", "Target", "Aggregation kind"};
 		for (int i=0; i<titles.length; i++) {
 			TableColumn column = new TableColumn (inferredAssociationsTable, SWT.NONE);
 			column.setText (titles [i]);
@@ -166,7 +165,7 @@ public class PageTwo extends WizardPage{
 					TableItem[] selectedItems = inferredAssociationsTable.getSelection();
 					AssociationCandidate associationCandidate = (AssociationCandidate) selectedItems[0].getData();
 					associationCandidate.setAggregationKind(associationCandidate.getAggregationKindByValue(combo.getSelectionIndex()));
-					
+					selectedItems[0].setText(3,associationCandidate.getAggregationKind().getLiteral());
 					
 				});
 				
