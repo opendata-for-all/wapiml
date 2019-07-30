@@ -25,15 +25,16 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import edu.uoc.som.openapi2.API;
+import edu.uoc.som.openapi2.io.model.SerializationFormat;
 import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
 import edu.uoc.som.wapiml.ui.wizards.GenerateClassDiagramWizard;
 import edu.uoc.som.wapiml.utils.Utils;
 
-public class ConvertToClassDiagram extends AbstractHandler {
+public class ConvertToClassDiagramJSON extends AbstractHandler {
 
-	public static final String ID = "edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagram";
+	public static final String ID = "edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramJSON";
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -62,7 +63,7 @@ public class ConvertToClassDiagram extends AbstractHandler {
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
 								File inputFile = new File(iFile.getLocation().toString());
-								API api = Utils.loadOpenAPIModel(inputFile);
+								API api = Utils.loadOpenAPIModel(inputFile,SerializationFormat.JSON);
 								ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(api, iFile.getName().substring(0, iFile.getName().lastIndexOf('.')));
 								Display.getDefault().syncExec(new Runnable() {
 								    public void run() {
