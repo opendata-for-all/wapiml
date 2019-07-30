@@ -12,6 +12,7 @@ import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API_OP
 import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.SECURITY_DEFINITIONS;
 import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.SECURITY;
 import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.API_PROPERTY;
+import static edu.uoc.som.openapi2.profile.OpenAPIProfilePackage.Literals.SERIALIZATION;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Model;
@@ -55,6 +57,7 @@ import edu.uoc.som.openapi2.Schema;
 import edu.uoc.som.openapi2.SecurityRequirement;
 import edu.uoc.som.openapi2.SecurityScheme;
 import edu.uoc.som.openapi2.Tag;
+import edu.uoc.som.openapi2.impl.SecuritySchemeEntryImpl;
 
 public class OpenAPIProfileUtils {
 
@@ -70,6 +73,7 @@ public class OpenAPIProfileUtils {
 	public static final String SECURITY_DEFINITIONS_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY_DEFINITIONS);
 	public static final String SECURITY_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY);
 	public static final String API_PROPERTY_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PROPERTY);
+	public static final String SERIALIZATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(SERIALIZATION);
 
 
 	public static void applyAPIStereotype(Model model, API api) {
@@ -129,6 +133,14 @@ public class OpenAPIProfileUtils {
 	}
 
 
+	public static void applySerializationStereotype(Association association, boolean includesTarget) {
+		Stereotype serializationStereotype = association.getApplicableStereotype(SERIALIZATION_QN);
+		if(!association.isStereotypeApplied(serializationStereotype)) {
+			association.applyStereotype(serializationStereotype);
+		}
+		UMLUtil.setTaggedValue(association, serializationStereotype, "includesTarget",includesTarget);
+		
+	}
 
 	public static void applyTagsStereotype(Model model, List<Tag> tagList) {
 		Stereotype tagsStereotype = model.getApplicableStereotype(TAGS_QN);
@@ -357,7 +369,7 @@ public class OpenAPIProfileUtils {
 					.createSecurityRequirement();
 			for(edu.uoc.som.openapi2.RequiredSecurityScheme mRequiredSecurityScheme : mSecurityRequirement.getSecuritySchemes()) {
 				RequiredSecurityScheme pRequiredSecurityScheme = OpenAPIProfileFactory.eINSTANCE.createRequiredSecurityScheme();
-				pRequiredSecurityScheme.setName(mRequiredSecurityScheme.getSecurityScheme().getName());
+				pRequiredSecurityScheme.setName(((SecuritySchemeEntryImpl)mRequiredSecurityScheme.getSecurityScheme().eContainer()).getKey());
 			for (edu.uoc.som.openapi2.SecurityScope mScope : mRequiredSecurityScheme.getSecurityScheme().getScopes()) {
 				pRequiredSecurityScheme.getScopes().add(mScope.getName());
 			}
