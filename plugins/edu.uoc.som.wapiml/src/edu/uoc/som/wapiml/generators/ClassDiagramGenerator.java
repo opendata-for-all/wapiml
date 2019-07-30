@@ -256,8 +256,11 @@ public class ClassDiagramGenerator implements Serializable {
 //			}
 //		}
 		for(AssociationCandidate associationCandidate: discoveredAssociations) {
-			Association association =createAssociation(associationCandidate.getSchema(), associationCandidate.getProperty(),associationCandidate.getAggregationKind());
+			Association association =createAssociation(associationCandidate.getSchema(), associationCandidate.getProperty(),associationCandidate.getAggregationKind(),applyProfile);
 			package_.getPackagedElements().add(association);
+			if(applyProfile) {
+				OpenAPIProfileUtils.applySerializationStereotype(association, true);
+			}
 		}
 		// resolve associations for allOf
 		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
@@ -265,8 +268,11 @@ public class ClassDiagramGenerator implements Serializable {
 				if (!definition.getValue().getAllOf().isEmpty()) {
 					for (edu.uoc.som.openapi2.Property property : definition.getValue().getAllOf().get(1).getProperties()) {
 						if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
-							Association association = createAssociation( definition.getValue(), property, AggregationKind.COMPOSITE_LITERAL);
+							Association association = createAssociation( definition.getValue(), property, AggregationKind.COMPOSITE_LITERAL, applyProfile);
 							package_.getPackagedElements().add(association);
+							if(applyProfile) {
+								OpenAPIProfileUtils.applySerializationStereotype(association, true);
+							}
 						}
 
 					}
@@ -419,33 +425,36 @@ public class ClassDiagramGenerator implements Serializable {
 
 		}
 		if(discoverAssociations)
-			refine(package_);
+			refine(package_,applyProfile);
 
 		return umlModel;
 
 	}
 
-	public void refine(Package package_) {
+	public void refine(Package package_,boolean applyProfile) {
 		List<Association> associations = new ArrayList<Association>();
 		List<Property> propertiesToRemore = new ArrayList<Property>();
 		
 		
 		for(AssociationCandidate associationCandidate: assocationCandidates) {
 			Property properyToRemove = propertiesMaps.get(associationCandidate.getProperty());
-			associations.add(extractAssociation(schemaMaps.get(associationCandidate.getSchema()), schemaMaps.get(associationCandidate.getTargetSchema()),properyToRemove,associationCandidate.getAggregationKind()));
+			associations.add(extractAssociation(schemaMaps.get(associationCandidate.getSchema()), schemaMaps.get(associationCandidate.getTargetSchema()),properyToRemove,associationCandidate.getAggregationKind(),applyProfile));
 			propertiesToRemore.add(properyToRemove);
 		}
 
 					
 		for(Association association: associations) {
 			package_.getPackagedElements().add(association);
+			if(applyProfile) {
+				OpenAPIProfileUtils.applySerializationStereotype(association, false);
+			}
 		}
 		for(Property property: propertiesToRemore) {
 			EcoreUtil.delete(property);
 		}
 	
 	}
-	private Association extractAssociation(Class class1, Class class2, Property property, AggregationKind aggregationKind) {
+	private Association extractAssociation(Class class1, Class class2, Property property, AggregationKind aggregationKind, boolean applyProfile) {
 		Association association = umlFactory.createAssociation();
 
 		association.setName(class1.getName()+"_"+class2.getName());
@@ -459,11 +468,13 @@ public class ClassDiagramGenerator implements Serializable {
 		secondEnd.setType(class1);
 		secondEnd.setAggregation(aggregationKind);
 		association.getOwnedEnds().add(secondEnd);
+		association.getNavigableOwnedEnds().add(secondEnd);
+		
 		
 		return association;
 	}
 	private Association createAssociation(Schema definition,
-			edu.uoc.som.openapi2.Property property,AggregationKind agrreAggregationKind) {
+			edu.uoc.som.openapi2.Property property,AggregationKind agrreAggregationKind, boolean applyProfile) {
 		Association association = umlFactory.createAssociation();
 		association.setName(definition.getName() + "_" + property.getName());
 		Property firstOwnedEnd = umlFactory.createProperty();
@@ -488,6 +499,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 		}
 		association.getNavigableOwnedEnds().add(secondOwnedEnd);
+		
 		return association;
 	}
 
