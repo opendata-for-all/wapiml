@@ -331,7 +331,7 @@ public class OpenAPIProfileUtils {
 		for (Entry<String, SecurityScheme> mSecurityScheme : eMap) {
 			edu.uoc.som.openapi2.profile.SecurityScheme pSecurityScheme = OpenAPIProfileFactory.eINSTANCE
 					.createSecurityScheme();
-			pSecurityScheme.setReferenceName(mSecurityScheme.getKey());
+			pSecurityScheme.setKey(mSecurityScheme.getKey());
 			pSecurityScheme.setName(mSecurityScheme.getValue().getName());
 			if (mSecurityScheme.getValue().getType() != null) {
 				pSecurityScheme.setType(transformSecuritySchemeType(mSecurityScheme.getValue().getType()));
@@ -369,7 +369,7 @@ public class OpenAPIProfileUtils {
 					.createSecurityRequirement();
 			for(edu.uoc.som.openapi2.RequiredSecurityScheme mRequiredSecurityScheme : mSecurityRequirement.getSecuritySchemes()) {
 				RequiredSecurityScheme pRequiredSecurityScheme = OpenAPIProfileFactory.eINSTANCE.createRequiredSecurityScheme();
-				pRequiredSecurityScheme.setName(((SecuritySchemeEntryImpl)mRequiredSecurityScheme.getSecurityScheme().eContainer()).getKey());
+				pRequiredSecurityScheme.setKey(((SecuritySchemeEntryImpl)mRequiredSecurityScheme.getSecurityScheme().eContainer()).getKey());
 			for (edu.uoc.som.openapi2.SecurityScope mScope : mRequiredSecurityScheme.getSecurityScheme().getScopes()) {
 				pRequiredSecurityScheme.getScopes().add(mScope.getName());
 			}

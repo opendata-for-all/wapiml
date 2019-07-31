@@ -145,7 +145,7 @@ public class OpenAPIModelGenerator {
 				for (edu.uoc.som.openapi2.profile.SecurityScheme pSecurityScheme : pSecuritySchemes) {
 					SecurityScheme mSecurityScheme = extractSecurityScheme(pSecurityScheme);
 					if (mSecurityScheme != null) {
-						api.getSecurityDefinitions().put(pSecurityScheme.getReferenceName(), mSecurityScheme);
+						api.getSecurityDefinitions().put(pSecurityScheme.getKey(), mSecurityScheme);
 					}
 				}
 			}
@@ -670,7 +670,7 @@ public class OpenAPIModelGenerator {
 		for (RequiredSecurityScheme pRequiredSecurityScheme : pSecurityRequirement.getSecuritySchemes()) {
 			edu.uoc.som.openapi2.RequiredSecurityScheme mRequiredSecurityScheme = factory
 					.createRequiredSecurityScheme();
-			SecurityScheme securityScheme = api.getSecurityDefinitions().get(pRequiredSecurityScheme.getName());
+			SecurityScheme securityScheme = api.getSecurityDefinitions().get(pRequiredSecurityScheme.getKey());
 			mRequiredSecurityScheme.setSecurityScheme(securityScheme);
 
 			for (String s : pRequiredSecurityScheme.getScopes()) {
