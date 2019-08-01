@@ -11,11 +11,9 @@ public class AssociationCandidate {
 	private Property sourceProperty;
 	private Schema targetSchema;
 	private Property targetProperty;
-	private int lowerBound; 
+	private int lowerBound;
 	private int upperBound;
 	private AggregationKind aggregationKind;
-
-	
 
 	public AssociationCandidate(Schema sourceSchema, Property sourceProperty, Schema targetSchema,
 			Property targetProperty, int lowerBound, int upperBound, AggregationKind aggregationKind) {
@@ -30,10 +28,10 @@ public class AssociationCandidate {
 	}
 
 	public String printCardinality() {
-		if(lowerBound == 0 && upperBound == -1)
-		return "[0]";
-		return "["+lowerBound+".."+upperBound+"]";
-		
+		if (lowerBound == 0 && upperBound == -1)
+			return "[*]";
+		return "[" + lowerBound + ".." + upperBound + "]";
+
 	}
 
 	public Property getTargetProperty() {
