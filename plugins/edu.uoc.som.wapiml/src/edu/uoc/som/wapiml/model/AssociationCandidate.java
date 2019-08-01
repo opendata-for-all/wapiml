@@ -6,55 +6,90 @@ import edu.uoc.som.openapi2.Property;
 import edu.uoc.som.openapi2.Schema;
 
 public class AssociationCandidate {
-	
-	private Schema schema;
-	private Property property;
+
+	private Schema sourceSchema;
+	private Property sourceProperty;
 	private Schema targetSchema;
+	private Property targetProperty;
+	private int lowerBound; 
+	private int upperBound;
 	private AggregationKind aggregationKind;
+
 	
-	
-	
-	public AssociationCandidate(Schema schema, Property property, Schema targetSchema, AggregationKind aggregationKind) {
-		this.schema = schema;
-		this.property = property;
+
+	public AssociationCandidate(Schema sourceSchema, Property sourceProperty, Schema targetSchema,
+			Property targetProperty, int lowerBound, int upperBound, AggregationKind aggregationKind) {
+		super();
+		this.sourceSchema = sourceSchema;
+		this.sourceProperty = sourceProperty;
 		this.targetSchema = targetSchema;
+		this.targetProperty = targetProperty;
+		this.lowerBound = lowerBound;
+		this.upperBound = upperBound;
 		this.aggregationKind = aggregationKind;
 	}
-	public Schema getSchema() {
-		return schema;
+
+	public String printCardinality() {
+		if(lowerBound == 0 && upperBound == -1)
+		return "[0]";
+		return "["+lowerBound+".."+upperBound+"]";
+		
 	}
-	public void setSchema(Schema schema) {
-		this.schema = schema;
+
+	public Property getTargetProperty() {
+		return targetProperty;
 	}
-	public Property getProperty() {
-		return property;
+
+	public void setTargetProperty(Property targetProperty) {
+		this.targetProperty = targetProperty;
 	}
-	public void setProperty(Property property) {
-		this.property = property;
+
+	public Schema getSourceSchema() {
+		return sourceSchema;
 	}
+
+	public void setSourceSchema(Schema sourceSchema) {
+		this.sourceSchema = sourceSchema;
+	}
+
+	public Property getSourceProperty() {
+		return sourceProperty;
+	}
+
+	public void setSourceProperty(Property sourceProperty) {
+		this.sourceProperty = sourceProperty;
+	}
+
 	public Schema getTargetSchema() {
 		return targetSchema;
 	}
+
 	public void setTargetSchema(Schema targetSchema) {
 		this.targetSchema = targetSchema;
 	}
+
 	public AggregationKind getAggregationKind() {
 		return aggregationKind;
 	}
+
 	public void setAggregationKind(AggregationKind aggregationKind) {
 		this.aggregationKind = aggregationKind;
 	}
-	
-	public AggregationKind getAggregationKindByValue(int value) {
-		switch (value) {
-		case AggregationKind.NONE:
-			return AggregationKind.NONE_LITERAL;
-		case AggregationKind.SHARED:
-			return AggregationKind.SHARED_LITERAL;
-		case AggregationKind.COMPOSITE:
-			return AggregationKind.COMPOSITE_LITERAL;
-		default: 
-			return null;
-		}
+
+	public int getLowerBound() {
+		return lowerBound;
 	}
+
+	public void setLowerBound(int lowerBound) {
+		this.lowerBound = lowerBound;
+	}
+
+	public int getUpperBound() {
+		return upperBound;
+	}
+
+	public void setUpperBound(int upperBound) {
+		this.upperBound = upperBound;
+	}
+
 }
