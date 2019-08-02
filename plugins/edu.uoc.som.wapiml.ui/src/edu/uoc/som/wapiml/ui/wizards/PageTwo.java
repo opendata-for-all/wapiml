@@ -2,7 +2,6 @@ package edu.uoc.som.wapiml.ui.wizards;
 
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CellLabelProvider;
-import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
@@ -12,27 +11,28 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.Text;
-
+import org.eclipse.swt.widgets.TableItem;
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.model.AssociationCandidate;
 
 public class PageTwo extends WizardPage {
 
 	private ClassDiagramGenerator classDiagramGenerator;
-	private Composite container;
+	Composite container;
+	Composite lowerComposite;
 
 	private TableViewer topViewer;
 	private TableViewer bottomViewer;
 
+
 	public PageTwo(ClassDiagramGenerator classDiagramGenerator) {
 		super("WAPIml - Generate a UML model");
 		setTitle("WAPIml - Generate a UML model");
-		setDescription("This page allows you to modify the discovered associations.\n"
-				+ "The explicit associations are the associations that are explicitly defined in OpenAPI definitions.\n"
-				+ "The implicit associations are the association discovered by analyzing property names.");
+		setDescription("This page allows you to modify the discovered associations.");
 		this.classDiagramGenerator = classDiagramGenerator;
 	}
 
@@ -42,17 +42,21 @@ public class PageTwo extends WizardPage {
 		setControl(container);
 		GridLayout layout = new GridLayout(1, false);
 		container.setLayout(layout);
-		Label label2 = new Label(container, SWT.NONE);
+		Composite upperComposite = new Composite(container, SWT.NONE);
+		upperComposite.setLayout(layout);
+		Label label2 = new Label(upperComposite, SWT.NONE);
 		label2.setText("Explicit associations");
-		createTopViewer(container);
-		Label shadow_sep_h = new Label(container, SWT.SEPARATOR | SWT.SHADOW_OUT | SWT.HORIZONTAL);
-
-		Label label = new Label(container, SWT.NONE);
+		createTopViewer(upperComposite);
+		lowerComposite = new Composite(container, SWT.NONE);
+		lowerComposite.setLayout(layout);
+		Label shadow_sep_h = new Label(lowerComposite, SWT.SEPARATOR | SWT.SHADOW_OUT | SWT.HORIZONTAL);
+		Label label = new Label(lowerComposite, SWT.NONE);
 		label.setText("Implicit associations");
-		createBottomViewer(container);
+		createBottomViewer(lowerComposite);
+		lowerComposite.setVisible(classDiagramGenerator.isDiscoverAssociations());
+	
 
-		setPageComplete(true);
-		getWizard().getContainer().updateButtons();
+	setPageComplete(true);
 
 	}
 
@@ -90,6 +94,18 @@ public class PageTwo extends WizardPage {
 		// Get the content for the viewer, setInput will call getElements in the
 		// contentProvider
 		bottomViewer.setInput(classDiagramGenerator.getAssociationCandidates());
+
+		Menu menu = new Menu(container.getShell(), SWT.POP_UP);
+		table.setMenu(menu);
+		MenuItem item = new MenuItem(menu, SWT.PUSH);
+		item.setText("Delete Selection");
+		item.addListener(SWT.Selection, event -> {
+			TableItem[] selectedItems = table.getSelection();
+
+			for (int i = 0; i < selectedItems.length; i++)
+				classDiagramGenerator.getAssociationCandidates().remove(selectedItems[i].getData());
+			bottomViewer.refresh();
+		});
 
 		// Layout the viewer
 		GridData gridData = new GridData();

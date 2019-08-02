@@ -64,7 +64,7 @@ public class ConvertToClassDiagramYaml extends AbstractHandler {
 								}
 								File inputFile = new File(iFile.getLocation().toString());
 								API api = Utils.loadOpenAPIModel(inputFile,SerializationFormat.YAML);
-								ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(api, iFile.getName().substring(0, iFile.getName().lastIndexOf('.')));
+								ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(api, iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),true,true);
 								Display.getDefault().syncExec(new Runnable() {
 								    public void run() {
 								    	WizardDialog dialog = new WizardDialog(new Shell (Display.getCurrent()), new GenerateClassDiagramWizard(classDiagramGenerator,target.getLocation()

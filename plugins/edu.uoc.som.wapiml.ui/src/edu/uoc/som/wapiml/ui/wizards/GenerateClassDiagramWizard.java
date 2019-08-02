@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -54,8 +53,7 @@ public class GenerateClassDiagramWizard extends Wizard{
 	
 	@Override
 	public boolean canFinish() {
-		if(!pageOne.discoverAssociations)
-			return true;
+
 		if(pageTwo.isCurrentPage())
 			return true;
 		return false;
@@ -66,14 +64,16 @@ public class GenerateClassDiagramWizard extends Wizard{
 	public boolean performFinish() {
 
 		try {
-			classDiagramGenerator.generateClassDiagramFromOpenAPI(pageOne.applyProfile,pageOne.discoverAssociations);
+			classDiagramGenerator.generateClassDiagramFromOpenAPI();
 			classDiagramGenerator.saveClassDiagram(targetFile);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return true;
 	}
+	
+	
 
+	
 
 }
