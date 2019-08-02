@@ -1,32 +1,31 @@
 package edu.uoc.som.wapiml.ui.wizards;
 
 
+import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
+import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
+
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.model.AssociationCandidate;
-import edu.uoc.som.wapiml.utils.OpenAPIUtils;
-
-import static org.eclipse.swt.events.SelectionListener.*;
-
-import org.eclipse.swt.widgets.*;
 
 public class PageTwo extends WizardPage{
 	
 	private ClassDiagramGenerator classDiagramGenerator;
 	private Composite container;
-
+	
+	private TableViewer topViewer;
+	private TableViewer bottomViewer;
     
 	public PageTwo(ClassDiagramGenerator classDiagramGenerator) {
 		super("WAPIml - Generate a UML model");
@@ -43,157 +42,141 @@ public class PageTwo extends WizardPage{
 	public void createControl(Composite parent) {
 		container = new Composite(parent, SWT.NONE);
 		setControl(container);
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns =1;
-		gridLayout.makeColumnsEqualWidth = true;
-	       container.setLayout(gridLayout);
+		GridLayout layout  = new GridLayout(2,false);
+	       container.setLayout(layout);
+	        createTopViewer(container);
+	        createBottomViewer(container);
 	       
-	       
-		   Label label2 = new Label(container, SWT.NONE);
-		   label2.setText("Explicit associations");
-		
-		
-		Table discoveredAssociationsTable = new Table (container, SWT.BORDER | SWT.FULL_SELECTION);
-		Rectangle clientArea2 = container.getClientArea ();
-		discoveredAssociationsTable.setBounds (clientArea2.x, clientArea2.y,280, 150);
-		discoveredAssociationsTable.setLinesVisible (true);
-		discoveredAssociationsTable.setHeaderVisible (true);
-		GridData data2 = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data2.heightHint = 100;
-		discoveredAssociationsTable.setLayoutData(data2);
-		String[] titles2 = {"Source", "Property", "Target", "Aggregation kind"};
-		for (int i=0; i<titles2.length; i++) {
-			TableColumn column = new TableColumn (discoveredAssociationsTable, SWT.NONE);
-			column.setText (titles2 [i]);
-		}
-		for (AssociationCandidate candidate : classDiagramGenerator.getDiscoveredAssociations()) {
-			TableItem item2 = new TableItem (discoveredAssociationsTable, SWT.NONE);
-			item2.setText (0,candidate.getSchema().getName());
-			item2.setText(1, candidate.getProperty().getName());
-			item2.setText(2,OpenAPIUtils.getDecoratedName(candidate.getTargetSchema()));
-			item2.setText(3,candidate.getAggregationKind().getLiteral());
-			item2.setData(candidate);
-		}
-		for (int i=0; i<titles2.length; i++) {
-			discoveredAssociationsTable.getColumn(i).pack();
-		}
-		final TableEditor editor2 = new TableEditor(discoveredAssociationsTable);
-		editor2.horizontalAlignment = SWT.LEFT;
-		editor2.grabHorizontal = true;
-		editor2.grabVertical = true;
-		editor2.minimumWidth = 50;
-
-		discoveredAssociationsTable.addSelectionListener(widgetSelectedAdapter(e -> {
-				Control oldEditor = editor2.getEditor();
-				if (oldEditor != null)
-					oldEditor.dispose();
-
-				TableItem item2 = (TableItem) e.item;
-				if (item2 == null)
-					return;
-
-				Combo combo = new Combo (discoveredAssociationsTable, SWT.READ_ONLY);
-				combo.setItems("None", "Shared", "Composite");
-				combo.select(((AssociationCandidate)item2.getData()).getAggregationKind().getValue());
-				
-				combo.addListener (SWT.Modify, ev -> {
-					System.out.println(combo.getSelectionIndex());
-					TableItem[] selectedItems = discoveredAssociationsTable.getSelection();
-					AssociationCandidate associationCandidate = (AssociationCandidate) selectedItems[0].getData();
-					associationCandidate.setAggregationKind(associationCandidate.getAggregationKindByValue(combo.getSelectionIndex()));
-					selectedItems[0].setText(3,associationCandidate.getAggregationKind().getLiteral());
-					
-				});
-				
-				combo.setFocus();
-				final int EDITABLECOLUMN = 3;
-				editor2.setEditor(combo, item2, EDITABLECOLUMN);
-			}));
-		
-		
-		Label shadow_sep_h = new Label(container, SWT.SEPARATOR | SWT.SHADOW_OUT | SWT.HORIZONTAL);
-	       
-	       Label label = new Label(container, SWT.NONE);
-	   	label.setText("Implicit associations");
-		Table inferredAssociationsTable = new Table (container, SWT.BORDER | SWT.FULL_SELECTION);
-		Rectangle clientArea = container.getClientArea();
-		inferredAssociationsTable.setBounds (clientArea.x, clientArea.y,480, 150);
-		inferredAssociationsTable.setLinesVisible (true);
-		inferredAssociationsTable.setHeaderVisible (true);
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.heightHint = 100;
-		inferredAssociationsTable.setLayoutData(data);
-		String[] titles = {"Source", "Property", "Target", "Aggregation kind"};
-		for (int i=0; i<titles.length; i++) {
-			TableColumn column = new TableColumn (inferredAssociationsTable, SWT.NONE);
-			column.setText (titles [i]);
-		}
-		for (AssociationCandidate candidate : classDiagramGenerator.getAssocationCandidates()) {
-			TableItem item = new TableItem (inferredAssociationsTable, SWT.NONE);
-			item.setText (0,candidate.getSchema().getName());
-			item.setText(1, candidate.getProperty().getName());
-			item.setText(2,candidate.getTargetSchema().getName());
-			item.setText(3,candidate.getAggregationKind().getLiteral());
-			item.setData(candidate);
-		}
-		for (int i=0; i<titles.length; i++) {
-			inferredAssociationsTable.getColumn(i).pack();
-		}
-		final TableEditor editor = new TableEditor(inferredAssociationsTable);
-		editor.horizontalAlignment = SWT.LEFT;
-		editor.grabHorizontal = true;
-		editor.grabVertical = true;
-		editor.minimumWidth = 50;
-		final int EDITABLECOLUMN = 3;
-
-		inferredAssociationsTable.addSelectionListener(widgetSelectedAdapter(e -> {
-				Control oldEditor = editor.getEditor();
-				if (oldEditor != null)
-					oldEditor.dispose();
-
-				// Identify the selected row
-				TableItem item = (TableItem) e.item;
-				if (item == null)
-					return;
-
-				Combo combo = new Combo (inferredAssociationsTable, SWT.READ_ONLY);
-				combo.setItems("None", "Shared", "Composite");
-				combo.select(((AssociationCandidate)item.getData()).getAggregationKind().getValue());
-				
-				combo.addListener (SWT.Modify, ev -> {
-					System.out.println(combo.getSelectionIndex());
-					TableItem[] selectedItems = inferredAssociationsTable.getSelection();
-					AssociationCandidate associationCandidate = (AssociationCandidate) selectedItems[0].getData();
-					associationCandidate.setAggregationKind(associationCandidate.getAggregationKindByValue(combo.getSelectionIndex()));
-					selectedItems[0].setText(3,associationCandidate.getAggregationKind().getLiteral());
-					
-				});
-				
-				combo.setFocus();
-				editor.setEditor(combo, item, EDITABLECOLUMN);
-			}));
-		
-		Menu menu = new Menu (container.getShell(), SWT.POP_UP);
-		inferredAssociationsTable.setMenu (menu);
-		MenuItem item = new MenuItem (menu, SWT.PUSH);
-		item.setText ("Delete Selection");
-		item.addListener (SWT.Selection, event -> { 
-		TableItem[] selectedItems =inferredAssociationsTable.getSelection();
-		
-		for(int i = 0; i< selectedItems.length; i++)
-			classDiagramGenerator.getAssocationCandidates().remove(selectedItems[i].getData());
-		inferredAssociationsTable.remove (inferredAssociationsTable.getSelectionIndices ());
-		});
-		
-
-	
-	
+		  
 		
         setPageComplete(true);
         getWizard().getContainer().updateButtons();
 
 		
 	}
+	private void createTopViewer(Composite parent) {
+		topViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+                | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        createColumns(parent, topViewer);
+        final Table table = topViewer.getTable();
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+
+        topViewer.setContentProvider(new ArrayContentProvider());
+        // Get the content for the viewer, setInput will call getElements in the
+        // contentProvider
+        topViewer.setInput(classDiagramGenerator.getAssociations());
+    
+        // Layout the viewer
+        GridData gridData = new GridData();
+        gridData.verticalAlignment = GridData.FILL;
+        gridData.horizontalSpan = 2;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        topViewer.getControl().setLayoutData(gridData);
+    }
+
+	private void createBottomViewer(Composite parent) {
+		bottomViewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
+                | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.BORDER);
+        createColumns(parent, bottomViewer);
+        final Table table = bottomViewer.getTable();
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+
+        bottomViewer.setContentProvider(new ArrayContentProvider());
+        // Get the content for the viewer, setInput will call getElements in the
+        // contentProvider
+        bottomViewer.setInput(classDiagramGenerator.getAssociationCandidates());
+    
+        // Layout the viewer
+        GridData gridData = new GridData();
+        gridData.verticalAlignment = GridData.FILL;
+        gridData.horizontalSpan = 2;
+        gridData.grabExcessHorizontalSpace = true;
+        gridData.grabExcessVerticalSpace = true;
+        gridData.horizontalAlignment = GridData.FILL;
+        bottomViewer.getControl().setLayoutData(gridData);
+    }
+	 private void createColumns(final Composite parent, final TableViewer viewer) {
+	        String[] titles = { "Source", "Property", "Target","Cardinality","Aggregation Kind", "Target property"};
+	        int[] bounds = { 100, 100, 100,100,100,100 };
+
+
+	        TableViewerColumn col = createTableViewerColumn(titles[0], bounds[0], viewer, 0);
+	        col.setLabelProvider(new CellLabelProvider() {
+	            @Override
+	            public void update(ViewerCell cell) {
+	            	AssociationCandidate a = (AssociationCandidate) cell.getElement();
+	              cell.setText(a.getSourceSchema().getName());
+	            }
+	        });
+
+	        col = createTableViewerColumn(titles[1], bounds[1], viewer, 1);
+	        col.setLabelProvider(new CellLabelProvider() {
+	            @Override
+	            public void update(ViewerCell cell) {
+	            	AssociationCandidate a = (AssociationCandidate) cell.getElement();
+	              cell.setText(a.getSourceProperty().getName());
+	            }
+	        });
+
+	        col = createTableViewerColumn(titles[2], bounds[2], viewer, 2);
+	        col.setLabelProvider(new CellLabelProvider() {
+	            @Override
+	            public void update(ViewerCell cell) {
+	            	AssociationCandidate a = (AssociationCandidate) cell.getElement();
+	              cell.setText(a.getTargetSchema().getName());
+	            }
+	        });
+	        
+	        
+	        col = createTableViewerColumn(titles[3], bounds[3], viewer, 3);
+	        col.setLabelProvider(new CellLabelProvider() {
+	            @Override
+	            public void update(ViewerCell cell) {
+	            	AssociationCandidate a = (AssociationCandidate) cell.getElement();
+	              cell.setText(a.printCardinality());
+	            }
+	        });
+	        
+	        col = createTableViewerColumn(titles[4], bounds[4], viewer, 4);
+	        col.setLabelProvider(new CellLabelProvider() {
+	            @Override
+	            public void update(ViewerCell cell) {
+	            	AssociationCandidate a = (AssociationCandidate) cell.getElement();
+	              cell.setText(a.getAggregationKind().getLiteral());
+	            }
+	        });
+	        col.setEditingSupport(new AggregationKindEditingSupport(viewer));
+	        
+	        col = createTableViewerColumn(titles[5], bounds[5], viewer, 5);
+	        col.setLabelProvider(new CellLabelProvider() {
+	            @Override
+	            public void update(ViewerCell cell) {
+	            	AssociationCandidate a = (AssociationCandidate) cell.getElement();
+	              cell.setText((a.getTargetProperty()!=null)?a.getTargetProperty().getName():"");
+	            }
+	        });
+	        col.setEditingSupport(new TargetPropertyEditingSupport(viewer));
+
+
+
+	       
+	    }
+
+	 private TableViewerColumn createTableViewerColumn(String title, int bound, TableViewer viewer, final int colNumber) {
+	        final TableViewerColumn viewerColumn = new TableViewerColumn(viewer,
+	                SWT.NONE);
+	        final TableColumn column = viewerColumn.getColumn();
+	        column.setText(title);
+	        column.setWidth(bound);
+	        column.setResizable(true);
+	        column.setMoveable(true);
+	        return viewerColumn;
+
+	    }
 	
 	@Override
 	public boolean isCurrentPage() {
