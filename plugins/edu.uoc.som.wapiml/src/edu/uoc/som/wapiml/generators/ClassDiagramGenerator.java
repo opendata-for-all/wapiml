@@ -242,12 +242,12 @@ public class ClassDiagramGenerator implements Serializable {
 						OpenAPIProfileUtils.applyExternalDocsStereotype(clazz, definition.getValue().getExternalDocs());
 				}
 				schemaMaps.put(definition.getValue(), clazz);
-				addProperties(types, definition.getValue(), definition.getKey(), clazz, applyProfile);
+				addProperties(types, definition.getValue(), definition.getKey(), clazz);
 				if (!definition.getValue().getAllOf().isEmpty()) {
 					for (Schema allOfItem : definition.getValue().getAllOf()) {
 						if (allOfItem.getDeclaringContext() != null
 								&& allOfItem.getDeclaringContext().equals(definition.getValue())) {
-							addProperties(types, allOfItem, definition.getKey(), clazz, applyProfile);
+							addProperties(types, allOfItem, definition.getKey(), clazz);
 						}
 					}
 				}
@@ -281,7 +281,7 @@ public class ClassDiagramGenerator implements Serializable {
 					if (OpenAPIUtils.isPrimitive(additionalPropertiesSchema)) {
 						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN),
 								"additionalProperties", getUMLType(types, additionalPropertiesSchema.getType(),
-										additionalPropertiesSchema.getFormat(), applyProfile));
+										additionalPropertiesSchema.getFormat()));
 					}
 					if (OpenAPIUtils.isObject(additionalPropertiesSchema)) {
 						Class referencedClass = schemaMaps.get(additionalPropertiesSchema);
@@ -294,7 +294,7 @@ public class ClassDiagramGenerator implements Serializable {
 		}
 		// resolve associations
 		for (AssociationCandidate associationCandidate : associations) {
-			Association association = createAssociation(associationCandidate, applyProfile);
+			Association association = createAssociation(associationCandidate);
 			package_.getPackagedElements().add(association);
 			if (applyProfile) {
 				OpenAPIProfileUtils.applySerializationStereotype(association, true);
@@ -392,17 +392,16 @@ public class ClassDiagramGenerator implements Serializable {
 							umlParameter.setUpper(-1);
 						if (!parameter.getItems().getEnum().isEmpty())
 							umlParameter.setType(getOrCreateEnumeration(parameter.getItems().getEnum(),
-									clazz.getName() + StringUtils.capitalize(parameter.getName()), types,
-									applyProfile));
+									clazz.getName() + StringUtils.capitalize(parameter.getName()), types));
 						else
 							umlParameter.setType(getUMLType(types, parameter.getItems().getType(),
-									parameter.getItems().getFormat(), applyProfile));
+									parameter.getItems().getFormat()));
 					} else if (!parameter.getEnum().isEmpty())
 						umlParameter.setType(getOrCreateEnumeration(parameter.getEnum(),
-								clazz.getName() + StringUtils.capitalize(parameter.getName()), types, applyProfile));
+								clazz.getName() + StringUtils.capitalize(parameter.getName()), types));
 					else
 						umlParameter
-								.setType(getUMLType(types, parameter.getType(), parameter.getFormat(), applyProfile));
+								.setType(getUMLType(types, parameter.getType(), parameter.getFormat()));
 					if (parameter.getDefault() != null) {
 						umlParameter.setDefault(parameter.getDefault());
 					}
@@ -446,19 +445,19 @@ public class ClassDiagramGenerator implements Serializable {
 
 		}
 		if (discoverAssociations)
-			refine(package_, applyProfile);
+			refine(package_);
 
 		return umlModel;
 
 	}
 
-	private void refine(Package package_, boolean applyProfile) {
+	private void refine(Package package_) {
 		List<Association> associations = new ArrayList<Association>();
 		List<Property> propertiesToRemore = new ArrayList<Property>();
 
 		for (AssociationCandidate associationCandidate : associationCandidates) {
 			Property properyToRemove = propertiesMaps.get(associationCandidate.getSourceProperty());
-			associations.add(createAssociation(associationCandidate, applyProfile));
+			associations.add(createAssociation(associationCandidate));
 			propertiesToRemore.add(properyToRemove);
 		}
 
@@ -474,7 +473,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
-	private Association createAssociation(AssociationCandidate associationCandidate, boolean applyProfile) {
+	private Association createAssociation(AssociationCandidate associationCandidate) {
 		Association association = umlFactory.createAssociation();
 		association.setName(associationCandidate.getSourceSchema().getName() + "_"
 				+ associationCandidate.getSourceProperty().getName());
@@ -496,7 +495,7 @@ public class ClassDiagramGenerator implements Serializable {
 		return association;
 	}
 
-	private void addProperties(Package types, Schema schema, String definitionName, Class clazz, boolean applyProfile) {
+	private void addProperties(Package types, Schema schema, String definitionName, Class clazz) {
 		for (edu.uoc.som.openapi2.Property openAPIproperty : schema.getProperties()) {
 			if (OpenAPIUtils.isPrimitive(openAPIproperty.getSchema())) {
 				Property umlProperty = umlFactory.createProperty();
@@ -540,11 +539,10 @@ public class ClassDiagramGenerator implements Serializable {
 				if (!propertySchema.getType().equals(JSONDataType.ARRAY)) {
 					if (!propertySchema.getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(propertySchema.getEnum(),
-								clazz.getName() + StringUtils.capitalize(openAPIproperty.getName()), types,
-								applyProfile));
+								clazz.getName() + StringUtils.capitalize(openAPIproperty.getName()), types));
 					else
 						umlProperty.setType(
-								getUMLType(types, propertySchema.getType(), propertySchema.getFormat(), applyProfile));
+								getUMLType(types, propertySchema.getType(), propertySchema.getFormat()));
 					umlProperty.setLower(0);
 				} else {
 
@@ -555,11 +553,10 @@ public class ClassDiagramGenerator implements Serializable {
 						umlProperty.setLower(0);
 					if (!propertySchema.getItems().getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(propertySchema.getItems().getEnum(),
-								clazz.getName() + StringUtils.capitalize(openAPIproperty.getName()), types,
-								applyProfile));
+								clazz.getName() + StringUtils.capitalize(openAPIproperty.getName()), types));
 					else
 						umlProperty.setType(getUMLType(types, propertySchema.getItems().getType(),
-								propertySchema.getItems().getFormat(), applyProfile));
+								propertySchema.getItems().getFormat()));
 
 				}
 				clazz.getOwnedAttributes().add(umlProperty);
@@ -572,7 +569,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 	
 
-	private PrimitiveType getUMLType(Package types, JSONDataType jsonDataType, String format, boolean applyProfile) {
+	private PrimitiveType getUMLType(Package types, JSONDataType jsonDataType, String format) {
 		PrimitiveType type = null;
 		switch (jsonDataType) {
 
@@ -654,8 +651,7 @@ public class ClassDiagramGenerator implements Serializable {
 		}
 	}
 
-	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Package types,
-			boolean applyProfile) {
+	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Package types) {
 
 		Type type = types.getOwnedType(name, false, UMLPackage.eINSTANCE.getEnumeration(), false);
 		if (type != null)
