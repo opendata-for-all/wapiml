@@ -176,7 +176,7 @@ public class ClassDiagramGenerator implements Serializable {
 					String propertyName = property.getName();
 					String targetSchemaName = target.getName();
 					// this should be transformed to a regular expression in the future
-					if (propertyName != null && targetSchemaName != null && isPrimitive(property.getSchema())
+					if (propertyName != null && targetSchemaName != null && OpenAPIUtils.isPrimitive(property.getSchema())
 							&& (propertyName.equalsIgnoreCase(targetSchemaName)
 									|| propertyName.equalsIgnoreCase(targetSchemaName + "id")
 									|| propertyName.equalsIgnoreCase(targetSchemaName + "_id")
@@ -273,7 +273,7 @@ public class ClassDiagramGenerator implements Serializable {
 				if (definition.getValue().getAdditonalProperties() != null) {
 					Class clazz = schemaMaps.get(definition.getValue());
 					Schema additionalPropertiesSchema = definition.getValue().getAdditonalProperties();
-					if (isPrimitive(additionalPropertiesSchema)) {
+					if (OpenAPIUtils.isPrimitive(additionalPropertiesSchema)) {
 						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN),
 								"additionalProperties", getUMLType(types, additionalPropertiesSchema.getType(),
 										additionalPropertiesSchema.getFormat(), applyProfile));
@@ -493,7 +493,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 	private void addProperties(Package types, Schema schema, String definitionName, Class clazz, boolean applyProfile) {
 		for (edu.uoc.som.openapi2.Property openAPIproperty : schema.getProperties()) {
-			if (isPrimitive(openAPIproperty.getSchema())) {
+			if (OpenAPIUtils.isPrimitive(openAPIproperty.getSchema())) {
 				Property umlProperty = umlFactory.createProperty();
 				propertiesMaps.put(openAPIproperty, umlProperty);
 				Schema propertySchema = openAPIproperty.getSchema();
@@ -565,17 +565,7 @@ public class ClassDiagramGenerator implements Serializable {
 		}
 	}
 
-	private boolean isPrimitive(Schema property) {
-		if (property.getType().equals(JSONDataType.BOOLEAN) || property.getType().equals(JSONDataType.INTEGER)
-				|| property.getType().equals(JSONDataType.NUMBER) || property.getType().equals(JSONDataType.STRING))
-			return true;
-		if (property.getType().equals(JSONDataType.ARRAY) && (property.getItems().getType().equals(JSONDataType.BOOLEAN)
-				|| property.getItems().getType().equals(JSONDataType.INTEGER)
-				|| property.getItems().getType().equals(JSONDataType.NUMBER)
-				|| property.getItems().getType().equals(JSONDataType.STRING)))
-			return true;
-		return false;
-	}
+	
 
 	private PrimitiveType getUMLType(Package types, JSONDataType jsonDataType, String format, boolean applyProfile) {
 		PrimitiveType type = null;
