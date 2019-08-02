@@ -9,6 +9,7 @@ import edu.uoc.som.openapi2.JSONDataType;
 import edu.uoc.som.openapi2.Operation;
 import edu.uoc.som.openapi2.Parameter;
 import edu.uoc.som.openapi2.ParameterLocation;
+import edu.uoc.som.openapi2.Property;
 import edu.uoc.som.openapi2.Response;
 import edu.uoc.som.openapi2.Schema;
 import edu.uoc.som.openapi2.SecurityScheme;
@@ -172,5 +173,45 @@ public class OpenAPIUtils {
 
 		return false;
 	}
+	public static boolean isPrimitive(Schema property) {
+		if (property.getType().equals(JSONDataType.BOOLEAN) || property.getType().equals(JSONDataType.INTEGER)
+				|| property.getType().equals(JSONDataType.NUMBER) || property.getType().equals(JSONDataType.STRING))
+			return true;
+		if (property.getType().equals(JSONDataType.ARRAY) && (property.getItems().getType().equals(JSONDataType.BOOLEAN)
+				|| property.getItems().getType().equals(JSONDataType.INTEGER)
+				|| property.getItems().getType().equals(JSONDataType.NUMBER)
+				|| property.getItems().getType().equals(JSONDataType.STRING)))
+			return true;
+		return false;
+	}
+	public static boolean isSingleValuedPrimitive(Schema schema) {
+		if (schema.getType().equals(JSONDataType.BOOLEAN) || schema.getType().equals(JSONDataType.INTEGER)
+				|| schema.getType().equals(JSONDataType.NUMBER) || schema.getType().equals(JSONDataType.STRING))
+			return true;
+		return false;
+	}
+	public static boolean isMultiValuedPrimitive(Schema schema) {
+		if (schema.getType().equals(JSONDataType.ARRAY) && (schema.getItems().getType().equals(JSONDataType.BOOLEAN)
+				|| schema.getItems().getType().equals(JSONDataType.INTEGER)
+				|| schema.getItems().getType().equals(JSONDataType.NUMBER)
+				|| schema.getItems().getType().equals(JSONDataType.STRING)))
+			return true;
+		return false;
+	}
+	public static List<Property> getSingleValuedPrimitiveProperties(Schema schema){
+		List<Property> properties = new ArrayList<Property>();
+		for(Property property: schema.getProperties()) 
+			if(isSingleValuedPrimitive(property.getSchema()))
+				properties.add(property);
+			return properties;	
+	}
 	
+	public static List<Property> getMultiValuedPrimitiveProperties(Schema schema){
+		List<Property> properties = new ArrayList<Property>();
+		for(Property property: schema.getProperties()) 
+			if(isMultiValuedPrimitive(property.getSchema()))
+				properties.add(property);
+			return properties;	
+		
+	}
 }
