@@ -27,24 +27,7 @@ public class TargetPropertyEditingSupport extends EditingSupport {
 	protected CellEditor getCellEditor(Object element) {
 
 		AssociationCandidate associationCandidate = (AssociationCandidate) element;
-		List<Property> properties = null;
-		if (associationCandidate.getUpperBound() == -1 || associationCandidate.getUpperBound() > 1) {
-			properties = OpenAPIUtils.getMultiValuedPrimitiveProperties(associationCandidate.getTargetSchema());// We
-																												// need
-																												// to
-																												// also
-																												// check
-																												// the
-																												// type
-		} else {
-			properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema()); // we
-																													// need
-																													// to
-																													// also
-																													// check
-																													// the
-																													// type
-		}
+		List<Property> properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema());
 		List<String> propertyNames = properties.stream().map(Property::getName).collect(Collectors.toList());
 		ComboBoxCellEditor comboBoxCellEditor = new ComboBoxCellEditor(viewer.getTable(),
 				propertyNames.toArray(new String[propertyNames.size()]), SWT.READ_ONLY);
@@ -60,24 +43,14 @@ public class TargetPropertyEditingSupport extends EditingSupport {
 	@Override
 	protected Object getValue(Object element) {
 		AssociationCandidate associationCandidate = (AssociationCandidate) element;
-		List<Property> properties = null;
-		if (associationCandidate.getUpperBound() == -1 || associationCandidate.getUpperBound() > 1) {
-			properties = OpenAPIUtils.getMultiValuedPrimitiveProperties(associationCandidate.getTargetSchema());
-		} else {
-			properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema());
-		}
+		List<Property> properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema());
 		return properties.indexOf(associationCandidate.getTargetProperty());
 	}
 
 	@Override
 	protected void setValue(Object element, Object value) {
 		AssociationCandidate associationCandidate = (AssociationCandidate) element;
-		List<Property> properties = null;
-		if (associationCandidate.getUpperBound() == -1 || associationCandidate.getUpperBound() > 1) {
-			properties = OpenAPIUtils.getMultiValuedPrimitiveProperties(associationCandidate.getTargetSchema());
-		} else {
-			properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema());
-		}
+		List<Property> properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema());
 		if ((Integer) value != -1 && !properties.isEmpty()) {
 			associationCandidate.setTargetProperty(properties.get((Integer) value));
 		}
