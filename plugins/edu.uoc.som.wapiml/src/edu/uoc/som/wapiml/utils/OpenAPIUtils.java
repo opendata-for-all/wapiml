@@ -152,6 +152,25 @@ public class OpenAPIUtils {
 		return "undefined";
 	
 	}
-	
+	public static boolean isObject(Schema schema) {
+		if (schema.getType().equals(JSONDataType.OBJECT))
+			return true;
+
+		if (!schema.getProperties().isEmpty())
+			return true;
+
+		if (!schema.getAllOf().isEmpty())
+			return true;
+
+		return false;
+	}
+
+	public static boolean isArrayOfObjects(Schema schema) {
+
+		if (schema.getType().equals(JSONDataType.ARRAY) && isObject(schema.getItems()))
+			return true;
+
+		return false;
+	}
 	
 }
