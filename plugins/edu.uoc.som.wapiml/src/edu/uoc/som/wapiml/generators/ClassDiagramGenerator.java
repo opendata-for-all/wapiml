@@ -62,14 +62,19 @@ public class ClassDiagramGenerator implements Serializable {
 	private Model umlModel;
 	private String modelName;
 	private API openAPIModel;
+	private boolean applyProfile;
+	private boolean discoverAssociations;
 	private List<AssociationCandidate> associationCandidates;
 	private List<AssociationCandidate> associations;
 	private Map<edu.uoc.som.openapi2.Property, Property> propertiesMaps = new HashMap<>();
 	private Map<Schema, Class> schemaMaps = new HashMap<>();
 
-	public ClassDiagramGenerator(API OpenAPIModel, String modelName) throws IOException {
+	public ClassDiagramGenerator(API OpenAPIModel, String modelName, boolean applyProfile, boolean discoverAssociations) throws IOException {
 		this.openAPIModel = OpenAPIModel;
 		this.modelName = modelName;
+		this.applyProfile = applyProfile;
+		this.discoverAssociations = discoverAssociations;
+		
 
 		umlFactory = UMLFactory.eINSTANCE;
 		resourceSet = initUMLResourceSet();
@@ -181,7 +186,7 @@ public class ClassDiagramGenerator implements Serializable {
 									|| propertyName.equalsIgnoreCase(targetSchemaName + "id")
 									|| propertyName.equalsIgnoreCase(targetSchemaName + "_id")
 									|| propertyName.equalsIgnoreCase(targetSchemaName + "-id"))) {
-						AssociationCandidate candidate = new AssociationCandidate(source, property, target, null, 0, 1,
+						AssociationCandidate candidate = new AssociationCandidate(source, property, target, target.getPropertyByName("id"), 0, 1,
 								AggregationKind.SHARED_LITERAL);
 						assocationCandidates.add(candidate);
 					}
@@ -195,7 +200,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 	
 
-	public Model generateClassDiagramFromOpenAPI(boolean applyProfile, boolean discoverAssociations)
+	public Model generateClassDiagramFromOpenAPI()
 			throws IOException {
 
 		if (applyProfile) {
@@ -708,5 +713,22 @@ public class ClassDiagramGenerator implements Serializable {
 	public void setAssociations(List<AssociationCandidate> associations) {
 		this.associations = associations;
 	}
+
+	public boolean isApplyProfile() {
+		return applyProfile;
+	}
+
+	public void setApplyProfile(boolean applyProfile) {
+		this.applyProfile = applyProfile;
+	}
+
+	public boolean isDiscoverAssociations() {
+		return discoverAssociations;
+	}
+
+	public void setDiscoverAssociations(boolean discoverAssociations) {
+		this.discoverAssociations = discoverAssociations;
+	}
+	
 
 }
