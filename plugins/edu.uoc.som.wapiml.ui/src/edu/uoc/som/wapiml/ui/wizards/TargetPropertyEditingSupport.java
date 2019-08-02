@@ -8,49 +8,81 @@ import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.uml2.uml.AggregationKind;
 
 import edu.uoc.som.openapi2.Property;
 import edu.uoc.som.wapiml.model.AssociationCandidate;
+import edu.uoc.som.wapiml.utils.OpenAPIUtils;
 
-public class TargetPropertyEditingSupport extends EditingSupport{
-	
+public class TargetPropertyEditingSupport extends EditingSupport {
 
 	private final TableViewer viewer;
-	
-	public TargetPropertyEditingSupport(TableViewer  viewer) {
+
+	public TargetPropertyEditingSupport(TableViewer viewer) {
 		super(viewer);
 		this.viewer = viewer;
 	}
 
 	@Override
 	protected CellEditor getCellEditor(Object element) {
-		
-		
+
 		AssociationCandidate associationCandidate = (AssociationCandidate) element;
-		List<String> propertyNames = associationCandidate.getTargetSchema().getProperties().stream().map(Property::getName).collect(Collectors.toList());
-		ComboBoxCellEditor comboBoxCellEditor =	new ComboBoxCellEditor(viewer.getTable(),propertyNames.toArray(new String[propertyNames.size()]), SWT.READ_ONLY);
+		List<Property> properties = null;
+		if (associationCandidate.getUpperBound() == -1 || associationCandidate.getUpperBound() > 1) {
+			properties = OpenAPIUtils.getMultiValuedPrimitiveProperties(associationCandidate.getTargetSchema());// We
+																												// need
+																												// to
+																												// also
+																												// check
+																												// the
+																												// type
+		} else {
+			properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema()); // we
+																													// need
+																													// to
+																													// also
+																													// check
+																													// the
+																													// type
+		}
+		List<String> propertyNames = properties.stream().map(Property::getName).collect(Collectors.toList());
+		ComboBoxCellEditor comboBoxCellEditor = new ComboBoxCellEditor(viewer.getTable(),
+				propertyNames.toArray(new String[propertyNames.size()]), SWT.READ_ONLY);
 		return comboBoxCellEditor;
 	}
 
 	@Override
 	protected boolean canEdit(Object element) {
-		return (((AssociationCandidate)element).getUpperBound() == 1)?true:false;
+		return (((AssociationCandidate) element).getAggregationKind().equals(AggregationKind.COMPOSITE_LITERAL)) ? false
+				: true;
 	}
 
 	@Override
 	protected Object getValue(Object element) {
-	
 		AssociationCandidate associationCandidate = (AssociationCandidate) element;
-		return associationCandidate.getTargetSchema().getProperties().indexOf(associationCandidate.getTargetProperty());
+		List<Property> properties = null;
+		if (associationCandidate.getUpperBound() == -1 || associationCandidate.getUpperBound() > 1) {
+			properties = OpenAPIUtils.getMultiValuedPrimitiveProperties(associationCandidate.getTargetSchema());
+		} else {
+			properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema());
+		}
+		return properties.indexOf(associationCandidate.getTargetProperty());
 	}
 
 	@Override
 	protected void setValue(Object element, Object value) {
 		AssociationCandidate associationCandidate = (AssociationCandidate) element;
-		associationCandidate.setTargetProperty(associationCandidate.getTargetSchema().getProperties().get((Integer) value));
+		List<Property> properties = null;
+		if (associationCandidate.getUpperBound() == -1 || associationCandidate.getUpperBound() > 1) {
+			properties = OpenAPIUtils.getMultiValuedPrimitiveProperties(associationCandidate.getTargetSchema());
+		} else {
+			properties = OpenAPIUtils.getSingleValuedPrimitiveProperties(associationCandidate.getTargetSchema());
+		}
+		if ((Integer) value != -1 && !properties.isEmpty()) {
+			associationCandidate.setTargetProperty(properties.get((Integer) value));
+		}
 		viewer.update(element, null);
-		
+
 	}
-	
 
 }
