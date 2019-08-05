@@ -298,6 +298,7 @@ public class ClassDiagramGenerator implements Serializable {
 			package_.getPackagedElements().add(association);
 			if (applyProfile) {
 				OpenAPIProfileUtils.applySerializationStereotype(association, true);
+				
 			}
 		}
 	
@@ -459,6 +460,9 @@ public class ClassDiagramGenerator implements Serializable {
 			Property properyToRemove = propertiesMaps.get(associationCandidate.getSourceProperty());
 			associations.add(createAssociation(associationCandidate));
 			propertiesToRemore.add(properyToRemove);
+			//we need to add isID to the target property.
+			if(associationCandidate.getTargetProperty()!=null)
+				OpenAPIProfileUtils.setAsId(propertiesMaps.get(associationCandidate.getTargetProperty()));
 		}
 
 		for (Association association : associations) {
