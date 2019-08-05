@@ -15,12 +15,9 @@ Require-Bundle: org.eclipse.uml2.uml,
  org.apache.log4j;bundle-version="1.2.15"
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: .,
- lib/json-schema-validator-2.2.6-lib.jar,
- lib/json-schema-validator-2.2.6.jar
+Bundle-ClassPath: .
 Export-Package: edu.uoc.som.wapiml.exception,
  edu.uoc.som.wapiml.generators,
  edu.uoc.som.wapiml.model,
- edu.uoc.som.wapiml.utils,
- edu.uoc.som.wapiml.validator
+ edu.uoc.som.wapiml.utils
 Bundle-Vendor: SOM Research Lab

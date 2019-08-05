@@ -20,10 +20,10 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
+import edu.uoc.som.openapi2.io.exception.OpenAPIValidationException;
 import edu.uoc.som.openapi2.io.model.SerializationFormat;
-import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
-import edu.uoc.som.wapiml.utils.Utils;
+import edu.uoc.som.wapiml.utils.IOUtils;
 
 public class ConvertToYaml extends AbstractHandler {
 
@@ -56,7 +56,7 @@ public class ConvertToYaml extends AbstractHandler {
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
 								File inputFile = new File(iFile.getLocation().toString());
-								Utils.convertAndSaveOpenAPIDefinition(inputFile, target.getLocation()
+								IOUtils.convertAndSaveOpenAPIDefinition(inputFile, target.getLocation()
 										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
 										.addFileExtension("yaml").toFile(),SerializationFormat.YAML);
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);

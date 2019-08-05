@@ -25,12 +25,12 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import edu.uoc.som.openapi2.API;
+import edu.uoc.som.openapi2.io.exception.OpenAPIValidationException;
 import edu.uoc.som.openapi2.io.model.SerializationFormat;
-import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
 import edu.uoc.som.wapiml.ui.wizards.GenerateClassDiagramWizard;
-import edu.uoc.som.wapiml.utils.Utils;
+import edu.uoc.som.wapiml.utils.IOUtils;
 
 public class ConvertToClassDiagramJSON extends AbstractHandler {
 
@@ -63,7 +63,7 @@ public class ConvertToClassDiagramJSON extends AbstractHandler {
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
 								File inputFile = new File(iFile.getLocation().toString());
-								API api = Utils.loadOpenAPIModel(inputFile,SerializationFormat.JSON);
+								API api = IOUtils.loadOpenAPIModel(inputFile,SerializationFormat.JSON);
 								ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(api, iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),true,true);
 								Display.getDefault().syncExec(new Runnable() {
 								    public void run() {
@@ -83,7 +83,7 @@ public class ConvertToClassDiagramJSON extends AbstractHandler {
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 
-					} catch (OpenAPIValidationException | ProcessingException e) {
+					} catch (OpenAPIValidationException e) {
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage());
 					} 
 					finally {
