@@ -25,7 +25,8 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import edu.uoc.som.openapi2.API;
-import edu.uoc.som.openapi2.io.exception.OpenAPIValidationException;
+import edu.uoc.som.openapi2.io.exceptions.OpenAPIProcessingException;
+import edu.uoc.som.openapi2.io.exceptions.OpenAPIValidationException;
 import edu.uoc.som.openapi2.io.model.SerializationFormat;
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
@@ -78,13 +79,11 @@ public class ConvertToClassDiagramJSON extends AbstractHandler {
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
-					} catch (IOException | CoreException e) {
+					} catch (IOException | CoreException | OpenAPIProcessingException | OpenAPIValidationException e) {
 						e.printStackTrace();
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 
-					} catch (OpenAPIValidationException e) {
-						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage());
 					} 
 					finally {
 						monitor.done();

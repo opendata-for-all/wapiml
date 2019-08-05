@@ -7,7 +7,7 @@ import java.io.IOException;
 import edu.uoc.som.openapi2.API;
 import edu.uoc.som.openapi2.io.ExporterBuilder;
 import edu.uoc.som.openapi2.io.OpenAPI2Importer;
-import edu.uoc.som.openapi2.io.exception.OpenAPIValidationException;
+import edu.uoc.som.openapi2.io.exceptions.OpenAPIValidationException;
 import edu.uoc.som.openapi2.io.model.SerializationFormat;
 import edu.uoc.som.wapiml.generators.OpenAPIModelGenerator;
 
