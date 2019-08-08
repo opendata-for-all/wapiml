@@ -7,6 +7,7 @@ import java.io.IOException;
 import edu.uoc.som.openapi2.API;
 import edu.uoc.som.openapi2.io.ExporterBuilder;
 import edu.uoc.som.openapi2.io.OpenAPI2Importer;
+import edu.uoc.som.openapi2.io.exceptions.OpenAPIProcessingException;
 import edu.uoc.som.openapi2.io.exceptions.OpenAPIValidationException;
 import edu.uoc.som.openapi2.io.model.SerializationFormat;
 import edu.uoc.som.wapiml.generators.OpenAPIModelGenerator;
@@ -14,7 +15,7 @@ import edu.uoc.som.wapiml.generators.OpenAPIModelGenerator;
 public class IOUtils {
 
 	public static API loadOpenAPIModel(File inputFile, SerializationFormat serializationFormat)
-			throws IOException, OpenAPIValidationException {
+			throws IOException, OpenAPIValidationException, OpenAPIProcessingException {
 		if (serializationFormat.equals(SerializationFormat.JSON))
 			return new OpenAPI2Importer().createOpenAPI2ModelFromFile(inputFile, SerializationFormat.JSON);
 		if (serializationFormat.equals(SerializationFormat.YAML))
