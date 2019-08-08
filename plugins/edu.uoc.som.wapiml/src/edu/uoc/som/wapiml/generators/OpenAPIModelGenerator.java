@@ -255,8 +255,20 @@ public class OpenAPIModelGenerator {
 						}
 						else {
 							Property mProperty = factory.createProperty();
-							mProperty.setName(firstEnd.getName());
+							mProperty.setName(secondEnd.getName());
 							Schema mSchema = factory.createSchema();
+							if (secondEnd.getUpper() == -1) {
+								Schema arraySchema = factory.createSchema();
+								arraySchema.setDeclaringContext(mProperty);
+								arraySchema.setType(edu.uoc.som.openapi2.JSONDataType.ARRAY);
+								arraySchema.setItems(mSchema);
+								mSchema = arraySchema;
+							}
+
+							if (secondEnd.getUpper() != -1 && secondEnd.getUpper() != 0 && secondEnd.getUpper() != 1)
+								mSchema.setMaxItems(secondEnd.getUpper());
+							if (secondEnd.getLower() != 0)
+								mSchema.setMinItems(secondEnd.getLower());
 							mSchema.setType(edu.uoc.som.openapi2.JSONDataType.INTEGER);
 							mProperty.setSchema(mSchema);
 							Schema schema = classMap.get(firstEnd.getType());

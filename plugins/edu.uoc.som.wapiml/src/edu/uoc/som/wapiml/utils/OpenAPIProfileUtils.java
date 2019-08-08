@@ -233,7 +233,7 @@ public class OpenAPIProfileUtils {
 			parameter.applyStereotype(apiResponseStereotype);
 		UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "description", response.getValue().getDescription());
 		if (response.getKey().equals("default")) {
-			UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "default", response.getKey());
+			UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "default", true);
 		} else {
 			if (NumberUtils.isNumber(response.getKey()))
 				UMLUtil.setTaggedValue(parameter, apiResponseStereotype, "code", response.getKey());
@@ -606,6 +606,19 @@ public class OpenAPIProfileUtils {
 		return null;
 	}
 
+	public static List<Property> getId(Class clazz){
+		List<Property> ids = new ArrayList<Property>();
+		for (org.eclipse.uml2.uml.Property attribute : clazz.getAllAttributes()) {
+			if (attribute.isStereotypeApplied(attribute.getApplicableStereotype(OpenAPIProfileUtils.API_PROPERTY_QN))) {
+				Boolean isID = (Boolean) UMLUtil.getTaggedValue(attribute, OpenAPIProfileUtils.API_PROPERTY_QN, "isID");
+				if(isID != null && isID.equals(Boolean.TRUE)){
+					ids.add(attribute);
+				}
+				
+			}
+		}
+		return ids;
+	}
 	public static edu.uoc.som.openapi2.CollectionFormat transformCollectionFormat(CollectionFormat from) {
 		switch (from) {
 		case CSV:
