@@ -2,21 +2,20 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WAPIml UI
 Bundle-SymbolicName: edu.uoc.som.wapiml.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: edu.uoc.som.wapiml.ui.WAPImlUIPlugin
 Bundle-Vendor: SOM Research Lab
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
+Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.uml2.uml,
  org.eclipse.uml2.uml.resources,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.emf.ecore,
- edu.uoc.som.wapiml;bundle-version="1.0.0",
- edu.uoc.som.openapi2.io
+ edu.uoc.som.wapiml,
+ org.eclipse.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .,
- lib/json-schema-validator-2.2.6-lib.jar,
- lib/json-schema-validator-2.2.6.jar
-Import-Package: edu.uoc.som.openapi2
+Bundle-ClassPath: .
+Export-Package: edu.uoc.som.wapiml.ui,
+ edu.uoc.som.wapiml.ui.handlers,
+ edu.uoc.som.wapiml.ui.wizards
