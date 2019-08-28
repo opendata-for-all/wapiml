@@ -2,7 +2,7 @@
 <feature
       id="edu.uoc.som.wapiml.feature"
       label="WAPIml"
-      version="1.0.0.qualifier"
+      version="1.1.0.qualifier"
       provider-name="SOM Research Lab">
 
    <description url="https://github.com/SOM-Research/WAPIml">
@@ -105,17 +105,17 @@ You may add additional accurate notices of copyright ownership.
       <import plugin="org.eclipse.uml2.uml.resources"/>
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.eclipse.emf.ecore"/>
-      <import plugin="edu.uoc.som.openapi2.io" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="edu.uoc.som.openapi2.mm" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="edu.uoc.som.openapi2.profile" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="edu.uoc.som.openapi2.io"/>
+      <import plugin="edu.uoc.som.openapi2.mm"/>
+      <import plugin="edu.uoc.som.openapi2.profile"/>
       <import plugin="com.google.gson"/>
       <import plugin="org.apache.commons.lang3" version="3.1.0" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.io" version="2.6.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.eclipse.core.resources"/>
-      <import plugin="edu.uoc.som.wapiml" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="edu.uoc.som.wapiml"/>
+      <import plugin="org.eclipse.ui"/>
    </requires>
 
    <plugin
