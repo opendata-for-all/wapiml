@@ -23,7 +23,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
 import edu.uoc.som.openapi2.API;
 import edu.uoc.som.openapi2.io.exceptions.OpenAPIProcessingException;
 import edu.uoc.som.openapi2.io.exceptions.OpenAPIValidationException;
