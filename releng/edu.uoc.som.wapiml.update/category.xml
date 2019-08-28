@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature id="edu.uoc.som.wapiml.feature">
+      <category name="WAPIml"/>
+   </feature>
+   <category-def name="WAPIml" label="WAPIml"/>
+   <repository-reference location="https://https://https://opendata-for-all.github.io/openapi-metamodel/openapi2/updates/" enabled="true" />
+</site>
