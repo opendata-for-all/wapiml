@@ -2,28 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Test
 Bundle-SymbolicName: edu.uoc.som.wapiml.test
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.1.0.qualifier
 Require-Bundle: org.eclipse.core.runtime,
  org.junit,
- org.junit.jupiter.api,
- org.junit.jupiter.engine,
- org.junit.jupiter.migrationsupport,
- org.junit.jupiter.params,
- org.junit.platform.commons,
- org.junit.platform.engine,
- org.junit.platform.launcher,
- org.junit.platform.runner,
- org.junit.platform.suite.api,
- org.hamcrest.core,
- org.opentest4j,
- org.apiguardian,
  org.eclipse.uml2.uml,
  org.eclipse.uml2.uml.resources,
- edu.uoc.som.wapiml;bundle-version="1.0.0"
+ edu.uoc.som.wapiml
 Automatic-Module-Name: edu.uoc.som.wapiml.test
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: libs/json-schema-validator-2.2.6-lib.jar,
- libs/json-schema-validator-2.2.6.jar,
- libs/log4j-api-2.7.jar,
- libs/log4j-core-2.7.jar,
- .
