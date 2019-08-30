@@ -69,8 +69,8 @@ public class ClassDiagramGenerator implements Serializable {
 	private Map<edu.uoc.som.openapi2.Property, Property> propertiesMaps = new HashMap<>();
 	private Map<Schema, Class> schemaMaps = new HashMap<>();
 
-	public ClassDiagramGenerator(API OpenAPIModel, String modelName, boolean applyProfile, boolean discoverAssociations) throws IOException {
-		this.openAPIModel = OpenAPIModel;
+	public ClassDiagramGenerator(API openAPIModel, String modelName, boolean applyProfile, boolean discoverAssociations) throws IOException {
+		this.openAPIModel = openAPIModel;
 		this.modelName = modelName;
 		this.applyProfile = applyProfile;
 		this.discoverAssociations = discoverAssociations;
