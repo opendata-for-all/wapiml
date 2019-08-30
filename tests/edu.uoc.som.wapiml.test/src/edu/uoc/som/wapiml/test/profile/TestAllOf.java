@@ -1,36 +1,40 @@
 package edu.uoc.som.wapiml.test.profile;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.IOException;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
+import org.junit.Test;
 
-import edu.uoc.som.wapiml.facade.WAPImlFacade;
+import edu.uoc.som.openapi2.API;
+import edu.uoc.som.openapi2.io.OpenAPI2Builder;
+import edu.uoc.som.openapi2.io.model.SerializationFormat;
+import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 
 
-@DisplayName("Test allOf - profile")
-class TestAllOf {
+
+public class TestAllOf {
 
 	
-	@DisplayName("Test allOf")
 	@Test
-	void testGenerateAndSaveClassDiagramURI() {
+	public void testGenerateAndSaveClassDiagram() {
 		
-	        File input = new File("inputs/allOf.json");
-	        File output = new File("outputs/profile/allOf.uml");
+	       
 	        
 	        try {
-	        	WAPImlFacade openAPItoUMLFacade = new WAPImlFacade();
-	        	openAPItoUMLFacade.generateAndSaveClassDiagram(input, "allOf", output, true, true);
-			} catch (IOException | ProcessingException e) {
-				fail(e.getLocalizedMessage());
+	        	File input = new File("resources/inputs/allOf.json");
+	 	        File output = File.createTempFile("allOf", ".uml");
+	        	API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
+	        	ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "allOf", true, true);
+	        	classDiagramGenerator.generateClassDiagramFromOpenAPI();
+	        	classDiagramGenerator.saveClassDiagram(output);}
+	        	catch (Exception e) {
+	        		fail(e.getLocalizedMessage());
+				}
 			}
 	       
 	}
 	
 
-}
+

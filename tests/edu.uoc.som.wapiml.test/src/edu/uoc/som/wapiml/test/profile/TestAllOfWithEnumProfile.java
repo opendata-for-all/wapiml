@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test.simple;
+package edu.uoc.som.wapiml.test.profile;
 
 
 import static org.junit.Assert.assertNotNull;
@@ -17,7 +17,7 @@ import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 
 
 
-public class TestAllOfWithEnum {
+public class TestAllOfWithEnumProfile {
 
 
 	
@@ -29,7 +29,7 @@ public class TestAllOfWithEnum {
 	        try {
 	        	File input = new File("resources/inputs/allOf.json");
 	        	API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-	        	ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "allOf", false, true);
+	        	ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "allOf", true, true);
 				Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 				Enumeration cantHuntingSkill  = (Enumeration)((Package) model.getPackagedElements().get(1)).getOwnedType("CatHuntingSkill");
 				assertNotNull(cantHuntingSkill);

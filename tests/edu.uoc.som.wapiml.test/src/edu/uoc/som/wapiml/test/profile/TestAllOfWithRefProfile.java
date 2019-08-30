@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test.simple;
+package edu.uoc.som.wapiml.test.profile;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -14,7 +14,7 @@ import edu.uoc.som.openapi2.io.OpenAPI2Builder;
 import edu.uoc.som.openapi2.io.model.SerializationFormat;
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 
-public class TestAllOfWithRef {
+public class TestAllOfWithRefProfile {
 
 	@Test
 	public void testGenerateAndSaveClassDiagramURI() {
@@ -22,7 +22,7 @@ public class TestAllOfWithRef {
 		try {
 			File input = new File("resources/inputs/allOf-with-ref.json");
 			API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "allOf-with-ref", false,
+			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "allOf-with-ref", true,
 					true);
 			Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 			Class fish = (Class) ((Package) model.getPackagedElements().get(0)).getOwnedMember("Fish");
