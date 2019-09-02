@@ -6,20 +6,18 @@ Require-Bundle: org.eclipse.uml2.uml,
  org.eclipse.uml2.uml.resources,
  org.eclipse.emf.ecore.xmi,
  org.eclipse.emf.ecore,
- edu.uoc.som.openapi,
- edu.uoc.som.openapi.io,
- edu.uoc.som.openapi.profile
-Bundle-Version: 1.0.0.qualifier
+ edu.uoc.som.openapi2.io;visibility:=reexport,
+ edu.uoc.som.openapi2.mm;visibility:=reexport,
+ edu.uoc.som.openapi2.profile,
+ com.google.gson,
+ org.apache.commons.lang3;bundle-version="3.1.0",
+ org.apache.commons.io;bundle-version="2.6.0",
+ org.apache.log4j;bundle-version="1.2.15"
+Bundle-Version: 1.1.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Bundle-ClassPath: .,
- lib/commons-lang3-3.7.jar,
- lib/json-schema-validator-2.2.6-lib.jar,
- lib/json-schema-validator-2.2.6.jar,
- lib/log4j-api-2.7.jar,
- lib/log4j-core-2.7.jar,
- lib/commons-io-20030203.000550.jar
-Export-Package: com.github.fge.jsonschema.core.exceptions,
- edu.uoc.som.wapiml.exception,
- edu.uoc.som.wapiml.facade,
- edu.uoc.som.wapiml.model
+Bundle-ClassPath: .
+Export-Package: edu.uoc.som.wapiml.exception,
+ edu.uoc.som.wapiml.generators,
+ edu.uoc.som.wapiml.model,
+ edu.uoc.som.wapiml.utils
 Bundle-Vendor: SOM Research Lab

@@ -1,24 +1,28 @@
 package edu.uoc.som.wapiml.generators;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Map.Entry;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAnnotation;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Constraint;
-import org.eclipse.uml2.uml.DataType;
+import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Enumeration;
 import org.eclipse.uml2.uml.EnumerationLiteral;
 import org.eclipse.uml2.uml.Generalization;
@@ -31,23 +35,22 @@ import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
-import edu.uoc.som.openapi.JSONDataType;
-import edu.uoc.som.openapi.Operation;
-import edu.uoc.som.openapi.Parameter;
-import edu.uoc.som.openapi.ParameterLocation;
-import edu.uoc.som.openapi.Path;
-import edu.uoc.som.openapi.Response;
-import edu.uoc.som.openapi.Root;
-import edu.uoc.som.openapi.Schema;
+import edu.uoc.som.openapi2.API;
+import edu.uoc.som.openapi2.JSONDataType;
+import edu.uoc.som.openapi2.Operation;
+import edu.uoc.som.openapi2.Parameter;
+import edu.uoc.som.openapi2.ParameterLocation;
+import edu.uoc.som.openapi2.Path;
+import edu.uoc.som.openapi2.Response;
+import edu.uoc.som.openapi2.Schema;
+import edu.uoc.som.wapiml.model.AssociationCandidate;
 import edu.uoc.som.wapiml.utils.OpenAPIProfileUtils;
-import edu.uoc.som.wapiml.utils.OpenAPIStereotypesUtils;
 import edu.uoc.som.wapiml.utils.OpenAPIUtils;
 
 public class ClassDiagramGenerator implements Serializable {
@@ -57,19 +60,53 @@ public class ClassDiagramGenerator implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private UMLFactory umlFactory;
 	private ResourceSet resourceSet;
-	Resource openAPIProfileResource;
-	Resource umlModelResource;
-	URI resourceURI;
+	private Resource openAPIProfileResource;
 
-	public ClassDiagramGenerator() throws IOException {
+	private Model umlModel;
+	private String modelName;
+	private API openAPIModel;
+	private boolean applyProfile;
+	private boolean discoverAssociations;
+	private List<AssociationCandidate> associationCandidates;
+	private List<AssociationCandidate> associations;
+	private Map<edu.uoc.som.openapi2.Property, Property> propertiesMaps = new HashMap<>();
+	private Map<Schema, Class> schemaMaps = new HashMap<>();
+
+	public ClassDiagramGenerator(API openAPIModel, String modelName, boolean applyProfile, boolean discoverAssociations)
+			throws IOException {
+		this.openAPIModel = openAPIModel;
+		this.modelName = modelName;
+		this.applyProfile = applyProfile;
+		this.discoverAssociations = discoverAssociations;
 
 		umlFactory = UMLFactory.eINSTANCE;
-		resourceSet = new ResourceSetImpl();
+		resourceSet = initUMLResourceSet();
+		openAPIProfileResource = resourceSet
+				.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
+
+		// create a temp file to hold the UML resource. The resource should exists to be
+		// able to apply the profile
+		File tempUMLFile = File.createTempFile("uml" + RandomStringUtils.random(10, true, false), ".uml");
+		tempUMLFile.deleteOnExit();
+		URI resourceURI = URI.createFileURI(tempUMLFile.getPath());
+		Resource umlModelResource = resourceSet.createResource(resourceURI);
+		umlModel = UMLFactory.eINSTANCE.createModel();
+		umlModelResource.getContents().add(umlModel);
+		// We collect the explicit associations from json schema
+		associations = getFixedAssociations();
+		// We use heuristics to infer associations candidates
+		associationCandidates = inferAssociationCandidates();
+
+	}
+
+	// this methods sets the resourceSet to work with UML and OpenAP profile
+	private ResourceSet initUMLResourceSet() {
+		ResourceSet resourceSet = new ResourceSetImpl();
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"),
-				URI.createPlatformPluginURI("edu.uoc.som.openapi.profile/resources/openapi.profile.uml", true));
+				URI.createPlatformPluginURI("edu.uoc.som.openapi2.profile/resources/openapi.profile.uml", true));
 		resourceSet.getURIConverter().getURIMap().put(
 				URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"), URI.createPlatformPluginURI(
 						"org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml", true));
@@ -82,77 +119,151 @@ public class ClassDiagramGenerator implements Serializable {
 		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.PROFILES_PATHMAP),
 				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("profiles")
 						.appendSegment(""));
+		return resourceSet;
+	}
 
-		openAPIProfileResource = resourceSet
-				.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
+	// this methods returns the list of explicit associations which are defined in
+	// the definitions
+	private List<AssociationCandidate> getFixedAssociations() {
+		List<AssociationCandidate> assocationCandidates = new ArrayList<AssociationCandidate>();
+		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
+			if (OpenAPIUtils.isObject(definition.getValue())) {
+				for (edu.uoc.som.openapi2.Property property : definition.getValue().getProperties()) {
+					if (OpenAPIUtils.isObject(property.getSchema())) {
+						// single valued association
+						AssociationCandidate association = new AssociationCandidate(definition.getValue(), property,
+								property.getSchema(), null, 0, 1, AggregationKind.COMPOSITE_LITERAL);
+						assocationCandidates.add(association);
+
+					}
+					if (OpenAPIUtils.isArrayOfObjects(property.getSchema())) {
+						// multivalued association
+						AssociationCandidate associationCandidate = new AssociationCandidate(definition.getValue(),
+								property, property.getSchema().getItems(), null, 0, -1,
+								AggregationKind.COMPOSITE_LITERAL);
+						assocationCandidates.add(associationCandidate);
+					}
+
+				}
+			}
+
+		}
+		// allOf
+		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
+			if (OpenAPIUtils.isObject(definition.getValue())) {
+				if (!definition.getValue().getAllOf().isEmpty()) {
+					for (edu.uoc.som.openapi2.Property property : definition.getValue().getAllOf().get(1)
+							.getProperties()) {
+						if (OpenAPIUtils.isObject(property.getSchema())) {
+							AssociationCandidate associationCandidate = new AssociationCandidate(definition.getValue(),
+									property, property.getSchema(), null, 0, 1, AggregationKind.COMPOSITE_LITERAL);
+							assocationCandidates.add(associationCandidate);
+						}
+						if (OpenAPIUtils.isArrayOfObjects(property.getSchema())) {
+							AssociationCandidate associationCandidate = new AssociationCandidate(definition.getValue(),
+									property, property.getSchema().getItems(), null, 0, -1,
+									AggregationKind.COMPOSITE_LITERAL);
+							assocationCandidates.add(associationCandidate);
+						}
+
+					}
+				}
+			}
+		}
+		return assocationCandidates;
+	}
+
+	private List<AssociationCandidate> inferAssociationCandidates() {
+		List<AssociationCandidate> assocationCandidates = new ArrayList<AssociationCandidate>();
+		List<Schema> schemaObjectLists = new ArrayList<Schema>();
+		for (Entry<String, Schema> schema : openAPIModel.getDefinitions()) {
+			if (OpenAPIUtils.isObject(schema.getValue()))
+				schemaObjectLists.add(schema.getValue());
+		}
+		for (Schema source : schemaObjectLists) {
+			for (edu.uoc.som.openapi2.Property property : source.getProperties()) {
+				for (Schema target : schemaObjectLists) {
+					String propertyName = property.getName();
+					String targetSchemaName = target.getName();
+					// this should be transformed to a regular expression in the future
+					if (propertyName != null && targetSchemaName != null
+							&& OpenAPIUtils.isPrimitive(property.getSchema())
+							&& (propertyName.equalsIgnoreCase(targetSchemaName)
+									|| propertyName.equalsIgnoreCase(targetSchemaName + "id")
+									|| propertyName.equalsIgnoreCase(targetSchemaName + "_id")
+									|| propertyName.equalsIgnoreCase(targetSchemaName + "-id"))) {
+						AssociationCandidate candidate = new AssociationCandidate(source, property, target,
+								target.getPropertyByName("id"), 0, 1, AggregationKind.SHARED_LITERAL);
+						assocationCandidates.add(candidate);
+					}
+				}
+
+			}
+		}
+		return assocationCandidates;
 
 	}
 
-	public Model generateClassDiagramFromOpenAPI(Root root, String modelName, File target, boolean applyProfile)
-			throws IOException {
-		resourceURI = URI.createFileURI(target.getPath());
-		umlModelResource = resourceSet.createResource(resourceURI);
-		Model model = UMLFactory.eINSTANCE.createModel();
-		umlModelResource.getContents().add(model);
+	public Model generateClassDiagramFromOpenAPI() throws IOException {
 
 		if (applyProfile) {
-			model.applyProfile((Profile) openAPIProfileResource.getContents().get(0));
+
+			umlModel.applyProfile((Profile) openAPIProfileResource.getContents().get(0));
+
 		}
 		Package package_ = umlFactory.createPackage();
 		package_.setName(modelName);
-		model.getPackagedElements().add(package_);
+		umlModel.getPackagedElements().add(package_);
 		Package types = umlFactory.createPackage();
 		types.setName("types");
-		model.getPackagedElements().add(types);
-
-		Map<Schema, Class> map = new HashMap<Schema, Class>();
+		umlModel.getPackagedElements().add(types);
 
 		if (applyProfile) {
-			OpenAPIProfileUtils.applyAPIStereotype(model, root.getApi());
-			if (root.getApi().getInfo() != null)
-				OpenAPIProfileUtils.applyAPIInfoStereotype(model, root.getApi().getInfo());
-			if (root.getApi().getExternalDocs() != null)
-				OpenAPIProfileUtils.applyExternalDocsStereotype(model, root.getApi().getExternalDocs());
-			if (!root.getApi().getSecurityDefinitions().isEmpty())
-				OpenAPIProfileUtils.applySecurityDefinitionsStereotype(model, root.getApi().getSecurityDefinitions());
-			if (!root.getApi().getTags().isEmpty())
-				OpenAPIProfileUtils.applyTagsStereotype(model, root.getApi().getTags());
-			if (!root.getApi().getSecurity().isEmpty())
-				OpenAPIProfileUtils.applySecurityStereotype(model, root.getApi().getSecurity());
+			OpenAPIProfileUtils.applyAPIStereotype(umlModel, openAPIModel);
+			if (openAPIModel.getInfo() != null)
+				OpenAPIProfileUtils.applyAPIInfoStereotype(umlModel, openAPIModel.getInfo());
+			if (openAPIModel.getExternalDocs() != null)
+				OpenAPIProfileUtils.applyExternalDocsStereotype(umlModel, openAPIModel.getExternalDocs());
+			if (!openAPIModel.getSecurityDefinitions().isEmpty())
+				OpenAPIProfileUtils.applySecurityDefinitionsStereotype(umlModel, openAPIModel.getSecurityDefinitions());
+			if (!openAPIModel.getTags().isEmpty())
+				OpenAPIProfileUtils.applyTagsStereotype(umlModel, openAPIModel.getTags());
+			if (!openAPIModel.getSecurity().isEmpty())
+				OpenAPIProfileUtils.applySecurityStereotype(umlModel, openAPIModel.getSecurity());
 
 		}
 
 		// generate classes
-		for (Schema definition : root.getApi().getDefinitions()) {
-			if (isObject(definition)) {
+		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
+			if (OpenAPIUtils.isObject(definition.getValue())) {
 				Class clazz = umlFactory.createClass();
-				clazz.setName(definition.getReferenceName());
+				clazz.setName(definition.getKey());
 				package_.getOwnedTypes().add(clazz);
 				if (applyProfile) {
-					OpenAPIProfileUtils.applySchemaStereotype(clazz, definition);
-					if (definition.getExternalDocs() != null)
-						OpenAPIProfileUtils.applyExternalDocsStereotype(clazz, definition.getExternalDocs());
+					OpenAPIProfileUtils.applySchemaStereotype(clazz, definition.getValue());
+					if (definition.getValue().getExternalDocs() != null)
+						OpenAPIProfileUtils.applyExternalDocsStereotype(clazz, definition.getValue().getExternalDocs());
 				}
-				map.put(definition, clazz);
-				addProperties(types, definition, definition.getReferenceName(), clazz, applyProfile);
-				if (!definition.getAllOf().isEmpty()) {
-					for (Schema allOfItem : definition.getAllOf()) {
+				schemaMaps.put(definition.getValue(), clazz);
+				addProperties(types, definition.getValue(), definition.getKey(), clazz);
+				if (!definition.getValue().getAllOf().isEmpty()) {
+					for (Schema allOfItem : definition.getValue().getAllOf()) {
 						if (allOfItem.getDeclaringContext() != null
-								&& allOfItem.getDeclaringContext().equals(definition)) {
-							addProperties(types, allOfItem, definition.getReferenceName(), clazz, applyProfile);
+								&& allOfItem.getDeclaringContext().equals(definition.getValue())) {
+							addProperties(types, allOfItem, definition.getKey(), clazz);
 						}
 					}
 				}
 			}
 		}
 		// resolve superclasses
-		for (Schema definition : root.getApi().getDefinitions()) {
-			if (isObject(definition)) {
-				if (!definition.getAllOf().isEmpty()) {
-					Class child = map.get(definition);
+		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
+			if (OpenAPIUtils.isObject(definition.getValue())) {
+				if (!definition.getValue().getAllOf().isEmpty()) {
+					Class child = schemaMaps.get(definition.getValue());
 					if (child != null)
-						for (Schema allOfItem : definition.getAllOf()) {
-							Class parent = map.get(allOfItem);
+						for (Schema allOfItem : definition.getValue().getAllOf()) {
+							Class parent = schemaMaps.get(allOfItem);
 
 							if (parent != null) {
 								Generalization generation = umlFactory.createGeneralization();
@@ -163,58 +274,44 @@ public class ClassDiagramGenerator implements Serializable {
 				}
 			}
 		}
-		
+
 		// resolve additionalProperties
-		for (Schema definition : root.getApi().getDefinitions()) {
-			if (isObject(definition)) {
-				if (definition.getAdditonalProperties()!=null) {
-					Class clazz = map.get(definition);
-					Schema additionalPropertiesSchema = definition.getAdditonalProperties();
-					if(isPrimitive(additionalPropertiesSchema)) {
-						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN), "additionalProperties",getUMLType(types, additionalPropertiesSchema.getType(), additionalPropertiesSchema.getFormat(), applyProfile));
+		for (Entry<String, Schema> definition : openAPIModel.getDefinitions()) {
+			if (OpenAPIUtils.isObject(definition.getValue())) {
+				if (definition.getValue().getAdditonalProperties() != null) {
+					Class clazz = schemaMaps.get(definition.getValue());
+					Schema additionalPropertiesSchema = definition.getValue().getAdditonalProperties();
+					if (OpenAPIUtils.isPrimitive(additionalPropertiesSchema)) {
+						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN),
+								"additionalProperties", getUMLType(types, additionalPropertiesSchema.getType(),
+										additionalPropertiesSchema.getFormat()));
 					}
-					if(isObject(additionalPropertiesSchema)) {
-						Class referencedClass = map.get(additionalPropertiesSchema);
-						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN), "additionalProperties",referencedClass);
+					if (OpenAPIUtils.isObject(additionalPropertiesSchema)) {
+						Class referencedClass = schemaMaps.get(additionalPropertiesSchema);
+						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN),
+								"additionalProperties", referencedClass);
 					}
-						
-						
+
 				}
 			}
 		}
 		// resolve associations
-		for (Schema definition : root.getApi().getDefinitions()) {
-			if (isObject(definition)) {
-				for (edu.uoc.som.openapi.Property property : definition.getProperties()) {
-					if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
-						Association association = createAssociation(map, definition, property, root);
-						package_.getPackagedElements().add(association);
-					}
+		for (AssociationCandidate associationCandidate : associations) {
+			Association association = createAssociation(associationCandidate);
+			package_.getPackagedElements().add(association);
+			if (applyProfile) {
+				OpenAPIProfileUtils.applySerializationStereotype(association, true);
 
-				}
 			}
 		}
-		// resolve associations for allOf
-		for (Schema definition : root.getApi().getDefinitions()) {
-			if (isObject(definition)) {
-				if (!definition.getAllOf().isEmpty()) {
-					for (edu.uoc.som.openapi.Property property : definition.getAllOf().get(1).getProperties()) {
-						if (isObject(property.getSchema()) || isArrayOfObjects(property.getSchema())) {
-							Association association = createAssociation(map, definition, property, root);
-							package_.getPackagedElements().add(association);
-						}
 
-					}
-				}
-			}
-		}
 		// add operations
-		for (Operation operation : root.getApi().getAllOperations()) {
-			Schema definition = OpenAPIUtils.getAppropriateLocation(root.getApi(), operation);
+		for (Operation operation : openAPIModel.getAllOperations()) {
+			Schema definition = OpenAPIUtils.getAppropriateLocation(openAPIModel, operation);
 			Class clazz = null;
 			if (definition != null) {
-				if (map.get(definition) != null) {
-					clazz = map.get(definition);
+				if (schemaMaps.get(definition) != null) {
+					clazz = schemaMaps.get(definition);
 				}
 
 			}
@@ -250,34 +347,34 @@ public class ClassDiagramGenerator implements Serializable {
 				if (parameter.getDefault() != null)
 					umlParameter.setDefault(parameter.getDefault());
 				if (parameter.getMultipleOf() != null)
-					addConstraint(umlOperation, parameter.getName(), "multipleOfConstraint",
+					addOCLConstraint(umlOperation, parameter.getName(), "multipleOfConstraint",
 							"self." + parameter.getName() + ".div(" + parameter.getMultipleOf() + ") = 0");
 				if (parameter.getMaximum() != null) {
 					if (parameter.getExclusiveMaximum() != null && parameter.getExclusiveMaximum().equals(Boolean.TRUE))
-						addConstraint(umlOperation, umlParameter.getName(), "maximumConstraint",
+						addOCLConstraint(umlOperation, umlParameter.getName(), "maximumConstraint",
 								"self." + umlParameter.getName() + " < " + parameter.getMaximum());
 					else
-						addConstraint(umlOperation, umlParameter.getName(), "maximumConstraint",
+						addOCLConstraint(umlOperation, umlParameter.getName(), "maximumConstraint",
 								"self." + umlParameter.getName() + " <= " + parameter.getMaximum());
 				}
 				if (parameter.getMinimum() != null) {
 					if (parameter.getExclusiveMinimum() != null && parameter.getExclusiveMinimum().equals(Boolean.TRUE))
-						addConstraint(umlOperation, umlParameter.getName(), "minimumConstraint",
+						addOCLConstraint(umlOperation, umlParameter.getName(), "minimumConstraint",
 								"self." + umlParameter.getName() + " > " + parameter.getMinimum());
 					else
-						addConstraint(umlOperation, umlParameter.getName(), "minimumConstraint",
+						addOCLConstraint(umlOperation, umlParameter.getName(), "minimumConstraint",
 								"self." + umlParameter.getName() + " >= " + parameter.getMinimum());
 				}
 				if (parameter.getMaxLength() != null)
-					addConstraint(umlOperation, parameter.getName(), "maxLengthConstraint",
+					addOCLConstraint(umlOperation, parameter.getName(), "maxLengthConstraint",
 							"self." + parameter.getName() + ".size() <= " + parameter.getMaxLength());
 				if (parameter.getMinLength() != null)
-					addConstraint(umlOperation, parameter.getName(), "minLengthConstraint",
+					addOCLConstraint(umlOperation, parameter.getName(), "minLengthConstraint",
 							"self." + parameter.getName() + ".size() >= " + parameter.getMinLength());
 				if (parameter.getLocation().equals(ParameterLocation.BODY)) {
 					if (parameter.getSchema() != null) {
 						if (parameter.getSchema().getType().equals(JSONDataType.ARRAY)) {
-							umlParameter.setType(map.get(parameter.getSchema().getItems()));
+							umlParameter.setType(schemaMaps.get(parameter.getSchema().getItems()));
 							if (parameter.getSchema().getMaxItems() != null) {
 								umlParameter.setUpper(parameter.getSchema().getMaxItems());
 							} else
@@ -287,14 +384,11 @@ public class ClassDiagramGenerator implements Serializable {
 							else
 								umlParameter.setLower(0);
 						} else {
-							umlParameter.setType(map.get(parameter.getSchema()));
+							umlParameter.setType(schemaMaps.get(parameter.getSchema()));
 						}
 					}
 				} else {
-//					if (parameter.getRequired() != null && parameter.getRequired().equals(Boolean.TRUE))
-//						umlParameter.setLower(1);
-//					else
-						umlParameter.setLower(0);
+					umlParameter.setLower(0);
 					if (parameter.getType().equals(JSONDataType.ARRAY)) {
 						if (parameter.getMaxItems() != null)
 							umlParameter.setUpper(parameter.getMaxItems());
@@ -302,15 +396,15 @@ public class ClassDiagramGenerator implements Serializable {
 							umlParameter.setUpper(-1);
 						if (!parameter.getItems().getEnum().isEmpty())
 							umlParameter.setType(getOrCreateEnumeration(parameter.getItems().getEnum(),
-									clazz.getName() + StringUtils.capitalize(parameter.getName()), types, applyProfile));
+									clazz.getName() + StringUtils.capitalize(parameter.getName()), types));
 						else
 							umlParameter.setType(getUMLType(types, parameter.getItems().getType(),
-									parameter.getItems().getFormat(),applyProfile));
+									parameter.getItems().getFormat()));
 					} else if (!parameter.getEnum().isEmpty())
 						umlParameter.setType(getOrCreateEnumeration(parameter.getEnum(),
-								clazz.getName() + StringUtils.capitalize(parameter.getName()), types,applyProfile));
+								clazz.getName() + StringUtils.capitalize(parameter.getName()), types));
 					else
-						umlParameter.setType(getUMLType(types, parameter.getType(), parameter.getFormat(),applyProfile));
+						umlParameter.setType(getUMLType(types, parameter.getType(), parameter.getFormat()));
 					if (parameter.getDefault() != null) {
 						umlParameter.setDefault(parameter.getDefault());
 					}
@@ -322,17 +416,17 @@ public class ClassDiagramGenerator implements Serializable {
 				}
 			}
 			if (!operation.getResponses().isEmpty()) {
-				for (Response response : operation.getResponses()) {
+				for (Entry<String, Response> response : operation.getResponses()) {
 
 					org.eclipse.uml2.uml.Parameter returnedParameter = umlFactory.createParameter();
-					if (response.getResponseDefinition().getSchema() != null) {
-						Schema returnedSchema = response.getResponseDefinition().getSchema();
-						boolean isObject = isObject(returnedSchema);
-						boolean isArrayOfObjects = isArrayOfObjects(returnedSchema);
+					if (response.getValue().getSchema() != null) {
+						Schema returnedSchema = response.getValue().getSchema();
+						boolean isObject = OpenAPIUtils.isObject(returnedSchema);
+						boolean isArrayOfObjects = OpenAPIUtils.isArrayOfObjects(returnedSchema);
 						Schema returnedObject = isObject ? returnedSchema
 								: (isArrayOfObjects ? returnedSchema.getItems() : null);
 						if (returnedObject != null) {
-							Class returnedClass = map.get(returnedObject);
+							Class returnedClass = schemaMaps.get(returnedObject);
 							if (returnedClass != null)
 								returnedParameter.setType(returnedClass);
 							if (isArrayOfObjects) {
@@ -353,90 +447,112 @@ public class ClassDiagramGenerator implements Serializable {
 			}
 
 		}
+		if (discoverAssociations)
+			refine(package_);
 
-		return model;
+		return umlModel;
 
 	}
 
-	private Association createAssociation(Map<Schema, Class> map, Schema definition,
-			edu.uoc.som.openapi.Property property, Root root) {
+	private void refine(Package package_) {
+		List<Association> associations = new ArrayList<Association>();
+		List<Property> propertiesToRemore = new ArrayList<Property>();
+
+		for (AssociationCandidate associationCandidate : associationCandidates) {
+			Property properyToRemove = propertiesMaps.get(associationCandidate.getSourceProperty());
+			associations.add(createAssociation(associationCandidate));
+			propertiesToRemore.add(properyToRemove);
+			// we need to add isID to the target property.
+			if (associationCandidate.getTargetProperty() != null) {
+				if (applyProfile)
+					OpenAPIProfileUtils.setAsId(propertiesMaps.get(associationCandidate.getTargetProperty()));
+				else
+					addAnnotation(propertiesMaps.get(associationCandidate.getTargetProperty()), "isID", "true");
+			}
+		}
+
+		for (Association association : associations) {
+			package_.getPackagedElements().add(association);
+			if (applyProfile) {
+				OpenAPIProfileUtils.applySerializationStereotype(association, false);
+			}
+		}
+		for (Property property : propertiesToRemore) {
+			EcoreUtil.delete(property);
+		}
+
+	}
+
+	private Association createAssociation(AssociationCandidate associationCandidate) {
 		Association association = umlFactory.createAssociation();
-		association.setName(definition.getReferenceName() + "_" + property.getReferenceName());
+		association.setName(associationCandidate.getSourceSchema().getName() + "_"
+				+ associationCandidate.getSourceProperty().getName());
 		Property firstOwnedEnd = umlFactory.createProperty();
 		association.getOwnedEnds().add(firstOwnedEnd);
 		Property secondOwnedEnd = umlFactory.createProperty();
 		association.getOwnedEnds().add(secondOwnedEnd);
-		firstOwnedEnd.setName(definition.getReferenceName());
-		firstOwnedEnd.setType(map.get(definition));
-		secondOwnedEnd.setName(property.getReferenceName());
-		secondOwnedEnd.setAggregation(AggregationKind.COMPOSITE_LITERAL);
-//		if (property.getRequired()!=null && property.getRequired())
-//			secondOwnedEnd.setLower(1);
-//		else
-			secondOwnedEnd.setLower(0);
-		if (!property.getSchema().getType().equals(JSONDataType.ARRAY)) {
-			Class type = map.get(property.getSchema());
-			secondOwnedEnd.setType(type);
+		firstOwnedEnd.setName(associationCandidate.getSourceSchema().getName());
+		firstOwnedEnd.setType(schemaMaps.get(associationCandidate.getSourceSchema()));
+		secondOwnedEnd.setName(associationCandidate.getSourceProperty().getName());
+		secondOwnedEnd.setAggregation(associationCandidate.getAggregationKind());
+		secondOwnedEnd.setLower(associationCandidate.getLowerBound());
+		Class type = schemaMaps.get(associationCandidate.getTargetSchema());
+		secondOwnedEnd.setType(type);
+		secondOwnedEnd.setUpper(associationCandidate.getUpperBound());
 
-		} else {
-			secondOwnedEnd.setUpper(-1);
-			secondOwnedEnd.setType(map.get(property.getSchema().getItems()));
-
-		}
 		association.getNavigableOwnedEnds().add(secondOwnedEnd);
+
 		return association;
 	}
 
-	private void addProperties(Package types, Schema schema, String definitionName, Class clazz, boolean applyProfile) {
-		for (edu.uoc.som.openapi.Property openAPIproperty : schema.getProperties()) {
-			if (isPrimitive(openAPIproperty.getSchema())) {
+	private void addProperties(Package types, Schema schema, String definitionName, Class clazz) {
+		for (edu.uoc.som.openapi2.Property openAPIproperty : schema.getProperties()) {
+			if (OpenAPIUtils.isPrimitive(openAPIproperty.getSchema())) {
 				Property umlProperty = umlFactory.createProperty();
+				propertiesMaps.put(openAPIproperty, umlProperty);
 				Schema propertySchema = openAPIproperty.getSchema();
-				umlProperty.setName(openAPIproperty.getReferenceName());
+				umlProperty.setName(openAPIproperty.getName());
 
 				if (propertySchema.getMultipleOf() != null)
-					addConstraint(clazz, umlProperty.getName(), "multipleOfConstraint",
+					addOCLConstraint(clazz, umlProperty.getName(), "multipleOfConstraint",
 							"self." + umlProperty.getName() + ".div(" + propertySchema.getMultipleOf() + ") = 0");
 				if (propertySchema.getMaximum() != null) {
 					if (propertySchema.getExclusiveMaximum() != null
 							&& propertySchema.getExclusiveMaximum().equals(Boolean.TRUE))
-						addConstraint(clazz, umlProperty.getName(), "maximumConstraint",
+						addOCLConstraint(clazz, umlProperty.getName(), "maximumConstraint",
 								"self." + umlProperty.getName() + " < " + propertySchema.getMaximum());
 					else
-						addConstraint(clazz, umlProperty.getName(), "maximumConstraint",
+						addOCLConstraint(clazz, umlProperty.getName(), "maximumConstraint",
 								"self." + umlProperty.getName() + " <= " + propertySchema.getMaximum());
 				}
 				if (propertySchema.getMinimum() != null) {
 					if (propertySchema.getExclusiveMinimum() != null
 							&& propertySchema.getExclusiveMinimum().equals(Boolean.TRUE))
-						addConstraint(clazz, umlProperty.getName(), "minimumConstraint",
+						addOCLConstraint(clazz, umlProperty.getName(), "minimumConstraint",
 								"self." + umlProperty.getName() + " > " + propertySchema.getMinimum());
 					else
-						addConstraint(clazz, umlProperty.getName(), "minimumConstraint",
+						addOCLConstraint(clazz, umlProperty.getName(), "minimumConstraint",
 								"self." + umlProperty.getName() + " >= " + propertySchema.getMinimum());
 				}
 				if (propertySchema.getMaxLength() != null)
-					addConstraint(clazz, umlProperty.getName(), "maxLengthConstraint",
+					addOCLConstraint(clazz, umlProperty.getName(), "maxLengthConstraint",
 							"self." + umlProperty.getName() + ".size() <= " + propertySchema.getMaxLength());
 				if (propertySchema.getMinLength() != null)
-					addConstraint(clazz, umlProperty.getName(), "minLengthConstraint",
+					addOCLConstraint(clazz, umlProperty.getName(), "minLengthConstraint",
 							"self." + umlProperty.getName() + ".size() >= " + propertySchema.getMinLength());
 
 				if (propertySchema.getDefault() != null)
 					umlProperty.setDefault(propertySchema.getDefault());
-				if(propertySchema.getReadOnly()!= null && propertySchema.getReadOnly().equals(Boolean.TRUE))
+				if (propertySchema.getReadOnly() != null && propertySchema.getReadOnly().equals(Boolean.TRUE))
 					umlProperty.setIsReadOnly(true);
 
 				if (!propertySchema.getType().equals(JSONDataType.ARRAY)) {
 					if (!propertySchema.getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(propertySchema.getEnum(),
-								clazz.getName() + StringUtils.capitalize(openAPIproperty.getReferenceName()), types,applyProfile));
+								clazz.getName() + StringUtils.capitalize(openAPIproperty.getName()), types));
 					else
-						umlProperty.setType(getUMLType(types, propertySchema.getType(), propertySchema.getFormat(),applyProfile));
-//					if (openAPIproperty.getRequired()!=null && openAPIproperty.getRequired())
-//						umlProperty.setLower(1);
-//					else
-						umlProperty.setLower(0);
+						umlProperty.setType(getUMLType(types, propertySchema.getType(), propertySchema.getFormat()));
+					umlProperty.setLower(0);
 				} else {
 
 					umlProperty.setUpper(-1);
@@ -446,10 +562,10 @@ public class ClassDiagramGenerator implements Serializable {
 						umlProperty.setLower(0);
 					if (!propertySchema.getItems().getEnum().isEmpty())
 						umlProperty.setType(getOrCreateEnumeration(propertySchema.getItems().getEnum(),
-								clazz.getName() + StringUtils.capitalize(openAPIproperty.getReferenceName()), types,applyProfile));
+								clazz.getName() + StringUtils.capitalize(openAPIproperty.getName()), types));
 					else
 						umlProperty.setType(getUMLType(types, propertySchema.getItems().getType(),
-								propertySchema.getItems().getFormat(),applyProfile));
+								propertySchema.getItems().getFormat()));
 
 				}
 				clazz.getOwnedAttributes().add(umlProperty);
@@ -460,40 +576,7 @@ public class ClassDiagramGenerator implements Serializable {
 		}
 	}
 
-	private boolean isPrimitive(Schema property) {
-		if (property.getType().equals(JSONDataType.BOOLEAN) || property.getType().equals(JSONDataType.INTEGER)
-				|| property.getType().equals(JSONDataType.NUMBER) || property.getType().equals(JSONDataType.STRING))
-			return true;
-		if (property.getType().equals(JSONDataType.ARRAY) && (property.getItems().getType().equals(JSONDataType.BOOLEAN)
-				|| property.getItems().getType().equals(JSONDataType.INTEGER)
-				|| property.getItems().getType().equals(JSONDataType.NUMBER)
-				|| property.getItems().getType().equals(JSONDataType.STRING)))
-			return true;
-		return false;
-	}
-
-	private boolean isObject(Schema schema) {
-		if (schema.getType().equals(JSONDataType.OBJECT))
-			return true;
-
-		if (!schema.getProperties().isEmpty())
-			return true;
-
-		if (!schema.getAllOf().isEmpty())
-			return true;
-
-		return false;
-	}
-
-	private boolean isArrayOfObjects(Schema schema) {
-
-		if (schema.getType().equals(JSONDataType.ARRAY) && isObject(schema.getItems()))
-			return true;
-
-		return false;
-	}
-
-	private PrimitiveType getUMLType(Package types, JSONDataType jsonDataType, String format, boolean applyProfile) {
+	private PrimitiveType getUMLType(Package types, JSONDataType jsonDataType, String format) {
 		PrimitiveType type = null;
 		switch (jsonDataType) {
 
@@ -501,11 +584,12 @@ public class ClassDiagramGenerator implements Serializable {
 			if (format == null)
 				type = getOrCreatePrimitiveType("Integer", jsonDataType, format, types, applyProfile);
 			else if (format.equals("int32"))
-				type = getOrCreatePrimitiveType("Integer",jsonDataType, format, types, applyProfile);
+				type = getOrCreatePrimitiveType("Integer", jsonDataType, format, types, applyProfile);
 			else if (format.equals("int64"))
 				type = getOrCreatePrimitiveType("Long", jsonDataType, format, types, applyProfile);
 			else
-				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types, applyProfile);
+				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types,
+						applyProfile);
 			break;
 		case NUMBER:
 			if (format == null)
@@ -515,7 +599,8 @@ public class ClassDiagramGenerator implements Serializable {
 			else if (format.equals("double"))
 				type = getOrCreatePrimitiveType("Double", jsonDataType, format, types, applyProfile);
 			else
-				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types, applyProfile);
+				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types,
+						applyProfile);
 			break;
 		case STRING:
 			if (format == null)
@@ -531,7 +616,8 @@ public class ClassDiagramGenerator implements Serializable {
 			else if (format.equals("password"))
 				type = getOrCreatePrimitiveType("Password", jsonDataType, format, types, applyProfile);
 			else
-				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types, applyProfile);
+				type = getOrCreatePrimitiveType(StringUtils.capitalize(format), jsonDataType, format, types,
+						applyProfile);
 
 			break;
 		case BOOLEAN:
@@ -546,21 +632,15 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
-	public UMLFactory getUmlFactory() {
-		return umlFactory;
-	}
+	public void saveClassDiagram(File target) throws IOException {
 
-	public void setUmlFactory(UMLFactory umlFactory) {
-		this.umlFactory = umlFactory;
-	}
-
-	public void saveClassDiagram() throws IOException {
-
-		umlModelResource.save(Collections.EMPTY_MAP);
+		umlModel.eResource().setURI(URI.createFileURI(target.getPath()));
+		umlModel.eResource().save(Collections.EMPTY_MAP);
 
 	}
 
-	private PrimitiveType getOrCreatePrimitiveType(String commonName,  JSONDataType jsonDataType, String format, Package types,  boolean applyProfile) {
+	private PrimitiveType getOrCreatePrimitiveType(String commonName, JSONDataType jsonDataType, String format,
+			Package types, boolean applyProfile) {
 
 		Type type = types.getOwnedType(commonName, false, UMLPackage.eINSTANCE.getPrimitiveType(), false);
 		if (type != null)
@@ -569,14 +649,14 @@ public class ClassDiagramGenerator implements Serializable {
 			PrimitiveType primitiveType = umlFactory.createPrimitiveType();
 			primitiveType.setName(commonName);
 			types.getOwnedTypes().add(primitiveType);
-			if(applyProfile) {
+			if (applyProfile) {
 				OpenAPIProfileUtils.applyAPIDataTypeStereotype((PrimitiveType) primitiveType, jsonDataType, format);
 			}
 			return primitiveType;
 		}
 	}
 
-	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Package types, boolean applyProfile) {
+	private Enumeration getOrCreateEnumeration(List<String> literals, String name, Package types) {
 
 		Type type = types.getOwnedType(name, false, UMLPackage.eINSTANCE.getEnumeration(), false);
 		if (type != null)
@@ -590,7 +670,7 @@ public class ClassDiagramGenerator implements Serializable {
 				literal.setName(l);
 				enumeration.getOwnedLiterals().add(literal);
 			}
-			if(applyProfile) {
+			if (applyProfile) {
 				OpenAPIProfileUtils.applyAPIDataTypeStereotype((Enumeration) enumeration, JSONDataType.STRING, null);
 			}
 			return enumeration;
@@ -607,7 +687,7 @@ public class ClassDiagramGenerator implements Serializable {
 	 *                       macLengthConstraint)
 	 * @param constraintExp  The OCL expression
 	 */
-	private void addConstraint(Namespace namespace, String constraintName, String constraintType,
+	private void addOCLConstraint(Namespace namespace, String constraintName, String constraintType,
 			String constraintExp) {
 		Constraint constraint = UMLFactory.eINSTANCE.createConstraint();
 		String constraintId = namespace.getName() + "-" + constraintName + "-" + constraintType;
@@ -619,5 +699,42 @@ public class ClassDiagramGenerator implements Serializable {
 		namespace.getOwnedRules().add(constraint);
 	}
 
+	private void addAnnotation(Element element, String annotationKey, String annotationValue) {
+		EAnnotation annotation = EcoreFactory.eINSTANCE.createEAnnotation();
+		annotation.setSource("wapiml");
+		annotation.getDetails().put(annotationKey, annotationValue);
+	}
+
+	public List<AssociationCandidate> getAssociationCandidates() {
+		return associationCandidates;
+	}
+
+	public void setAssociationCandidates(List<AssociationCandidate> assocationCandidates) {
+		this.associationCandidates = assocationCandidates;
+	}
+
+	public List<AssociationCandidate> getAssociations() {
+		return associations;
+	}
+
+	public void setAssociations(List<AssociationCandidate> associations) {
+		this.associations = associations;
+	}
+
+	public boolean isApplyProfile() {
+		return applyProfile;
+	}
+
+	public void setApplyProfile(boolean applyProfile) {
+		this.applyProfile = applyProfile;
+	}
+
+	public boolean isDiscoverAssociations() {
+		return discoverAssociations;
+	}
+
+	public void setDiscoverAssociations(boolean discoverAssociations) {
+		this.discoverAssociations = discoverAssociations;
+	}
 
 }

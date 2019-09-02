@@ -7,9 +7,10 @@
             allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any">
          <menu
+               icon="images/logo-small.png"
                label="WAPIml">
             <command
-                  commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagram"
+                  commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramJSON"
                   label="Generate a class diagram"
                   style="push"
                   tooltip="Generate a class diagram from an OpenAPI definition">
@@ -26,17 +27,17 @@
                </visibleWhen>
             </command>
             <command
-                  commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramWithProfile"
-                  label="Generate a class diagram and apply the OpenAPI profile"
+                  commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramYaml"
+                  label="Generate a class diagram"
                   style="push"
-                  tooltip="Generate a class diagram and and apply the OpenAPI profile">
+                  tooltip="Generate a class diagram from an OpenAPI definition">
                <visibleWhen
                      checkEnabled="false">
                   <iterate>
                      <and>
                         <test
                               property="org.eclipse.core.resources.extension"
-                              value="json">
+                              value="yaml">
                         </test>
                      </and>
                   </iterate>
@@ -44,7 +45,24 @@
             </command>
             <command
                   commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToJson"
-                  label="Generate an OpenAPI definition"
+                  label="Generate an OpenAPI definition in JSON format"
+                  style="push"
+                  tooltip="Generate an OpenAPI definition from an annotated UML model">
+               <visibleWhen
+                     checkEnabled="false">
+                  <iterate>
+                     <and>
+                        <test
+                              property="org.eclipse.core.resources.extension"
+                              value="uml">
+                        </test>
+                     </and>
+                  </iterate>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="edu.uoc.som.wapiml.ui.handlers.ConvertToYaml"
+                  label="Generate an OpenAPI definition in Yaml format"
                   style="push"
                   tooltip="Generate an OpenAPI definition from an annotated UML model">
                <visibleWhen
@@ -65,19 +83,24 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagram"
-            id="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagram"
+            defaultHandler="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramJSON"
+            id="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramJSON"
             name="Generate a class diagram">
-      </command>
-      <command
-            defaultHandler="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramWithProfile"
-            id="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramWithProfile"
-            name="Generate a class diagram and apply the OpenAPI profile">
       </command>
       <command
             defaultHandler="edu.uoc.som.wapiml.ui.handlers.ConvertToJson"
             id="edu.uoc.som.wapiml.ui.handlers.ConvertToJson"
-            name="Generate an OpenAPI definition">
+            name="Generate an OpenAPI definition in JSON format">
+      </command>
+      <command
+            defaultHandler="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramYaml"
+            id="edu.uoc.som.wapiml.ui.handlers.ConvertToClassDiagramYaml"
+            name="Generate a class diagram">
+      </command>
+      <command
+            defaultHandler="edu.uoc.som.wapiml.ui.handlers.ConvertToYaml"
+            id="edu.uoc.som.wapiml.ui.handlers.ConvertToYaml"
+            name="Generate an OpenAPI definition in Yaml format">
       </command>
    </extension>
 

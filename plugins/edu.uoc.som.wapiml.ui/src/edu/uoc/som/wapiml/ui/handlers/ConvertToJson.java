@@ -20,11 +20,9 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.github.fge.jsonschema.core.exceptions.ProcessingException;
-
-import edu.uoc.som.wapiml.exception.OpenAPIValidationException;
-import edu.uoc.som.wapiml.facade.WAPImlFacade;
+import edu.uoc.som.openapi2.io.model.SerializationFormat;
 import edu.uoc.som.wapiml.ui.WAPImlUIPlugin;
+import edu.uoc.som.wapiml.utils.IOUtils;
 
 public class ConvertToJson extends AbstractHandler {
 
@@ -36,6 +34,7 @@ public class ConvertToJson extends AbstractHandler {
 		if (selection != null & selection instanceof IStructuredSelection) {
 			final IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 			Job job = new Job(ID) {
+				@SuppressWarnings("unused")
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					final StringBuilder message = new StringBuilder();
@@ -57,21 +56,17 @@ public class ConvertToJson extends AbstractHandler {
 									iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 								}
 								File inputFile = new File(iFile.getLocation().toString());
-								WAPImlFacade openAPItoUMLFacade = new WAPImlFacade();
-								openAPItoUMLFacade.generateAndSaveOpenAPIDefinition(inputFile,
-										iFile.getName().substring(0, iFile.getName().lastIndexOf('.')),target.getLocation()
+								IOUtils.convertAndSaveOpenAPIDefinition(inputFile, target.getLocation()
 										.append(iFile.getName().substring(0, iFile.getName().lastIndexOf('.')))
-										.addFileExtension("json").toFile());
+										.addFileExtension("json").toFile(),SerializationFormat.JSON);
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
-					} catch (IOException | CoreException | ProcessingException e) {
+					} catch (IOException | CoreException e) {
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 
-					} catch (OpenAPIValidationException e) {
-						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage());
-					} finally {
+					}finally {
 						monitor.done();
 					}
 
