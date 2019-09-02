@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<associateSites>
-	<associateSite url="http://opendata-for-all.github.io/openapi-profile/update/" label="openapi-profile"/>
-	<associateSite url="http://opendata-for-all.github.io/openapi-metamodel/update/" label="openapi-metamodel"/>
-	<associateSite url="http://download.eclipse.org/releases/2019-06/" label="2019-06"/>
-</associateSites>
