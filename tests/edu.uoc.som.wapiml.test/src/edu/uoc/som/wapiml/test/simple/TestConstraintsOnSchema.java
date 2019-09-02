@@ -133,7 +133,7 @@ public class TestConstraintsOnSchema {
 			try {
 				File input = new File("resources/inputs/constraints/length.json");
 				API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-				ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "allOf-with-ref", false,
+				ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "length", false,
 						true);
 				Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 				Class concept = (Class) ((Package) model.getPackagedElement("length")).getPackagedElement("Concept");

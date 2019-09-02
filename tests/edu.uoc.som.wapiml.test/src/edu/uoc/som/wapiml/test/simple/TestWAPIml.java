@@ -38,7 +38,7 @@ public class TestWAPIml {
 	        	File input = new File("resources/inputs/petstore.json");
 	 	        File output = File.createTempFile("petstore", ".uml");
 	 	       API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-	        	ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "allOf", false, true);
+	        	ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "petstore", false, true);
 	        	classDiagramGenerator.generateClassDiagramFromOpenAPI();
 	        	classDiagramGenerator.saveClassDiagram(output);
 			} catch (Exception e) {
