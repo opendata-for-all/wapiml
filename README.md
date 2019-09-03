@@ -32,12 +32,12 @@ N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI d
 2. Import your OpenAPI 2 definition into the project (**we support both JSON and YAML**). 
 3. Right-click on the definition file and select *WAPIml/Generate a class diagram* to start. This will initiate a wizard to guide the generation process. The first page of the wizard is shown below.
 	
-![page1](https://opendata-for-all.github.io/wapiml/images/page1.PNG)
+![page1](https://opendata-for-all.github.io/wapiml/images/wapiml/page1.PNG)
 
 4. Check *Apply the OpenAPI profile* if you want to enrich your UML model with OpenAPI stereotypes (this mandatory if you want to generate an OpenAPI definition later) and check *Discover associations* if you want the process to discover implicit associations by analyzing schema properties (note: this only concerns the association that are not explicity defined. Explicit associations will be included in the model either way).
 5. Click on *Next*. This will display the second page of the wizard.
 
-![page1](https://opendata-for-all.github.io/wapiml/images/page2.PNG)
+![page1](https://opendata-for-all.github.io/wapiml/images/wapiml/page2.PNG)
 
 - The first table includes the explicit associations defined using JSON Schema (properties of type object or array of objects). You could change the aggregation kind of an association by clicking on its row (the default one is composite).
 - The second table shows the discovered associations which are not explicity defined in the definition. You could change the aggregation kind and the target property. You could also delete the association using a right-click on the row of the association and selecting *Delete Selection*.
@@ -74,13 +74,12 @@ From scratch:
 ###### Generate an OpenAPI definition from an annotated UML model
 
 1. Switch to the perspective *Java*.
-2. Right-click on the annotated UML model and select *WAPIml -> Generate an OpenAPI definition*.
+2. Right-click on the annotated UML model and select *WAPIml -> Generate an OpenAPI definition in JSON format* to generate the definition in JSON or *WAPIml -> Generate an OpenAPI definition in YAML format* to generate the definition in YAML.
 
-The generated OpenAPI definition will be located under the folder *src-gen* in JSON format.
+The generated OpenAPI definition will be located under the folder *src-gen*.
 
 ## Notes
 - Each schema definition  (#/definitions) of type `object` is represented as a class.
-- All associations are of type containment.
 - The location of an operation (i.e., in which class it should be) is decided based on the schema this operation produces (response 2xx schema), the schema it consumes (parameter of type body), or the tags properties of the operation. When no class is a good fit for the operation, an artificial class is created to host the operation. The name of such class is inferred from the path of the operation.
 - The name of an operation is taken from `operationId` of the operation definition. If such information is not provided the name is created by concatenating the method of the operation (e.g., get, post) plus the name of its class.
 - The cardinalities of attributes and parameters are inferred from:
