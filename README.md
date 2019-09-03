@@ -1,7 +1,7 @@
 
 # WAPIml
 
-An OpenAPI round-trip tool that leverages model-driven techniques to create, visualize, manage, and generate OpenAPI
+WAPIml is an OpenAPI round-trip tool that leverages model-driven techniques to create, visualize, manage, and generate OpenAPI
 definitions. WAPIml embeds an OpenAPI metamodel but also a UML profile to enable working with OpenAPI in any Eclipse UML-compatible modeling tool.
 
 N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI definitions, can be found under the branch [*openapi-to-uml*](https://github.com/opendata-for-all/wapiml/tree/openapi-to-uml).
@@ -29,13 +29,16 @@ N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI d
 
 ###### Generating UML models 
 1. Create a Project or use an existing project in your workspace.
-2. Import the JSON file of your OpenAPI definition. 
-3. Right-click on the definition file and select:
+2. Import your OpenAPI 2 definition into the project (**we support both JSON and YAML**). 
+3. Right-click on the definition file and select *WAPIml/Generate a class diagram* to start the generation process. This will display a wizard to guide the generation process. The first page of the wizard is shown below.
+	
+![page1](https://opendata-for-all.github.io/wapiml/images/page1.PNG)
 
-	a. *WAPIml/Generate a Class diagram* to generate a simple UML model.
-	
-	b. *WAPIml/Generate a Class diagram and apply the OpenAPI profile* to generate a UML model annotated with OpenAPI profile.
-	
+4. Check *Apply the OpenAPI profile* if you want to enrich your UML model with OpenAPI stereotypes (this mandatory if you want to generate an OpenAPI definition later) and check *Discover associations* if you want the process to discover implicit associations by analyzing schema properties.
+5. Click on *Next*. This will display the second page of the wizard.
+
+![page1](https://opendata-for-all.github.io/wapiml/images/page2.PNG)
+
 The generated models are located under the folder *src-gen*
 
 
