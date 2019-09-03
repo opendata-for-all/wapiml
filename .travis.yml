@@ -1,8 +1,10 @@
 os: linux
 language: java
-dist: trusty
-sudo: false
+dist: xenial
 jdk: oraclejdk8
+services:
+  - xvfb
+sudo: false
 
 env:
    global:
