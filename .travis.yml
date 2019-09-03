@@ -4,6 +4,11 @@ dist: trusty
 sudo: false
 jdk: oraclejdk8
 
+env:  
+   global:  
+    - DISPLAY=:99.0  
+  before_install:  
+
 script: mvn clean verify
   
 cache:
