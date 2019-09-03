@@ -4,10 +4,11 @@ dist: trusty
 sudo: false
 jdk: oraclejdk8
 
-env:  
-   global:  
-    - DISPLAY=:99.0  
-  before_install:  
+env:
+   global:
+      - DISPLAY=:99.0  
+   before_install:
+      - sh -e /etc/init.d/xvfb start - sleep 10  
 
 script: mvn clean verify
   
