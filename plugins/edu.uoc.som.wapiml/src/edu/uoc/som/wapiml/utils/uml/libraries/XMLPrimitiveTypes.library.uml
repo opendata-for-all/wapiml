@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML">
+  <uml:Model xmi:id="_0" name="XMLPrimitiveTypes" URI="http://www.eclipse.org/uml2/4.2.0/XMLPrimitiveTypes">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="AnySimpleType" name="AnySimpleType"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="AnyURI" name="AnyURI"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Base64Binary" name="Base64Binary"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Boolean" name="Boolean"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="BooleanObject" name="BooleanObject">
+      <generalization xmi:id="BooleanObject-_generalization.0" general="Boolean"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Byte" name="Byte"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="ByteObject" name="ByteObject">
+      <generalization xmi:id="ByteObject-_generalization.0" general="Byte"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Date" name="Date">
+      <generalization xmi:id="Date-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="DateTime" name="DateTime">
+      <generalization xmi:id="DateTime-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Decimal" name="Decimal"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Double" name="Double"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="DoubleObject" name="DoubleObject">
+      <generalization xmi:id="DoubleObject-_generalization.0" general="Double"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Duration" name="Duration">
+      <generalization xmi:id="Duration-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="ENTITIES" name="ENTITIES">
+      <generalization xmi:id="ENTITIES-_generalization.0" general="ENTITIESBase"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="ENTITIESBase" name="ENTITIESBase"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="ENTITY" name="ENTITY">
+      <generalization xmi:id="ENTITY-_generalization.0" general="NCName"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NCName" name="NCName">
+      <generalization xmi:id="NCName-_generalization.0" general="Name"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Name" name="Name">
+      <generalization xmi:id="Name-_generalization.0" general="Token"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Token" name="Token">
+      <generalization xmi:id="Token-_generalization.0" general="NormalizedString"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NormalizedString" name="NormalizedString">
+      <generalization xmi:id="NormalizedString-_generalization.0" general="String"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="String" name="String"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Float" name="Float"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="FloatObject" name="FloatObject">
+      <generalization xmi:id="FloatObject-_generalization.0" general="Float"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="GDay" name="GDay">
+      <generalization xmi:id="GDay-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="GMonth" name="GMonth">
+      <generalization xmi:id="GMonth-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="GMonthDay" name="GMonthDay">
+      <generalization xmi:id="GMonthDay-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="GYear" name="GYear">
+      <generalization xmi:id="GYear-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="GYearMonth" name="GYearMonth">
+      <generalization xmi:id="GYearMonth-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="HexBinary" name="HexBinary"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="ID" name="ID">
+      <generalization xmi:id="ID-_generalization.0" general="NCName"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="IDREF" name="IDREF">
+      <generalization xmi:id="IDREF-_generalization.0" general="NCName"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="IDREFS" name="IDREFS">
+      <generalization xmi:id="IDREFS-_generalization.0" general="IDREFSBase"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="IDREFSBase" name="IDREFSBase"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Int" name="Int"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Integer" name="Integer"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="IntObject" name="IntObject">
+      <generalization xmi:id="IntObject-_generalization.0" general="Int"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Language" name="Language">
+      <generalization xmi:id="Language-_generalization.0" general="Token"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Long" name="Long"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="LongObject" name="LongObject">
+      <generalization xmi:id="LongObject-_generalization.0" general="Long"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NegativeInteger" name="NegativeInteger">
+      <generalization xmi:id="NegativeInteger-_generalization.0" general="NonPositiveInteger"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NonPositiveInteger" name="NonPositiveInteger">
+      <generalization xmi:id="NonPositiveInteger-_generalization.0" general="Integer"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NMTOKEN" name="NMTOKEN">
+      <generalization xmi:id="NMTOKEN-_generalization.0" general="Token"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NMTOKENS" name="NMTOKENS">
+      <generalization xmi:id="NMTOKENS-_generalization.0" general="NMTOKENSBase"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NMTOKENSBase" name="NMTOKENSBase"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NonNegativeInteger" name="NonNegativeInteger">
+      <generalization xmi:id="NonNegativeInteger-_generalization.0" general="Integer"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="NOTATION" name="NOTATION">
+      <generalization xmi:id="NOTATION-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="PositiveInteger" name="PositiveInteger">
+      <generalization xmi:id="PositiveInteger-_generalization.0" general="NonNegativeInteger"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="QName" name="QName">
+      <generalization xmi:id="QName-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Short" name="Short"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="ShortObject" name="ShortObject">
+      <generalization xmi:id="ShortObject-_generalization.0" general="Short"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Time" name="Time">
+      <generalization xmi:id="Time-_generalization.0" general="AnySimpleType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnsignedByte" name="UnsignedByte"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnsignedByteObject" name="UnsignedByteObject">
+      <generalization xmi:id="UnsignedByteObject-_generalization.0" general="UnsignedByte"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnsignedInt" name="UnsignedInt"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnsignedIntObject" name="UnsignedIntObject">
+      <generalization xmi:id="UnsignedIntObject-_generalization.0" general="UnsignedInt"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnsignedLong" name="UnsignedLong">
+      <generalization xmi:id="UnsignedLong-_generalization.0" general="NonNegativeInteger"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnsignedShort" name="UnsignedShort"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnsignedShortObject" name="UnsignedShortObject">
+      <generalization xmi:id="UnsignedShortObject-_generalization.0" general="UnsignedShort"/>
+    </packagedElement>
+    <profileApplication xmi:id="_profileApplication.0">
+      <eAnnotations xmi:id="_profileApplication.0-_http2F2Fwww.eclipse.org2Fuml22F2.0.02FUML" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <standard:ModelLibrary xmi:id="_9V5vwMMDEeCj2YHTjQqCqw" base_Package="_0"/>
+</xmi:XMI>
