@@ -1,4 +1,31 @@
+os: linux
 language: java
+dist: trusty
 sudo: false
-jdk:
-  - oraclejdk8
+
+jdk: oraclejdk8
+
+env: DISPLAY=:99.0
+
+install: true
+
+before_install:
+ - sudo apt-get update
+ - sudo apt-get install gnome-themes-standard
+ - sudo apt-get install metacity
+ - sudo apt-get install libwebkit-dev
+
+before_script:
+ - sh -e /etc/init.d/xvfb start
+ - sleep 10 # give xvfb some time to start
+ - metacity --sm-disable --replace &
+ - sleep 10 # give metacity some time to start
+
+script: mvn clean verify
+  
+cache:
+  directories:
+    - '~/.m2/repository'
+
+notifications:
+  email: false
