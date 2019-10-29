@@ -2,6 +2,7 @@ package edu.uoc.som.wapiml.ui.handlers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -61,7 +62,7 @@ public class ConvertToYaml extends AbstractHandler {
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
-					} catch (IOException | CoreException e) {
+					} catch (IOException | CoreException | URISyntaxException e) {
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());
 
