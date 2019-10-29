@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.eclipse.emf.common.util.EMap;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
@@ -61,21 +62,37 @@ import edu.uoc.som.openapi2.impl.SecuritySchemeEntryImpl;
 
 public class OpenAPIProfileUtils {
 
-	public static final String API_QN = OpenAPIStereotypesUtils.getStereotypeQn(API);
-	public static final String API_INFO_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_INFO);
-	public static final String EXTERNAL_DOCS_QN = OpenAPIStereotypesUtils.getStereotypeQn(EXTERNAL_DOCS);
-	public static final String TAGS_QN = OpenAPIStereotypesUtils.getStereotypeQn(TAGS);
-	public static final String SCHEMA_QN = OpenAPIStereotypesUtils.getStereotypeQn(SCHEMA);
-	public static final String API_DATA_TYPE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_DATA_TYPE);
-	public static final String API_PARAMETER_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PARAMETER);
-	public static final String API_RESPONSE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_RESPONSE);
-	public static final String API_OPERATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_OPERATION);
-	public static final String SECURITY_DEFINITIONS_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY_DEFINITIONS);
-	public static final String SECURITY_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY);
-	public static final String API_PROPERTY_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PROPERTY);
-	public static final String SERIALIZATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(SERIALIZATION);
+	public OpenAPIProfileUtils(ResourceSet resourceSet) {
+		API_QN = OpenAPIStereotypesUtils.getStereotypeQn(API, resourceSet);
+		API_INFO_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_INFO, resourceSet);
+		EXTERNAL_DOCS_QN = OpenAPIStereotypesUtils.getStereotypeQn(EXTERNAL_DOCS, resourceSet);
+		TAGS_QN = OpenAPIStereotypesUtils.getStereotypeQn(TAGS, resourceSet);
+		SCHEMA_QN = OpenAPIStereotypesUtils.getStereotypeQn(SCHEMA, resourceSet);
+		API_DATA_TYPE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_DATA_TYPE, resourceSet);
+		API_PARAMETER_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PARAMETER, resourceSet);
+		API_RESPONSE_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_RESPONSE, resourceSet);
+		API_OPERATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_OPERATION, resourceSet);
+		SECURITY_DEFINITIONS_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY_DEFINITIONS, resourceSet);
+		SECURITY_QN = OpenAPIStereotypesUtils.getStereotypeQn(SECURITY, resourceSet);
+		API_PROPERTY_QN = OpenAPIStereotypesUtils.getStereotypeQn(API_PROPERTY, resourceSet);
+		SERIALIZATION_QN = OpenAPIStereotypesUtils.getStereotypeQn(SERIALIZATION, resourceSet);
+	}
 
-	public static void applyAPIStereotype(Model model, API api) {
+	public String API_QN;
+	public String API_INFO_QN;
+	public String EXTERNAL_DOCS_QN;
+	public String TAGS_QN;
+	public String SCHEMA_QN;
+	public String API_DATA_TYPE_QN;
+	public String API_PARAMETER_QN;
+	public String API_RESPONSE_QN;
+	public String API_OPERATION_QN;
+	public String SECURITY_DEFINITIONS_QN;
+	public String SECURITY_QN;
+	public String API_PROPERTY_QN;
+	public String SERIALIZATION_QN;
+
+	public void applyAPIStereotype(Model model, API api) {
 		Stereotype apiStereotype = model.getApplicableStereotype(API_QN);
 		if (!model.isStereotypeApplied(apiStereotype)) {
 			model.applyStereotype(apiStereotype);
@@ -95,7 +112,7 @@ public class OpenAPIProfileUtils {
 
 	}
 
-	public static void applyAPIInfoStereotype(Model model, Info info) {
+	public void applyAPIInfoStereotype(Model model, Info info) {
 		Stereotype infoStereotype = model.getApplicableStereotype(API_INFO_QN);
 		if (!model.isStereotypeApplied(infoStereotype)) {
 			model.applyStereotype(infoStereotype);
@@ -119,7 +136,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static void applyExternalDocsStereotype(Model model, ExternalDocs externalDocs) {
+	public void applyExternalDocsStereotype(Model model, ExternalDocs externalDocs) {
 		Stereotype externalDocsStereotype = model.getApplicableStereotype(EXTERNAL_DOCS_QN);
 		if (!model.isStereotypeApplied(externalDocsStereotype)) {
 			model.applyStereotype(externalDocsStereotype);
@@ -128,7 +145,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(model, externalDocsStereotype, "url", externalDocs.getUrl());
 	}
 
-	public static void applySerializationStereotype(Association association, boolean includesTarget) {
+	public void applySerializationStereotype(Association association, boolean includesTarget) {
 		Stereotype serializationStereotype = association.getApplicableStereotype(SERIALIZATION_QN);
 		if (!association.isStereotypeApplied(serializationStereotype)) {
 			association.applyStereotype(serializationStereotype);
@@ -137,7 +154,7 @@ public class OpenAPIProfileUtils {
 
 	}
 
-	public static void applyTagsStereotype(Model model, List<Tag> tagList) {
+	public void applyTagsStereotype(Model model, List<Tag> tagList) {
 		Stereotype tagsStereotype = model.getApplicableStereotype(TAGS_QN);
 		if (!model.isStereotypeApplied(tagsStereotype))
 			model.applyStereotype(tagsStereotype);
@@ -155,7 +172,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(model, tagsStereotype, "tags", pTags);
 	}
 
-	public static void applySchemaStereotype(Element element, Schema schema) {
+	public void applySchemaStereotype(Element element, Schema schema) {
 		Stereotype schemaStereotype = element.getApplicableStereotype(SCHEMA_QN);
 		if (!element.isStereotypeApplied(schemaStereotype))
 			element.applyStereotype(schemaStereotype);
@@ -171,7 +188,7 @@ public class OpenAPIProfileUtils {
 
 	}
 
-	public static void applyAPIPropertyStereotype(Property property, edu.uoc.som.openapi2.Property apiProperty) {
+	public void applyAPIPropertyStereotype(Property property, edu.uoc.som.openapi2.Property apiProperty) {
 		Stereotype apiPropertyStereotype = property.getApplicableStereotype(API_PROPERTY_QN);
 		if (!property.isStereotypeApplied(apiPropertyStereotype))
 			property.applyStereotype(apiPropertyStereotype);
@@ -195,15 +212,14 @@ public class OpenAPIProfileUtils {
 
 	}
 
-	public static void setAsId(Property property) {
+	public void setAsId(Property property) {
 		Stereotype apiPropertyStereotype = property.getApplicableStereotype(API_PROPERTY_QN);
 		if (!property.isStereotypeApplied(apiPropertyStereotype))
 			property.applyStereotype(apiPropertyStereotype);
-			UMLUtil.setTaggedValue(property, apiPropertyStereotype, "isID",true);
+		UMLUtil.setTaggedValue(property, apiPropertyStereotype, "isID", true);
 	}
 
-	public static void applyAPIDataTypeStereotype(Type type, edu.uoc.som.openapi2.JSONDataType jsonDataType,
-			String format) {
+	public void applyAPIDataTypeStereotype(Type type, edu.uoc.som.openapi2.JSONDataType jsonDataType, String format) {
 		Stereotype apiDataTypeStereotype = type.getApplicableStereotype(API_DATA_TYPE_QN);
 		if (!type.isStereotypeApplied(apiDataTypeStereotype))
 			type.applyStereotype(apiDataTypeStereotype);
@@ -211,7 +227,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(type, apiDataTypeStereotype, "format", format);
 	}
 
-	public static void applyAPIParameterStereotype(Parameter parameter, edu.uoc.som.openapi2.Parameter mParameter) {
+	public void applyAPIParameterStereotype(Parameter parameter, edu.uoc.som.openapi2.Parameter mParameter) {
 		Stereotype apiParameterStereotype = parameter.getApplicableStereotype(API_PARAMETER_QN);
 		if (!parameter.isStereotypeApplied(apiParameterStereotype))
 			parameter.applyStereotype(apiParameterStereotype);
@@ -227,7 +243,7 @@ public class OpenAPIProfileUtils {
 		addJSONSchemaSubsetAttribute(parameter, apiParameterStereotype, mParameter);
 	}
 
-	public static void applyAPIResponseStereotype(Parameter parameter, Entry<String, Response> response) {
+	public void applyAPIResponseStereotype(Parameter parameter, Entry<String, Response> response) {
 		Stereotype apiResponseStereotype = parameter.getApplicableStereotype(API_RESPONSE_QN);
 		if (!parameter.isStereotypeApplied(apiResponseStereotype))
 			parameter.applyStereotype(apiResponseStereotype);
@@ -279,7 +295,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static void applyAPIOperationeStereotype(Operation operation, edu.uoc.som.openapi2.Operation mOperation) {
+	public void applyAPIOperationeStereotype(Operation operation, edu.uoc.som.openapi2.Operation mOperation) {
 		Stereotype apiOperationStereotype = operation.getApplicableStereotype(API_OPERATION_QN);
 		if (!operation.isStereotypeApplied(apiOperationStereotype))
 			operation.applyStereotype(apiOperationStereotype);
@@ -305,7 +321,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static void applyExternalDocsStereotype(Class clazz, ExternalDocs externalDocs) {
+	public void applyExternalDocsStereotype(Class clazz, ExternalDocs externalDocs) {
 		Stereotype externalDocsStereotype = clazz.getApplicableStereotype(EXTERNAL_DOCS_QN);
 		if (!clazz.isStereotypeApplied(externalDocsStereotype)) {
 			clazz.applyStereotype(externalDocsStereotype);
@@ -314,7 +330,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(clazz, externalDocsStereotype, "url", externalDocs.getUrl());
 	}
 
-	public static void applyExternalDocsStereotype(Operation operation, ExternalDocs externalDocs) {
+	public void applyExternalDocsStereotype(Operation operation, ExternalDocs externalDocs) {
 		Stereotype externalDocsStereotype = operation.getApplicableStereotype(EXTERNAL_DOCS_QN);
 		if (!operation.isStereotypeApplied(externalDocsStereotype)) {
 			operation.applyStereotype(externalDocsStereotype);
@@ -323,7 +339,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(operation, externalDocsStereotype, "url", externalDocs.getUrl());
 	}
 
-	public static void applySecurityDefinitionsStereotype(Model model, EMap<String, SecurityScheme> eMap) {
+	public void applySecurityDefinitionsStereotype(Model model, EMap<String, SecurityScheme> eMap) {
 		Stereotype securityDefinitionsStereotype = model.getApplicableStereotype(SECURITY_DEFINITIONS_QN);
 		if (!model.isStereotypeApplied(securityDefinitionsStereotype)) {
 			model.applyStereotype(securityDefinitionsStereotype);
@@ -357,7 +373,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static void applySecurityStereotype(Element element, List<SecurityRequirement> securityRequirements) {
+	public void applySecurityStereotype(Element element, List<SecurityRequirement> securityRequirements) {
 		Stereotype securityRequirementsStereotype = element.getApplicableStereotype(SECURITY_QN);
 		if (!element.isStereotypeApplied(securityRequirementsStereotype)) {
 			element.applyStereotype(securityRequirementsStereotype);
@@ -384,7 +400,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(element, securityRequirementsStereotype, "securityRequirements", pSecurityRequirements);
 	}
 
-	public static SchemeType transformSchemeType(edu.uoc.som.openapi2.SchemeType from) {
+	public SchemeType transformSchemeType(edu.uoc.som.openapi2.SchemeType from) {
 		switch (from) {
 		case HTTP:
 			return SchemeType.HTTP;
@@ -399,7 +415,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static SecuritySchemeType transformSecuritySchemeType(edu.uoc.som.openapi2.SecuritySchemeType from) {
+	public SecuritySchemeType transformSecuritySchemeType(edu.uoc.som.openapi2.SecuritySchemeType from) {
 		switch (from) {
 		case BASIC:
 			return SecuritySchemeType.BASIC;
@@ -412,7 +428,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static APIKeyLocation transformAPIKeyLocation(edu.uoc.som.openapi2.APIKeyLocation from) {
+	public APIKeyLocation transformAPIKeyLocation(edu.uoc.som.openapi2.APIKeyLocation from) {
 		switch (from) {
 		case QUERY:
 			return APIKeyLocation.QUERY;
@@ -423,7 +439,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static OAuth2FlowType transformOAuth2FlowType(edu.uoc.som.openapi2.OAuth2FlowType from) {
+	public OAuth2FlowType transformOAuth2FlowType(edu.uoc.som.openapi2.OAuth2FlowType from) {
 		switch (from) {
 		case IMPLICIT:
 			return OAuth2FlowType.IMPLICIT;
@@ -438,7 +454,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static JSONDataType transformJSONDataType(edu.uoc.som.openapi2.JSONDataType from) {
+	public JSONDataType transformJSONDataType(edu.uoc.som.openapi2.JSONDataType from) {
 		switch (from) {
 		case BOOLEAN:
 			return JSONDataType.BOOLEAN;
@@ -457,7 +473,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static HTTPMethod extractHTTPMethod(String method) {
+	public HTTPMethod extractHTTPMethod(String method) {
 		switch (method) {
 		case "GET":
 			return HTTPMethod.GET;
@@ -478,7 +494,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static ParameterLocation transformParameterLocation(edu.uoc.som.openapi2.ParameterLocation from) {
+	public ParameterLocation transformParameterLocation(edu.uoc.som.openapi2.ParameterLocation from) {
 		switch (from) {
 		case BODY:
 			return ParameterLocation.BODY;
@@ -496,7 +512,7 @@ public class OpenAPIProfileUtils {
 		return null;
 	}
 
-	public static CollectionFormat transformCollectionFormat(edu.uoc.som.openapi2.CollectionFormat from) {
+	public CollectionFormat transformCollectionFormat(edu.uoc.som.openapi2.CollectionFormat from) {
 		switch (from) {
 		case CSV:
 			return CollectionFormat.CSV;
@@ -515,7 +531,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static edu.uoc.som.openapi2.SchemeType transformSchemeType(SchemeType from) {
+	public edu.uoc.som.openapi2.SchemeType transformSchemeType(SchemeType from) {
 		switch (from) {
 		case HTTP:
 			return edu.uoc.som.openapi2.SchemeType.HTTP;
@@ -530,7 +546,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static edu.uoc.som.openapi2.SecuritySchemeType transformSecuritySchemeType(SecuritySchemeType from) {
+	public edu.uoc.som.openapi2.SecuritySchemeType transformSecuritySchemeType(SecuritySchemeType from) {
 		switch (from) {
 		case BASIC:
 			return edu.uoc.som.openapi2.SecuritySchemeType.BASIC;
@@ -543,7 +559,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static edu.uoc.som.openapi2.APIKeyLocation transformAPIKeyLocation(APIKeyLocation from) {
+	public edu.uoc.som.openapi2.APIKeyLocation transformAPIKeyLocation(APIKeyLocation from) {
 		switch (from) {
 		case QUERY:
 			return edu.uoc.som.openapi2.APIKeyLocation.QUERY;
@@ -554,7 +570,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static edu.uoc.som.openapi2.OAuth2FlowType transformOAuth2FlowType(OAuth2FlowType from) {
+	public edu.uoc.som.openapi2.OAuth2FlowType transformOAuth2FlowType(OAuth2FlowType from) {
 		switch (from) {
 		case IMPLICIT:
 			return edu.uoc.som.openapi2.OAuth2FlowType.IMPLICIT;
@@ -569,7 +585,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static edu.uoc.som.openapi2.JSONDataType transformJSONDataType(JSONDataType from) {
+	public edu.uoc.som.openapi2.JSONDataType transformJSONDataType(JSONDataType from) {
 		switch (from) {
 		case BOOLEAN:
 			return edu.uoc.som.openapi2.JSONDataType.BOOLEAN;
@@ -588,7 +604,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	public static edu.uoc.som.openapi2.ParameterLocation transformParameterLocation(ParameterLocation from) {
+	public edu.uoc.som.openapi2.ParameterLocation transformParameterLocation(ParameterLocation from) {
 		switch (from) {
 		case BODY:
 			return edu.uoc.som.openapi2.ParameterLocation.BODY;
@@ -606,20 +622,21 @@ public class OpenAPIProfileUtils {
 		return null;
 	}
 
-	public static List<Property> getId(Class clazz){
+	public List<Property> getId(Class clazz) {
 		List<Property> ids = new ArrayList<Property>();
 		for (org.eclipse.uml2.uml.Property attribute : clazz.getAllAttributes()) {
-			if (attribute.isStereotypeApplied(attribute.getApplicableStereotype(OpenAPIProfileUtils.API_PROPERTY_QN))) {
-				Boolean isID = (Boolean) UMLUtil.getTaggedValue(attribute, OpenAPIProfileUtils.API_PROPERTY_QN, "isID");
-				if(isID != null && isID.equals(Boolean.TRUE)){
+			if (attribute.isStereotypeApplied(attribute.getApplicableStereotype(API_PROPERTY_QN))) {
+				Boolean isID = (Boolean) UMLUtil.getTaggedValue(attribute, API_PROPERTY_QN, "isID");
+				if (isID != null && isID.equals(Boolean.TRUE)) {
 					ids.add(attribute);
 				}
-				
+
 			}
 		}
 		return ids;
 	}
-	public static edu.uoc.som.openapi2.CollectionFormat transformCollectionFormat(CollectionFormat from) {
+
+	public edu.uoc.som.openapi2.CollectionFormat transformCollectionFormat(CollectionFormat from) {
 		switch (from) {
 		case CSV:
 			return edu.uoc.som.openapi2.CollectionFormat.CSV;
@@ -638,7 +655,7 @@ public class OpenAPIProfileUtils {
 		}
 	}
 
-	private static void addJSONSchemaSubsetAttribute(Element element, Stereotype stereotype,
+	private void addJSONSchemaSubsetAttribute(Element element, Stereotype stereotype,
 			JSONSchemaSubset jsonSchemaSubset) {
 		UMLUtil.setTaggedValue(element, stereotype, "pattern", jsonSchemaSubset.getPattern());
 		UMLUtil.setTaggedValue(element, stereotype, "exclusiveMinimum", jsonSchemaSubset.getExclusiveMinimum());
@@ -651,7 +668,7 @@ public class OpenAPIProfileUtils {
 		UMLUtil.setTaggedValue(element, stereotype, "multipleOf", jsonSchemaSubset.getMultipleOf());
 	}
 
-	public static void extractJSONSchemaSubsetproperties(Element element, String stereotypeQN,
+	public void extractJSONSchemaSubsetproperties(Element element, String stereotypeQN,
 			JSONSchemaSubset jsonSchemaSubset) {
 		jsonSchemaSubset.setPattern((String) UMLUtil.getTaggedValue(element, stereotypeQN, "pattern"));
 		jsonSchemaSubset
