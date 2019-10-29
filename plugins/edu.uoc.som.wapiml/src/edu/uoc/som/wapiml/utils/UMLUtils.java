@@ -1,13 +1,18 @@
 package edu.uoc.som.wapiml.utils;
 
 import java.io.File;
+import java.net.URISyntaxException;
 
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.UMLPlugin;
 import org.eclipse.uml2.uml.resource.UMLResource;
+
+import edu.uoc.som.openapi2.profile.OpenAPIProfilePackage;
 
 public class UMLUtils {
 
@@ -25,27 +30,38 @@ public class UMLUtils {
 	}
 	
 	
-	public static ResourceSet initUMLResourceSet(boolean standalone) {
+	public static ResourceSet initUMLResourceSet(boolean standalone) throws URISyntaxException {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		
 		
 
-	
+		
 		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
 				UMLResource.Factory.INSTANCE);
+		Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap( ).put(UMLResource.FILE_EXTENSION,
+				UMLResource.Factory.INSTANCE);
 		if (standalone) {
-			File baseURIFolder = new File(UMLUtils.class.getResource("resources").getFile());
-			URI baseUri = URI.createFileURI(baseURIFolder.getAbsolutePath());
+			Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap( ).put(UMLResource.FILE_EXTENSION,
+					UMLResource.Factory.INSTANCE);
+//			File baseURIFolder = new File(UMLUtils.class.getResource("resources").getFile());
+//			URI baseUri = URI.createURI("jar:"+baseURIFolder.getPath());
+//			java.net.URI uri = UMLUtils.class.getResource("").toURI();
+//			URI baseUri = URI.createURI(UMLUtils.class.getResource("resources").toURI().toString());
+			URI baseUri = IOUtils.getResourcesURI();
+			URI umlBaseUri = baseUri.appendSegment("uml");
+			URI openAPIBaseUri = baseUri.appendSegment("openapi");
+			resourceSet.getPackageRegistry().put(OpenAPIProfilePackage.eNS_URI, OpenAPIProfilePackage.eINSTANCE);
 			resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.LIBRARIES_PATHMAP),
-					baseUri.appendSegment("libraries").appendSegment(""));
+					umlBaseUri.appendSegment("libraries").appendSegment(""));
 			resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.METAMODELS_PATHMAP),
-					baseUri.appendSegment("metamodels").appendSegment(""));
+					umlBaseUri.appendSegment("metamodels").appendSegment(""));
 			resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.PROFILES_PATHMAP),
-					baseUri.appendSegment("profiles").appendSegment(""));
+					umlBaseUri.appendSegment("profiles").appendSegment(""));
 			resourceSet.getURIConverter().getURIMap().put(
-					URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"),
-					baseUri.appendSegment("openapi.profile").appendFileExtension("uml"));
+					URI.createURI("pathmap://OPENAPI_PROFILES/"),
+					openAPIBaseUri.appendSegment(""));
+			UMLPlugin.getEPackageNsURIToProfileLocationMap().put(OpenAPIProfilePackage.eNS_URI, URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml").appendFragment("_8zK3wHyGEemaV87q0fd26g"));
 
 
 
