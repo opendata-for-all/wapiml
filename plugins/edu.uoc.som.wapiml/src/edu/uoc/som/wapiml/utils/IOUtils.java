@@ -54,17 +54,6 @@ public class IOUtils {
 		
 		
 	}
-	public static boolean isStandalone() {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		try {
-			resourceSet.getResource(
-					URI.createPlatformPluginURI("edu.uoc.som.openapi2.profile/resources/openapi.profile.uml", true),
-					true);
-			return false;
-		} catch (Exception e) {
-			return true;
-		}
-	}
-
+	
 	
 }
