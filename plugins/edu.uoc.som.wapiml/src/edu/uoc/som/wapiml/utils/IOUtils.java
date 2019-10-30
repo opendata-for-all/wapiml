@@ -43,17 +43,19 @@ public class IOUtils {
 
 	}
 
-	public static URI getResourcesURI() throws URISyntaxException {
-		String resourceURIString = UMLUtils.class.getResource("").toURI().toString();
-		String baseURIString = resourceURIString.substring(0, resourceURIString.indexOf("!")+2);
-		System.out.println(baseURIString);
-		return URI.createURI(baseURIString).appendSegment("resources");
+	public static URI getResourcesURI()  {
+		try {
+			String resourceURIString = UMLUtils.class.getResource("").toURI().toString();
+			return URI.createURI(resourceURIString.substring(0, resourceURIString.indexOf("!")+2)).appendSegment("resources");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+		
 	}
 	public static boolean isStandalone() {
-		System.out.println("boom");
 		ResourceSet resourceSet = new ResourceSetImpl();
-	
-
 		try {
 			resourceSet.getResource(
 					URI.createPlatformPluginURI("edu.uoc.som.openapi2.profile/resources/openapi.profile.uml", true),
