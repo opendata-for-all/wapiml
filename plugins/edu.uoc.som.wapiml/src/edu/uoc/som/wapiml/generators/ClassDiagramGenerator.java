@@ -3,7 +3,6 @@ package edu.uoc.som.wapiml.generators;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +17,6 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
@@ -40,7 +38,6 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
 import edu.uoc.som.openapi2.API;
@@ -52,10 +49,9 @@ import edu.uoc.som.openapi2.Path;
 import edu.uoc.som.openapi2.Response;
 import edu.uoc.som.openapi2.Schema;
 import edu.uoc.som.wapiml.model.AssociationCandidate;
-import edu.uoc.som.wapiml.utils.IOUtils;
+import edu.uoc.som.wapiml.resources.WAPImlResource;
 import edu.uoc.som.wapiml.utils.OpenAPIProfileUtils;
 import edu.uoc.som.wapiml.utils.OpenAPIUtils;
-import edu.uoc.som.wapiml.utils.UMLUtils;
 
 public class ClassDiagramGenerator implements Serializable {
 	/**
@@ -63,7 +59,7 @@ public class ClassDiagramGenerator implements Serializable {
 		 */
 	private static final long serialVersionUID = 1L;
 	private UMLFactory umlFactory;
-	private ResourceSet resourceSet;
+	private ResourceSet umlResourceSet;
 	private Resource openAPIProfileResource;
 
 	private Model umlModel;
@@ -75,8 +71,6 @@ public class ClassDiagramGenerator implements Serializable {
 	private List<AssociationCandidate> associations;
 	private Map<edu.uoc.som.openapi2.Property, Property> propertiesMaps = new HashMap<>();
 	private Map<Schema, Class> schemaMaps = new HashMap<>();
-	private boolean standalone;
-	private OpenAPIProfileUtils openAPIProfileUtils;
 
 	public ClassDiagramGenerator(API openAPIModel, String modelName, boolean applyProfile, boolean discoverAssociations)
 			throws IOException, URISyntaxException {
@@ -86,18 +80,16 @@ public class ClassDiagramGenerator implements Serializable {
 		this.applyProfile = applyProfile;
 		this.discoverAssociations = discoverAssociations;
 		umlFactory = UMLFactory.eINSTANCE;
-		standalone = IOUtils.isStandalone();
-		resourceSet = UMLUtils.initUMLResourceSet(standalone);
-		openAPIProfileResource = resourceSet
+		umlResourceSet = WAPImlResource.getUMResourceSet();
+		openAPIProfileResource = umlResourceSet
 					.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
-		openAPIProfileUtils = new OpenAPIProfileUtils(resourceSet);
 
 		// create a temp file to hold the UML resource. The resource should exists to be
 		// able to apply the profile
 		File tempUMLFile = File.createTempFile("uml" + RandomStringUtils.random(10, true, false), ".uml");
 		tempUMLFile.deleteOnExit();
 		URI resourceURI = URI.createFileURI(tempUMLFile.getPath());
-		Resource umlModelResource = resourceSet.createResource(resourceURI);
+		Resource umlModelResource = umlResourceSet.createResource(resourceURI);
 		umlModel = UMLFactory.eINSTANCE.createModel();
 		umlModelResource.getContents().add(umlModel);
 		// We collect the explicit associations from json schema
@@ -207,17 +199,17 @@ public class ClassDiagramGenerator implements Serializable {
 		umlModel.getPackagedElements().add(types);
 
 		if (applyProfile) {
-			openAPIProfileUtils.applyAPIStereotype(umlModel, openAPIModel);
+			OpenAPIProfileUtils.applyAPIStereotype(umlModel, openAPIModel);
 			if (openAPIModel.getInfo() != null)
-				openAPIProfileUtils.applyAPIInfoStereotype(umlModel, openAPIModel.getInfo());
+				OpenAPIProfileUtils.applyAPIInfoStereotype(umlModel, openAPIModel.getInfo());
 			if (openAPIModel.getExternalDocs() != null)
-				openAPIProfileUtils.applyExternalDocsStereotype(umlModel, openAPIModel.getExternalDocs());
+				OpenAPIProfileUtils.applyExternalDocsStereotype(umlModel, openAPIModel.getExternalDocs());
 			if (!openAPIModel.getSecurityDefinitions().isEmpty())
-				openAPIProfileUtils.applySecurityDefinitionsStereotype(umlModel, openAPIModel.getSecurityDefinitions());
+				OpenAPIProfileUtils.applySecurityDefinitionsStereotype(umlModel, openAPIModel.getSecurityDefinitions());
 			if (!openAPIModel.getTags().isEmpty())
-				openAPIProfileUtils.applyTagsStereotype(umlModel, openAPIModel.getTags());
+				OpenAPIProfileUtils.applyTagsStereotype(umlModel, openAPIModel.getTags());
 			if (!openAPIModel.getSecurity().isEmpty())
-				openAPIProfileUtils.applySecurityStereotype(umlModel, openAPIModel.getSecurity());
+				OpenAPIProfileUtils.applySecurityStereotype(umlModel, openAPIModel.getSecurity());
 
 		}
 
@@ -228,9 +220,9 @@ public class ClassDiagramGenerator implements Serializable {
 				clazz.setName(definition.getKey());
 				package_.getOwnedTypes().add(clazz);
 				if (applyProfile) {
-					openAPIProfileUtils.applySchemaStereotype(clazz, definition.getValue());
+					OpenAPIProfileUtils.applySchemaStereotype(clazz, definition.getValue());
 					if (definition.getValue().getExternalDocs() != null)
-						openAPIProfileUtils.applyExternalDocsStereotype(clazz, definition.getValue().getExternalDocs());
+						OpenAPIProfileUtils.applyExternalDocsStereotype(clazz, definition.getValue().getExternalDocs());
 				}
 				schemaMaps.put(definition.getValue(), clazz);
 				addProperties(types, definition.getValue(), definition.getKey(), clazz);
@@ -270,13 +262,13 @@ public class ClassDiagramGenerator implements Serializable {
 					Class clazz = schemaMaps.get(definition.getValue());
 					Schema additionalPropertiesSchema = definition.getValue().getAdditonalProperties();
 					if (OpenAPIUtils.isPrimitive(additionalPropertiesSchema)) {
-						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(openAPIProfileUtils.SCHEMA_QN),
+						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN),
 								"additionalProperties", getUMLType(types, additionalPropertiesSchema.getType(),
 										additionalPropertiesSchema.getFormat()));
 					}
 					if (OpenAPIUtils.isObject(additionalPropertiesSchema)) {
 						Class referencedClass = schemaMaps.get(additionalPropertiesSchema);
-						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(openAPIProfileUtils.SCHEMA_QN),
+						UMLUtil.setTaggedValue(clazz, clazz.getApplicableStereotype(OpenAPIProfileUtils.SCHEMA_QN),
 								"additionalProperties", referencedClass);
 					}
 
@@ -288,7 +280,7 @@ public class ClassDiagramGenerator implements Serializable {
 			Association association = createAssociation(associationCandidate);
 			package_.getPackagedElements().add(association);
 			if (applyProfile) {
-				openAPIProfileUtils.applySerializationStereotype(association, true);
+				OpenAPIProfileUtils.applySerializationStereotype(association, true);
 
 			}
 		}
@@ -321,11 +313,11 @@ public class ClassDiagramGenerator implements Serializable {
 			umlOperation.setName(OpenAPIUtils.getOperationName(operation));
 			clazz.getOwnedOperations().add(umlOperation);
 			if (applyProfile) {
-				openAPIProfileUtils.applyAPIOperationeStereotype(umlOperation, operation);
+				OpenAPIProfileUtils.applyAPIOperationeStereotype(umlOperation, operation);
 				if (operation.getExternalDocs() != null)
-					openAPIProfileUtils.applyExternalDocsStereotype(umlOperation, operation.getExternalDocs());
+					OpenAPIProfileUtils.applyExternalDocsStereotype(umlOperation, operation.getExternalDocs());
 				if (!operation.getSecurity().isEmpty())
-					openAPIProfileUtils.applySecurityStereotype(umlOperation, operation.getSecurity());
+					OpenAPIProfileUtils.applySecurityStereotype(umlOperation, operation.getSecurity());
 			}
 			for (Parameter parameter : operation.getParameters()) {
 				org.eclipse.uml2.uml.Parameter umlParameter = umlFactory.createParameter();
@@ -400,7 +392,7 @@ public class ClassDiagramGenerator implements Serializable {
 
 				umlOperation.getOwnedParameters().add(umlParameter);
 				if (applyProfile) {
-					openAPIProfileUtils.applyAPIParameterStereotype(umlParameter, parameter);
+					OpenAPIProfileUtils.applyAPIParameterStereotype(umlParameter, parameter);
 				}
 			}
 			if (!operation.getResponses().isEmpty()) {
@@ -427,7 +419,7 @@ public class ClassDiagramGenerator implements Serializable {
 					returnedParameter.setDirection(ParameterDirectionKind.RETURN_LITERAL);
 					umlOperation.getOwnedParameters().add(returnedParameter);
 					if (applyProfile) {
-						openAPIProfileUtils.applyAPIResponseStereotype(returnedParameter, response);
+						OpenAPIProfileUtils.applyAPIResponseStereotype(returnedParameter, response);
 
 					}
 
@@ -453,7 +445,7 @@ public class ClassDiagramGenerator implements Serializable {
 			// we need to add isID to the target property.
 			if (associationCandidate.getTargetProperty() != null) {
 				if (applyProfile)
-					openAPIProfileUtils.setAsId(propertiesMaps.get(associationCandidate.getTargetProperty()));
+					OpenAPIProfileUtils.setAsId(propertiesMaps.get(associationCandidate.getTargetProperty()));
 				else
 					addAnnotation(propertiesMaps.get(associationCandidate.getTargetProperty()), "isID", "true");
 			}
@@ -462,7 +454,7 @@ public class ClassDiagramGenerator implements Serializable {
 		for (Association association : associations) {
 			package_.getPackagedElements().add(association);
 			if (applyProfile) {
-				openAPIProfileUtils.applySerializationStereotype(association, false);
+				OpenAPIProfileUtils.applySerializationStereotype(association, false);
 			}
 		}
 		for (Property property : propertiesToRemore) {
@@ -558,7 +550,7 @@ public class ClassDiagramGenerator implements Serializable {
 				}
 				clazz.getOwnedAttributes().add(umlProperty);
 				if (applyProfile) {
-					openAPIProfileUtils.applyAPIPropertyStereotype(umlProperty, openAPIproperty);
+					OpenAPIProfileUtils.applyAPIPropertyStereotype(umlProperty, openAPIproperty);
 				}
 			}
 		}
@@ -638,7 +630,7 @@ public class ClassDiagramGenerator implements Serializable {
 			primitiveType.setName(commonName);
 			types.getOwnedTypes().add(primitiveType);
 			if (applyProfile) {
-				openAPIProfileUtils.applyAPIDataTypeStereotype((PrimitiveType) primitiveType, jsonDataType, format);
+				OpenAPIProfileUtils.applyAPIDataTypeStereotype((PrimitiveType) primitiveType, jsonDataType, format);
 			}
 			return primitiveType;
 		}
@@ -659,7 +651,7 @@ public class ClassDiagramGenerator implements Serializable {
 				enumeration.getOwnedLiterals().add(literal);
 			}
 			if (applyProfile) {
-				openAPIProfileUtils.applyAPIDataTypeStereotype((Enumeration) enumeration, JSONDataType.STRING, null);
+				OpenAPIProfileUtils.applyAPIDataTypeStereotype((Enumeration) enumeration, JSONDataType.STRING, null);
 			}
 			return enumeration;
 		}
