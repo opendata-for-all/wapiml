@@ -1,6 +1,9 @@
 
 # WAPIml
 
+[![License Badge](https://img.shields.io/badge/license-EPL%202.0-brightgreen.svg)](https://opensource.org/licenses/EPL-2.0)
+[![Build Status](https://travis-ci.org/opendata-for-all/wapiml.svg?branch=master)](https://travis-ci.org/opendata-for-all/wapiml)
+
 WAPIml is an OpenAPI round-trip tool that leverages model-driven techniques to create, visualize, manage, and generate OpenAPI
 definitions. WAPIml embeds an OpenAPI metamodel but also a UML profile to enable working with OpenAPI in any Eclipse UML-compatible modeling tool.
 
