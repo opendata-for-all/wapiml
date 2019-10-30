@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-
 import edu.uoc.som.openapi2.API;
 import edu.uoc.som.openapi2.io.ExporterBuilder;
 import edu.uoc.som.openapi2.io.OpenAPI2Importer;
