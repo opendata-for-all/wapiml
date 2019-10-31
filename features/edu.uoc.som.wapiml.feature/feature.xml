@@ -2,7 +2,7 @@
 <feature
       id="edu.uoc.som.wapiml.feature"
       label="WAPIml"
-      version="1.1.0.qualifier"
+      version="1.2.0.qualifier"
       provider-name="SOM Research Lab">
 
    <description url="https://github.com/SOM-Research/WAPIml">
