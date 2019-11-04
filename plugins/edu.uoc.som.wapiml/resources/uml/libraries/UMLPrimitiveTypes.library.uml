@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:Ecore="http://www.eclipse.org/uml2/schemas/Ecore/5" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:standard="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xsi:schemaLocation="http://www.eclipse.org/uml2/schemas/Ecore/5 pathmap://UML_PROFILES/Ecore.profile.uml#_z1OFcHjqEdy8S4Cr8Rc_NA">
+  <uml:Model xmi:id="_0" name="PrimitiveTypes" URI="http://www.omg.org/spec/PrimitiveTypes/20131001">
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Boolean" name="Boolean">
+      <ownedComment xmi:id="Boolean-_ownedComment.0" annotatedElement="Boolean">
+        <body>Boolean is used for logical expressions, consisting of the predefined values true and false.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Integer" name="Integer">
+      <ownedComment xmi:id="Integer-_ownedComment.0" annotatedElement="Integer">
+        <body>Integer is a primitive type representing integer values.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="Real" name="Real">
+      <ownedComment xmi:id="Real-_ownedComment.0" annotatedElement="Real">
+        <body>Real is a primitive type representing the mathematical concept of real.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="String" name="String">
+      <ownedComment xmi:id="String-_ownedComment.0" annotatedElement="String">
+        <body>String is a sequence of characters in some suitable character set used to display information about the model. Character sets may include non-Roman alphabets and characters.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="UnlimitedNatural" name="UnlimitedNatural">
+      <ownedComment xmi:id="UnlimitedNatural-_ownedComment.0" annotatedElement="UnlimitedNatural">
+        <body>UnlimitedNatural is a primitive type representing unlimited natural values.</body>
+      </ownedComment>
+    </packagedElement>
+    <profileApplication xmi:id="_profileApplication.0">
+      <eAnnotations xmi:id="_profileApplication.0-_http2F2Fwww.eclipse.org2Fuml22F2.0.02FUML" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="pathmap://UML_PROFILES/Ecore.profile.uml#_z1OFcHjqEdy8S4Cr8Rc_NA"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Ecore.profile.uml#_0"/>
+    </profileApplication>
+    <profileApplication xmi:id="_profileApplication.1">
+      <eAnnotations xmi:id="_profileApplication.1-_http2F2Fwww.eclipse.org2Fuml22F2.0.02FUML" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="http://www.eclipse.org/uml2/5.0.0/UML/Profile/Standard#/"/>
+      </eAnnotations>
+      <appliedProfile href="pathmap://UML_PROFILES/Standard.profile.uml#_0"/>
+    </profileApplication>
+  </uml:Model>
+  <Ecore:EPackage xmi:id="_eHAUgKzuEeC4yJrLbEUOVg" base_Package="_0" packageName="types" nsPrefix="types" nsURI="http://www.eclipse.org/uml2/5.0.0/Types" basePackage="org.eclipse.uml2" prefix="Types"/>
+  <Ecore:EDataType xmi:id="_unENgKzuEeC4yJrLbEUOVg" instanceClassName="boolean" base_PrimitiveType="Boolean"/>
+  <Ecore:EDataType xmi:id="_wSOHwKzuEeC4yJrLbEUOVg" instanceClassName="int" base_PrimitiveType="Integer"/>
+  <Ecore:EDataType xmi:id="_yCpjkKzuEeC4yJrLbEUOVg" instanceClassName="double" base_PrimitiveType="Real"/>
+  <Ecore:EDataType xmi:id="_z95IQKzuEeC4yJrLbEUOVg" instanceClassName="java.lang.String" base_PrimitiveType="String"/>
+  <Ecore:EDataType xmi:id="_2fJkEKzuEeC4yJrLbEUOVg" instanceClassName="int" base_PrimitiveType="UnlimitedNatural"/>
+  <standard:ModelLibrary xmi:id="_LSAUcIx7EeOumeDJYV0ScA" base_Package="_0"/>
+</xmi:XMI>

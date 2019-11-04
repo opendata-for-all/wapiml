@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: WAPIml
-Bundle-SymbolicName: edu.uoc.som.wapiml
+Bundle-SymbolicName: edu.uoc.som.wapiml;singleton:=true
 Require-Bundle: org.eclipse.uml2.uml,
  org.eclipse.uml2.uml.resources,
  org.eclipse.emf.ecore.xmi,
@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.uml2.uml,
  org.apache.commons.lang3;bundle-version="3.1.0",
  org.apache.commons.io;bundle-version="2.6.0",
  org.apache.log4j;bundle-version="1.2.15"
-Bundle-Version: 1.1.0.qualifier
+Bundle-Version: 1.2.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ClassPath: .
 Export-Package: edu.uoc.som.wapiml.exception,
@@ -21,3 +21,4 @@ Export-Package: edu.uoc.som.wapiml.exception,
  edu.uoc.som.wapiml.model,
  edu.uoc.som.wapiml.utils
 Bundle-Vendor: SOM Research Lab
+Bundle-ActivationPolicy: lazy

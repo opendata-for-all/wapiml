@@ -2,8 +2,9 @@ package edu.uoc.som.wapiml.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
-
+import org.eclipse.emf.common.util.URI;
 import edu.uoc.som.openapi2.API;
 import edu.uoc.som.openapi2.io.ExporterBuilder;
 import edu.uoc.som.openapi2.io.OpenAPI2Importer;
@@ -25,7 +26,7 @@ public class IOUtils {
 	}
 
 	public static void convertAndSaveOpenAPIDefinition(File inputFile, File targetFile,
-			SerializationFormat serializationFormat) throws IOException {
+			SerializationFormat serializationFormat) throws IOException, URISyntaxException {
 		OpenAPIModelGenerator openAPIModelGenerator = new OpenAPIModelGenerator(inputFile);
 		API api = openAPIModelGenerator.generate();
 		if (serializationFormat.equals(SerializationFormat.JSON)) {
@@ -39,4 +40,17 @@ public class IOUtils {
 
 	}
 
+	public static URI getResourcesURI()  {
+		try {
+			String resourceURIString = UMLUtils.class.getResource("").toURI().toString();
+			return URI.createURI(resourceURIString.substring(0, resourceURIString.indexOf("!")+2)).appendSegment("resources");
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+		return null;
+		
+		
+	}
+	
+	
 }

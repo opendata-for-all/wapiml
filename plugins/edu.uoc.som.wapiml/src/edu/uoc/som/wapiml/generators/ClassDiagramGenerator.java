@@ -3,6 +3,7 @@ package edu.uoc.som.wapiml.generators;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +17,6 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.uml2.uml.AggregationKind;
 import org.eclipse.uml2.uml.Association;
@@ -38,7 +38,6 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Type;
 import org.eclipse.uml2.uml.UMLFactory;
 import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
 import edu.uoc.som.openapi2.API;
@@ -50,6 +49,7 @@ import edu.uoc.som.openapi2.Path;
 import edu.uoc.som.openapi2.Response;
 import edu.uoc.som.openapi2.Schema;
 import edu.uoc.som.wapiml.model.AssociationCandidate;
+import edu.uoc.som.wapiml.resources.WAPImlResource;
 import edu.uoc.som.wapiml.utils.OpenAPIProfileUtils;
 import edu.uoc.som.wapiml.utils.OpenAPIUtils;
 
@@ -59,7 +59,7 @@ public class ClassDiagramGenerator implements Serializable {
 		 */
 	private static final long serialVersionUID = 1L;
 	private UMLFactory umlFactory;
-	private ResourceSet resourceSet;
+	private ResourceSet umlResourceSet;
 	private Resource openAPIProfileResource;
 
 	private Model umlModel;
@@ -73,23 +73,23 @@ public class ClassDiagramGenerator implements Serializable {
 	private Map<Schema, Class> schemaMaps = new HashMap<>();
 
 	public ClassDiagramGenerator(API openAPIModel, String modelName, boolean applyProfile, boolean discoverAssociations)
-			throws IOException {
+			throws IOException, URISyntaxException {
+
 		this.openAPIModel = openAPIModel;
 		this.modelName = modelName;
 		this.applyProfile = applyProfile;
 		this.discoverAssociations = discoverAssociations;
-
 		umlFactory = UMLFactory.eINSTANCE;
-		resourceSet = initUMLResourceSet();
-		openAPIProfileResource = resourceSet
-				.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
+		umlResourceSet = WAPImlResource.getUMResourceSet();
+		openAPIProfileResource = umlResourceSet
+					.getResource(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"), true);
 
 		// create a temp file to hold the UML resource. The resource should exists to be
 		// able to apply the profile
 		File tempUMLFile = File.createTempFile("uml" + RandomStringUtils.random(10, true, false), ".uml");
 		tempUMLFile.deleteOnExit();
 		URI resourceURI = URI.createFileURI(tempUMLFile.getPath());
-		Resource umlModelResource = resourceSet.createResource(resourceURI);
+		Resource umlModelResource = umlResourceSet.createResource(resourceURI);
 		umlModel = UMLFactory.eINSTANCE.createModel();
 		umlModelResource.getContents().add(umlModel);
 		// We collect the explicit associations from json schema
@@ -99,28 +99,8 @@ public class ClassDiagramGenerator implements Serializable {
 
 	}
 
-	// this methods sets the resourceSet to work with UML and OpenAP profile
-	private ResourceSet initUMLResourceSet() {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-				UMLResource.Factory.INSTANCE);
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"),
-				URI.createPlatformPluginURI("edu.uoc.som.openapi2.profile/resources/openapi.profile.uml", true));
-		resourceSet.getURIConverter().getURIMap().put(
-				URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"), URI.createPlatformPluginURI(
-						"org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml", true));
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.LIBRARIES_PATHMAP),
-				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("libraries")
-						.appendSegment(""));
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.METAMODELS_PATHMAP),
-				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("metamodels")
-						.appendSegment(""));
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.PROFILES_PATHMAP),
-				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("profiles")
-						.appendSegment(""));
-		return resourceSet;
-	}
+	
+	
 
 	// this methods returns the list of explicit associations which are defined in
 	// the definitions
@@ -676,7 +656,7 @@ public class ClassDiagramGenerator implements Serializable {
 			return enumeration;
 		}
 	}
-
+	
 	/**
 	 * Adds a OCL constraint to a concept
 	 * 

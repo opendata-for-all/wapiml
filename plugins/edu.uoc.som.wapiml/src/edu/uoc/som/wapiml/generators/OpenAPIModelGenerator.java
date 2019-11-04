@@ -1,6 +1,7 @@
 package edu.uoc.som.wapiml.generators;
 
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,7 +12,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.DataType;
@@ -27,8 +27,6 @@ import org.eclipse.uml2.uml.ParameterDirectionKind;
 import org.eclipse.uml2.uml.PrimitiveType;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.Type;
-import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
 import org.eclipse.uml2.uml.util.UMLUtil;
 
 import edu.uoc.som.openapi2.profile.CollectionFormat;
@@ -54,45 +52,27 @@ import edu.uoc.som.openapi2.SecurityRequirement;
 import edu.uoc.som.openapi2.SecurityScheme;
 import edu.uoc.som.openapi2.impl.ResponseEntryImpl;
 import edu.uoc.som.openapi2.impl.SchemaEntryImpl;
+import edu.uoc.som.wapiml.resources.WAPImlResource;
 import edu.uoc.som.wapiml.utils.OpenAPIProfileUtils;
 
 public class OpenAPIModelGenerator {
 
 	private ExtendedOpenAPI2Factory factory = ExtendedOpenAPI2Factory.eINSTANCE;
-	private ResourceSet resourceSet;
+	private ResourceSet umlResourceSet;
 	private Resource resource;
 	private Map<Class, Schema> classMap = new HashMap<Class, Schema>();
 	private Model umlModel;
 	private API api;
 
-	public OpenAPIModelGenerator(File modelFile) {
-		resourceSet = initUMLResourceSet();
-		resource = resourceSet.getResource(URI.createFileURI(modelFile.getPath()), true);
+
+	public OpenAPIModelGenerator(File modelFile) throws URISyntaxException {
+		umlResourceSet = WAPImlResource.getUMResourceSet();
+		resource = umlResourceSet.getResource(URI.createFileURI(modelFile.getPath()), true);
 		umlModel = (Model) resource.getContents().get(0);
+		
 
 	}
 
-	private ResourceSet initUMLResourceSet() {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		resourceSet.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION,
-				UMLResource.Factory.INSTANCE);
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI("pathmap://OPENAPI_PROFILES/openapi.profile.uml"),
-				URI.createPlatformPluginURI("edu.uoc.som.openapi2.profile/resources/openapi.profile.uml", true));
-		resourceSet.getURIConverter().getURIMap().put(
-				URI.createURI("pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml"), URI.createPlatformPluginURI(
-						"org.eclipse.uml2.uml.resources/libraries/UMLPrimitiveTypes.library.uml", true));
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.LIBRARIES_PATHMAP),
-				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("libraries")
-						.appendSegment(""));
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.METAMODELS_PATHMAP),
-				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("metamodels")
-						.appendSegment(""));
-		resourceSet.getURIConverter().getURIMap().put(URI.createURI(UMLResource.PROFILES_PATHMAP),
-				URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true).appendSegment("profiles")
-						.appendSegment(""));
-		return resourceSet;
-	}
 
 	public API generate() {
 
@@ -715,4 +695,5 @@ public class OpenAPIModelGenerator {
 	public void setApi(API api) {
 		this.api = api;
 	}
+	
 }

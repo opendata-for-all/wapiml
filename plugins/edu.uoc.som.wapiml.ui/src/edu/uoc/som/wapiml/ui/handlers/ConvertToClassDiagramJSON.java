@@ -2,6 +2,7 @@ package edu.uoc.som.wapiml.ui.handlers;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Iterator;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -78,7 +79,7 @@ public class ConvertToClassDiagramJSON extends AbstractHandler {
 								iFile.getProject().refreshLocal(IResource.DEPTH_INFINITE, monitor);
 							}
 						}
-					} catch (IOException | CoreException | OpenAPIProcessingException | OpenAPIValidationException e) {
+					} catch (IOException | CoreException | OpenAPIProcessingException | OpenAPIValidationException | URISyntaxException e) {
 						e.printStackTrace();
 						return new Status(IStatus.ERROR, WAPImlUIPlugin.PLUGIN_ID, e.getLocalizedMessage(),
 								e.getCause());

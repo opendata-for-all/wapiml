@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.junit.Test;
 
@@ -31,7 +32,7 @@ public class TestOpenAPIValidatorProfile {
 
 	@Test(expected = OpenAPIValidationException.class)
 	public void testGenerateClassDiagramInvalidDef()
-			throws  IOException {
+			throws  IOException, URISyntaxException {
 		File input = new File("resources/inputs/bad-petstore.json");
 		API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
 		ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "bad-petstore", false, true);
