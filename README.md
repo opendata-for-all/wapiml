@@ -1,8 +1,9 @@
 
 # WAPIml
 
-[![License Badge](https://img.shields.io/badge/license-EPL%202.0-brightgreen.svg)](https://opensource.org/licenses/EPL-2.0)
 [![Build Status](https://travis-ci.org/opendata-for-all/wapiml.svg?branch=master)](https://travis-ci.org/opendata-for-all/wapiml)
+[![Version 1.1.0 Badge][version-badge]][changelog]
+[![License Badge](https://img.shields.io/badge/license-EPL%202.0-brightgreen.svg)](https://opensource.org/licenses/EPL-2.0)
 
 WAPIml is an OpenAPI round-trip tool that leverages model-driven techniques to create, visualize, manage, and generate OpenAPI
 definitions. WAPIml embeds an OpenAPI metamodel but also a UML profile to enable working with OpenAPI in any Eclipse UML-compatible modeling tool.
@@ -37,7 +38,7 @@ N.B. The legacy tool **OpenAPItoUML**, which generates UML models from OpenAPI d
 	
 ![page1](https://opendata-for-all.github.io/wapiml/images/wapiml/page1.PNG)
 
-4. Check *Apply the OpenAPI profile* if you want to enrich your UML model with OpenAPI stereotypes (this mandatory if you want to generate an OpenAPI definition later) and check *Discover associations* if you want the process to discover implicit associations by analyzing schema properties (note: this only concerns the association that are not explicity defined. Explicit associations will be included in the model either way).
+4. Check *Apply the OpenAPI profile* if you want to enrich your UML model with OpenAPI stereotypes (this mandatory if you want to generate an OpenAPI definition later) and check *Discover associations* if you want the process to discover implicit associations by analyzing schema properties (note: this only concerns the association that are not explicitly defined. Explicit associations will be included in the model either way).
 5. Click on *Next*. This will display the second page of the wizard.
 
 ![page1](https://opendata-for-all.github.io/wapiml/images/wapiml/page2.PNG)
@@ -54,8 +55,8 @@ From a generated model:
 
 1. Open the perspective *Papyrus*.
 2. Right-click on the generated UML model and select *New -> Papyrus Model*.
-4. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initializtion information* step where you should check *Class Diagram* as the Respresentation kind).
-5. Drag-and-drop the UML elements from the *Model Expoler* into the editor.
+4. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initialization information* step where you should check *Class Diagram* as the Respresentation kind).
+5. Drag-and-drop the UML elements from the *Model Explorer* into the editor.
 6. Align and arrange the layout as you prefer.
 7. Save.
 
@@ -65,14 +66,14 @@ From scratch:
 
 1. Open the perspective *Papyrus*.
 2. Click on *File* then select *New -> Papyrus Model*.
-3. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initializtion information* step where you should check *Class Diagram* as the Respresentation kind and click on *Browse Registrered Profiles* and select *OpenAPI* as shown below).
+3. Follow the steps in the wizard to initialize a Class diagram (keep everything as predefined except in the *Initialization information* step where you should check *Class Diagram* as the Representation kind and click on *Browse Registered Profiles* and select *OpenAPI* as shown below).
 
 ![profile](https://opendata-for-all.github.io/wapiml/images/wapiml/capture3.PNG)
 
 4. Add UML elements to the canvas.
-5. Use the the *Properties* view to apply the streotypes and set the tag values (see an example below).
+5. Use the the *Properties* view to apply the stereotypes and set the tag values (see an example below).
 
-![Propertis views](https://opendata-for-all.github.io/wapiml/images/wapiml/capture4.PNG)
+![Properties views](https://opendata-for-all.github.io/wapiml/images/wapiml/capture4.PNG)
 
 ###### Generate an OpenAPI definition from an annotated UML model
 
@@ -91,3 +92,7 @@ The generated OpenAPI definition will be located under the folder *src-gen*.
 	- `minItems` and `maxItems` for `array` types.
 
 N.B. This tool relies on [the OpenAPI metamodel](https://github.com/opendata-for-all/openapi-metamodel) and [the OpenAPI UML profile](https://github.com/opendata-for-all/openapi-profile).
+
+
+[changelog]: ./CHANGELOG.md
+[version-badge]: https://img.shields.io/badge/version-1.1.0-blue.svg
