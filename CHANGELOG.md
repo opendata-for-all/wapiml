@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support the creation of UML model in standalone mode (without Eclipse context).
 
+### Fixed
+
+- [#41]: _UML to OpenAPI model: inherited properties are generated in the JSON schema representing the subclass bug_.
+
 ## [1.1.0] - 2019-11-04
 
 ### Added
@@ -51,4 +55,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [#2]: https://github.com/opendata-for-all/wapiml/issues/2
 [#3]: https://github.com/opendata-for-all/wapiml/issues/3
 [#4]: https://github.com/opendata-for-all/wapiml/issues/4
+[#41]: https://github.com/opendata-for-all/wapiml/issues/41
 
