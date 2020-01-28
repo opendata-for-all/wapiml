@@ -18,7 +18,7 @@
 		    
 	    </location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="https://opendata-for-all.github.io/openapi-metamodel/openapi2/updates/"/>
+			<repository location="https://opendata-for-all.github.io/openapi-metamodel/openapi2/updates/2.2.1/"/>
 			<unit id="edu.uoc.som.openapi2.feature.feature.group" version="0.0.0"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
