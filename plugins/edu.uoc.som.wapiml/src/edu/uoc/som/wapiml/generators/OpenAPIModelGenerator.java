@@ -314,7 +314,7 @@ public class OpenAPIModelGenerator {
 	}
 
 	private void generateAttributes(Class clazz, Schema schema) {
-		for (org.eclipse.uml2.uml.Property attribute : clazz.getAllAttributes()) {
+		for (org.eclipse.uml2.uml.Property attribute : clazz.getOwnedAttributes()) {
 			if (attribute.isStereotypeApplied(attribute.getApplicableStereotype(OpenAPIProfileUtils.API_PROPERTY_QN))) {
 				Property mProperty = extractProperty(attribute);
 				schema.getProperties().add(mProperty);
