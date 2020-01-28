@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test.profile;
+package edu.uoc.som.wapiml.test.model.gen.simple;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -18,7 +18,7 @@ import edu.uoc.som.openapi2.io.OpenAPI2Builder;
 import edu.uoc.som.openapi2.io.model.SerializationFormat;
 import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 
-public class TestConstraintsOnParameterProfile {
+public class TestConstraintsOnParameter {
 
 
 	@Test
@@ -27,7 +27,7 @@ public class TestConstraintsOnParameterProfile {
 		try {
 			File input = new File("resources/inputs/constraints/parameters.json");
 			API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "parameters", true,
+			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "parameters", false,
 					true);
 			Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 
@@ -52,7 +52,7 @@ public class TestConstraintsOnParameterProfile {
 			File input = new File("resources/inputs/constraints/parameters.json");
 
 			API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "parameters", true,
+			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "parameters", false,
 					true);
 			Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 			Class concept = (Class) ((Package) model.getPackagedElement("parameters")).getPackagedElement("Concept");

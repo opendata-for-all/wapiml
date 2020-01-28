@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test.simple;
+package edu.uoc.som.wapiml.test.model.gen.simple;
 
 import static org.junit.Assert.fail;
 

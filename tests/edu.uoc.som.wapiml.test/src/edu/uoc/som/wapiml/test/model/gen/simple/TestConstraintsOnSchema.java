@@ -1,4 +1,4 @@
-package edu.uoc.som.wapiml.test.profile;
+package edu.uoc.som.wapiml.test.model.gen.simple;
 
 
 import static org.junit.Assert.assertNotNull;
@@ -20,7 +20,7 @@ import edu.uoc.som.wapiml.generators.ClassDiagramGenerator;
 
 
 
-public class TestConstraintsOnSchemaProfile {
+public class TestConstraintsOnSchema {
 
 
 
@@ -31,7 +31,7 @@ public class TestConstraintsOnSchemaProfile {
 		try {
 			File input = new File("resources/inputs/constraints/max-min.json");
 			API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "max-min", true,
+			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "max-min", false,
 					true);
 			Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 			Class concept = (Class) ((Package) model.getPackagedElement("max-min")).getPackagedElement("Concept");
@@ -57,7 +57,7 @@ public class TestConstraintsOnSchemaProfile {
 		try {
 			File input = new File("resources/inputs/constraints/max-min.json");
 			API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "max-min", true,
+			ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "max-min", false,
 					true);
 			Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 			Class concept = (Class) ((Package) model.getPackagedElement("max-min")).getPackagedElement("Concept");
@@ -86,7 +86,7 @@ public class TestConstraintsOnSchemaProfile {
 			try {
 				File input = new File("resources/inputs/constraints/multipleOf.json");
 				API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-				ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "multipleOf", true,
+				ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "multipleOf", false,
 						true);
 				Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 				Class concept = (Class) ((Package) model.getPackagedElement("multipleOf")).getPackagedElement("Concept");
@@ -111,7 +111,7 @@ public class TestConstraintsOnSchemaProfile {
 			try {
 				File input = new File("resources/inputs/constraints/length.json");
 				API apiModel = new OpenAPI2Builder().setSerializationFormat(SerializationFormat.JSON).fromFile(input);
-				ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "length", true,
+				ClassDiagramGenerator classDiagramGenerator = new ClassDiagramGenerator(apiModel, "length", false,
 						true);
 				Model model = classDiagramGenerator.generateClassDiagramFromOpenAPI();
 				Class concept = (Class) ((Package) model.getPackagedElement("length")).getPackagedElement("Concept");
