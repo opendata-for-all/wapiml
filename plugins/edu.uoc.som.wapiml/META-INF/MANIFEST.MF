@@ -19,6 +19,7 @@ Bundle-ClassPath: .
 Export-Package: edu.uoc.som.wapiml.exception,
  edu.uoc.som.wapiml.generators,
  edu.uoc.som.wapiml.model,
+ edu.uoc.som.wapiml.resources,
  edu.uoc.som.wapiml.utils
 Bundle-Vendor: SOM Research Lab
 Bundle-ActivationPolicy: lazy
